@@ -23,17 +23,27 @@ These skills work as instruction sets that AI coding assistants read and follow 
 
 ---
 
+## ⚡ Two Editions Available
+
+| Edition | Directory | Best For | Description |
+|---|---|---|---|
+| **Standard Edition** | [`skills/`](file:///Users/raf/Downloads/AI-Agent-Skills/skills/) | Deep Architecture & Learning | In-depth documentation, full architectural explanations, exhaustive code patterns, and complete rationale. |
+| **Token-Efficient Edition** | [`AI-Skills-Token-Efficient/`](file:///Users/raf/Downloads/AI-Agent-Skills/AI-Skills-Token-Efficient/) | Limited Company AI Credits / Fast Responses | Ultra-compact (~85% fewer tokens), straight-to-the-point rules, direct code answers, zero conversational filler, no unnecessary web searches. |
+
+---
+
 ## 🚀 Installation
 
 ### Step 1: Clone this repo
 
 ```bash
 git clone https://github.com/RidhwanAF/AI-Agent-Skills.git
+cd AI-Agent-Skills
 ```
 
-### Step 2: Copy skills to your AI agent's global config
+### Step 2: Choose your edition and copy to your AI agent
 
-Each AI coding assistant reads skills from a specific directory. Copy the `skills/` folder contents to the correct location for your tool(s):
+Select either **`skills/*`** (Standard) or **`AI-Skills-Token-Efficient/*`** (Token-Efficient for limited company credits), then copy to your AI agent's directory:
 
 ---
 
@@ -137,18 +147,29 @@ cp -r AI-Agent-Skills/skills/* <project-root>/.codex/skills/
 
 ## 📝 Quick Install Script (All Agents at Once)
 
-Run this one-liner to install skills to **all** supported AI agents globally:
+Run this one-liner to install skills to **all** supported AI agents globally.
 
+### Option A: Token-Efficient Edition (Recommended for limited credits)
 ```bash
-# Clone the repo first
 git clone https://github.com/RidhwanAF/AI-Agent-Skills.git
 cd AI-Agent-Skills
 
-# Install to all agents
+for agent_dir in ~/.gemini/config/skills ~/.gemini/skills ~/.claude/skills ~/.codex/skills ~/.copilot/skills ~/.cursor/skills; do
+  mkdir -p "$agent_dir"
+  cp -r AI-Skills-Token-Efficient/* "$agent_dir/"
+  echo "✅ Installed Token-Efficient skills to $agent_dir"
+done
+```
+
+### Option B: Standard Edition (In-depth architecture & rationale)
+```bash
+git clone https://github.com/RidhwanAF/AI-Agent-Skills.git
+cd AI-Agent-Skills
+
 for agent_dir in ~/.gemini/config/skills ~/.gemini/skills ~/.claude/skills ~/.codex/skills ~/.copilot/skills ~/.cursor/skills; do
   mkdir -p "$agent_dir"
   cp -r skills/* "$agent_dir/"
-  echo "✅ Installed to $agent_dir"
+  echo "✅ Installed Standard skills to $agent_dir"
 done
 ```
 
@@ -177,30 +198,28 @@ done
 ```
 AI-Agent-Skills/
 ├── README.md
-└── skills/
+├── skills/                             # Standard Edition (In-depth)
+│   ├── agent-audit-workflow/
+│   ├── android-clean-architecture/
+│   ├── android-cli/
+│   ├── android-data-layer/
+│   ├── android-expert/
+│   ├── android-project-onboarding-architect/
+│   ├── android-testing/
+│   ├── compose-ui-maplibre/
+│   ├── compose-ui-preview-design/
+│   └── gradle-build-hygiene/
+└── AI-Skills-Token-Efficient/          # Token-Efficient Edition (~85% fewer tokens)
     ├── agent-audit-workflow/
-    │   └── SKILL.md
     ├── android-clean-architecture/
-    │   └── SKILL.md
     ├── android-cli/
-    │   ├── SKILL.md
-    │   ├── interact.md
-    │   ├── journeys.md
-    │   └── references/
     ├── android-data-layer/
-    │   └── SKILL.md
     ├── android-expert/
-    │   └── SKILL.md
     ├── android-project-onboarding-architect/
-    │   └── SKILL.md
     ├── android-testing/
-    │   └── SKILL.md
     ├── compose-ui-maplibre/
-    │   └── SKILL.md
     ├── compose-ui-preview-design/
-    │   └── SKILL.md
     └── gradle-build-hygiene/
-        └── SKILL.md
 ```
 
 ---
