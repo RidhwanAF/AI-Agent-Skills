@@ -10,7 +10,7 @@ These skills work as instruction sets that AI coding assistants read and follow 
 
 | Skill | Description |
 |-------|-------------|
-| **`android-expert`** | Comprehensive Android engineering guide: Jetpack Compose UI, Coroutines & Flow, MVVM/MVI, Hilt DI, shared element transitions with Coil, `PredictiveBackHandler`, `kotlin.time.Duration` enforcement, dead code cleanup, deprecation avoidance, DataStore over SharedPreferences, and Android 14/15 restrictions. |
+| **`android-expert`** | Comprehensive Android engineering guide: Jetpack Compose UI, Coroutines & Flow, MVVM/MVI, Hilt DI, shared element transitions with Coil, `PredictiveBackHandler`, `kotlin.time.Duration` enforcement, dead code cleanup, deprecation avoidance, DataStore over SharedPreferences, and Android 14+ restrictions. |
 | **`android-clean-architecture`** | Enforces Clean Architecture layer boundaries, multi-module dependency rules, Dagger Hilt DI scope management, and Navigation 3 type-safe routes. |
 | **`android-data-layer`** | Best practices for Retrofit, Room Database, Jetpack DataStore, and `kotlinx.serialization` — prevents data layer leakage into domain/presentation. |
 | **`android-testing`** | Automated unit test generation standards for ViewModels, UseCases, Repositories, and Compose UI components. |
