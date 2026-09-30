@@ -1,6 +1,0 @@
-Build a mini Crypto Tracker feature in Jetpack Compose:
-1. List of cryptos (id, name, symbol, price, iconUrl).
-2. Tap item -> opens detail screen with shared element transition (card, image, title) and PredictiveBackHandler.
-3. Image loaded with Coil (AsyncImage) participating in shared element animation.
-4. ViewModel with StateFlow, using a 3-second retry delay for auto-refresh.
-5. Toggle favorite saved to Jetpack DataStore (never SharedPreferences).
