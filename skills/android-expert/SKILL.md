@@ -1,6 +1,6 @@
 ---
 name: android_expert
-description: "Global Android engineering capability spanning legacy codebases, modern Jetpack Compose UI, background Services/WorkManager, Clean Architecture with MVVM/MVI, Coroutines & Flow, Hilt DI, and modern Android 14/15 restrictions."
+description: "Global Android engineering capability spanning legacy codebases, modern Jetpack Compose UI, background Services/WorkManager, Clean Architecture with MVVM/MVI, Coroutines & Flow, Hilt DI, and modern Android 14+ restrictions."
 ---
 
 # Android Expert Skill
@@ -161,7 +161,7 @@ This skill provides comprehensive architectural patterns, production standards, 
 - **Collection operations chain**: Prefer functional chain (`filter { }.map { }.sortedBy { }`) over imperative loops with mutable accumulators. Use `asSequence()` when the collection is large and multiple intermediate operations are chained.
 
 ### Modern API Support with Graceful Legacy Compatibility
-- **Always Target Latest SDK**: Write implementations targeting the latest stable Android platform features (Android 14/15, API 34/35).
+- **Always Target Latest SDK**: Write implementations targeting the latest stable Android platform features (Android 14+, API 34+).
 - **Graceful Backward Degradation**: Always validate platform version boundaries using explicit SDK level checks before invoking newer framework APIs:
   ```kotlin
   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
@@ -332,7 +332,7 @@ This skill provides comprehensive architectural patterns, production standards, 
       - **Item → Dialog / Bottom Sheet**: When tapping a list item opens a dialog or bottom sheet, apply `sharedBoundsWithCallerManagedVisibility` on the list item and `sharedBounds` on the dialog/sheet content using the same key. This makes the dialog appear to expand from the item's position and collapse back on dismiss.
       - **Item → Fullscreen Overlay**: For fullscreen image viewers or custom overlay views, apply `sharedElementWithCallerManagedVisibility` on the source thumbnail and `sharedElement` on the fullscreen image using the same key (e.g., `"image_${item.id}"`). The image smoothly scales from its list position to fill the screen.
       - **Grid / Staggered Grid Items**: Same rules apply — each grid cell gets unique keys based on item ID. The transition animates the cell from its grid position to the destination view regardless of scroll position.
-    - **Predictive Back Navigation & Spring Physics**: Support Android 14/15+ predictive back gestures by integrating `PredictiveBackHandler` with `SharedTransitionScope`. Use spring physics for `boundsTransform` (e.g., `spring(stiffness = Spring.StiffnessMediumLow)`) over linear/tween animations for natural spatial motion.
+    - **Predictive Back Navigation & Spring Physics**: Support Android 14+ predictive back gestures by integrating `PredictiveBackHandler` with `SharedTransitionScope`. Use spring physics for `boundsTransform` (e.g., `spring(stiffness = Spring.StiffnessMediumLow)`) over linear/tween animations for natural spatial motion.
     - **`PredictiveBackHandler` with Animated Progress (Mandatory for All Detail/Overlay Screens)**:
       - **Always use `PredictiveBackHandler`** instead of `BackHandler` on any screen that has shared element transitions. `BackHandler` snaps instantly; `PredictiveBackHandler` lets the user interactively swipe back and see the shared elements animating back toward their original positions in real-time.
       - Collect the `progress` flow to drive animated state (e.g., scale, alpha, offset) during the back gesture. On completion, invoke the back callback; on cancellation (user lifts finger before threshold), let the view snap back:
@@ -746,7 +746,7 @@ fun ItemDetailScreen(
     animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier
 ) {
-    // Android 14/15/16 Predictive Back Gesture — shared elements animate back smoothly
+    // Android 14+ Predictive Back Gesture — shared elements animate back smoothly
     PredictiveBackHandler { progress ->
         try {
             progress.collect { backEvent ->
