@@ -260,6 +260,37 @@ Inside [`apps/`](file:///Users/raf/Downloads/AI-Agent-Skills/apps/) are two **fu
 
 Read the detailed benchmark report: **[`CHIIKAWA_APPS_COMPARISON.md`](file:///Users/raf/Downloads/AI-Agent-Skills/CHIIKAWA_APPS_COMPARISON.md)**.
 
+### 🎬 Side-by-Side Video Demonstration
+
+<table>
+  <tr>
+    <th width="50%" align="center">🏛️ Standard Edition (Clean Architecture)</th>
+    <th width="50%" align="center">⚡ Token-Efficient Edition (Direct Code)</th>
+  </tr>
+  <tr>
+    <td align="center">
+      <video src="assets/videos/standard.mp4" controls="controls" width="100%"></video>
+      <br>
+      <a href="assets/videos/standard.mp4">▶️ View standard.mp4</a>
+    </td>
+    <td align="center">
+      <video src="assets/videos/efficient.mp4" controls="controls" width="100%"></video>
+      <br>
+      <a href="assets/videos/efficient.mp4">▶️ View efficient.mp4</a>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <i>485 lines • Modular Clean Architecture with pure domain physics</i><br>
+      <code>apps/chiikawa-character-standard/</code>
+    </td>
+    <td align="center">
+      <i>303 lines • Consolidated Screen (-37% lines, ~81% token savings)</i><br>
+      <code>apps/chiikawa-character-efficient/</code>
+    </td>
+  </tr>
+</table>
+
 Both apps feature:
 - 🌸 **Mochi Elastic Physics:** Squash-and-stretch with volume preservation on Canvas.
 - 📐 **3D Perspective Tilt (Z-Axis):** Interactive spherical rotation and facial parallax.
