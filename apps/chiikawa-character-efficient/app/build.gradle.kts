@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.raf.chiikawa.efficient"
-    compileSdk = 35
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.raf.chiikawa.efficient"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 37
         versionCode = 1
         versionName = "1.0.0"
     }

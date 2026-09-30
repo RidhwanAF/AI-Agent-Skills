@@ -28,6 +28,37 @@ Or simply **File → Open** in Android Studio.
 
 ---
 
+## 🎬 Side-by-Side Video Demonstration
+
+<table>
+  <tr>
+    <th width="50%" align="center">🏛️ Standard Edition App</th>
+    <th width="50%" align="center">⚡ Token-Efficient Edition App</th>
+  </tr>
+  <tr>
+    <td align="center">
+      <video src="assets/videos/standard.mp4" controls="controls" width="100%"></video>
+      <br>
+      <a href="assets/videos/standard.mp4">▶️ View standard.mp4</a>
+    </td>
+    <td align="center">
+      <video src="assets/videos/efficient.mp4" controls="controls" width="100%"></video>
+      <br>
+      <a href="assets/videos/efficient.mp4">▶️ View efficient.mp4</a>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <i>485 lines • Modular Clean Architecture</i>
+    </td>
+    <td align="center">
+      <i>303 lines • Consolidated Screen (-37% lines)</i>
+    </td>
+  </tr>
+</table>
+
+---
+
 ## 📊 Comprehensive Token & Code Comparison
 
 | Metric | Standard Edition (`skills/`) | Token-Efficient Edition (`AI-Skills-Token-Efficient/`) | Difference / Savings |
