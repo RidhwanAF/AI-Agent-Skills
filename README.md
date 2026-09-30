@@ -232,6 +232,28 @@ val settings = context.settingsDataStore.data.first()
 
 ---
 
+## 🏆 Built With These Skills — Published on Google Play
+
+These skills aren't just theory — they power **real apps published on the Google Play Store**.
+
+### 📱 Popup Anything
+
+<a href="https://play.google.com/store/apps/details?id=com.raf.popupanything">
+  <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" width="200"/>
+</a>
+
+The **Find My Device** feature in this app was **completely built by [Google Antigravity](https://github.com/google-gemini/antigravity)** AI agent using these skills — from architecture to implementation. No manual coding involved for that feature.
+
+### ⚔️ Gomi Samurai
+
+<a href="https://play.google.com/store/apps/details?id=com.raf.gomisamurai">
+  <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" width="200"/>
+</a>
+
+This app was **100% built by AI from scratch** — including all the in-game images and assets. The video demo was created using public Gemini AI from the web.
+
+> These apps demonstrate that with the right set of skills, AI coding agents can produce **production-quality, Play Store-ready Android applications**.
+
 ## 🤝 Contributing
 
 1. Fork this repo
