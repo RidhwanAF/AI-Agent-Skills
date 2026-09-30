@@ -251,6 +251,26 @@ val settings = context.settingsDataStore.data.first()
 
 ---
 
+## 🧸 Runnable Demo Apps: Chiikawa Stretchy Character
+
+Inside [`apps/`](file:///Users/raf/Downloads/AI-Agent-Skills/apps/) are two **fully runnable, independent Gradle Android projects** generated from the exact same user prompt to benchmark both skills editions:
+
+- **[apps/chiikawa-character-standard/](file:///Users/raf/Downloads/AI-Agent-Skills/apps/chiikawa-character-standard/)** — Built using **Standard Edition** (modular Clean Architecture, pure domain physics, KDocs).
+- **[apps/chiikawa-character-efficient/](file:///Users/raf/Downloads/AI-Agent-Skills/apps/chiikawa-character-efficient/)** — Built using **Token-Efficient Edition** (direct code first, zero fluff, ~81% fewer total tokens).
+
+Read the detailed benchmark report: **[`CHIIKAWA_APPS_COMPARISON.md`](file:///Users/raf/Downloads/AI-Agent-Skills/CHIIKAWA_APPS_COMPARISON.md)**.
+
+Both apps feature:
+- 🌸 **Mochi Elastic Physics:** Squash-and-stretch with volume preservation on Canvas.
+- 📐 **3D Perspective Tilt (Z-Axis):** Interactive spherical rotation and facial parallax.
+- 📳 **Haptic Feedback:** `SegmentTick`, `GestureThresholdActivate`, and `Confirm` snap-back.
+- 🍮 **Spring Return:** Jelly-like bouncy return when released.
+
+To open and run:
+Open either folder in **Android Studio** and click **Run**, or run `./gradlew assembleDebug`.
+
+---
+
 ## 🏆 Built With These Skills — Published on Google Play
 
 These skills aren't just theory — they power **real apps published on the Google Play Store**.

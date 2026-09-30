@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Chiikawa Efficient</string>
+    <string name="desc_character_hint">Drag and release to stretch and bounce</string>
+</resources>

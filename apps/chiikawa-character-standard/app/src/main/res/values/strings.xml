@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Chiikawa Standard</string>
+    <string name="title_character_screen">Stretchy Chiikawa Character</string>
+    <string name="desc_character_hint">Drag the character in any direction and release to bounce back</string>
+    <string name="label_drag_intensity">Stretch Power</string>
+</resources>
