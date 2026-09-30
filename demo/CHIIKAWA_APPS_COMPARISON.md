@@ -14,14 +14,14 @@ This benchmark compares two **fully runnable Gradle Android projects** generated
 
 ## 📱 Both Projects Are Complete & Runnable in Android Studio
 
-Both projects in [`apps/`](file:///Users/raf/Downloads/AI-Agent-Skills/apps/) are **independent, standalone Android applications** with full Gradle setup (`settings.gradle.kts`, `build.gradle.kts`, `gradle/libs.versions.toml`, `gradlew`, `AndroidManifest.xml`, and Material 3 Compose):
+Both projects in [`apps/`](file:///Users/raf/Downloads/AI-Agent-Skills/demo/apps/) are **independent, standalone Android applications** with full Gradle setup (`settings.gradle.kts`, `build.gradle.kts`, `gradle/libs.versions.toml`, `gradlew`, `AndroidManifest.xml`, and Material 3 Compose):
 
-- **Standard App:** [`apps/chiikawa-character-standard/`](file:///Users/raf/Downloads/AI-Agent-Skills/apps/chiikawa-character-standard/)
-- **Token-Efficient App:** [`apps/chiikawa-character-efficient/`](file:///Users/raf/Downloads/AI-Agent-Skills/apps/chiikawa-character-efficient/)
+- **Standard App:** [`demo/apps/chiikawa-character-standard/`](file:///Users/raf/Downloads/AI-Agent-Skills/demo/apps/chiikawa-character-standard/)
+- **Token-Efficient App:** [`demo/apps/chiikawa-character-efficient/`](file:///Users/raf/Downloads/AI-Agent-Skills/demo/apps/chiikawa-character-efficient/)
 
 To run either project:
 ```bash
-cd apps/chiikawa-character-standard   # or apps/chiikawa-character-efficient
+cd demo/apps/chiikawa-character-standard   # or demo/apps/chiikawa-character-efficient
 ./gradlew assembleDebug
 ```
 Or simply **File → Open** in Android Studio.

@@ -209,17 +209,26 @@ AI-Agent-Skills/
 │   ├── compose-ui-maplibre/
 │   ├── compose-ui-preview-design/
 │   └── gradle-build-hygiene/
-└── AI-Skills-Token-Efficient/          # Token-Efficient Edition (~85% fewer tokens)
-    ├── agent-audit-workflow/
-    ├── android-clean-architecture/
-    ├── android-cli/
-    ├── android-data-layer/
-    ├── android-expert/
-    ├── android-project-onboarding-architect/
-    ├── android-testing/
-    ├── compose-ui-maplibre/
-    ├── compose-ui-preview-design/
-    └── gradle-build-hygiene/
+├── AI-Skills-Token-Efficient/          # Token-Efficient Edition (~85% fewer tokens)
+│   ├── agent-audit-workflow/
+│   ├── android-clean-architecture/
+│   ├── android-cli/
+│   ├── android-data-layer/
+│   ├── android-expert/
+│   ├── android-project-onboarding-architect/
+│   ├── android-testing/
+│   ├── compose-ui-maplibre/
+│   ├── compose-ui-preview-design/
+│   └── gradle-build-hygiene/
+└── demo/                               # Interactive Demo & Benchmark
+    ├── CHIIKAWA_APPS_COMPARISON.md     # Full comparison report
+    ├── apps/                           # Runnable Android projects
+    │   ├── chiikawa-character-standard/
+    │   └── chiikawa-character-efficient/
+    └── assets/
+        └── videos/                     # Demo screen recordings
+            ├── standard.mp4
+            └── efficient.mp4
 ```
 
 ---
@@ -253,12 +262,12 @@ val settings = context.settingsDataStore.data.first()
 
 ## 🧸 Runnable Demo Apps: Chiikawa Stretchy Character
 
-Inside [`apps/`](file:///Users/raf/Downloads/AI-Agent-Skills/apps/) are two **fully runnable, independent Gradle Android projects** generated from the exact same user prompt to benchmark both skills editions:
+Inside [`demo/apps/`](file:///Users/raf/Downloads/AI-Agent-Skills/demo/apps/) are two **fully runnable, independent Gradle Android projects** generated from the exact same user prompt to benchmark both skills editions:
 
-- **[apps/chiikawa-character-standard/](file:///Users/raf/Downloads/AI-Agent-Skills/apps/chiikawa-character-standard/)** — Built using **Standard Edition** (modular Clean Architecture, pure domain physics, KDocs).
-- **[apps/chiikawa-character-efficient/](file:///Users/raf/Downloads/AI-Agent-Skills/apps/chiikawa-character-efficient/)** — Built using **Token-Efficient Edition** (direct code first, zero fluff, ~81% fewer total tokens).
+- **[demo/apps/chiikawa-character-standard/](file:///Users/raf/Downloads/AI-Agent-Skills/demo/apps/chiikawa-character-standard/)** — Built using **Standard Edition** (modular Clean Architecture, pure domain physics, KDocs).
+- **[demo/apps/chiikawa-character-efficient/](file:///Users/raf/Downloads/AI-Agent-Skills/demo/apps/chiikawa-character-efficient/)** — Built using **Token-Efficient Edition** (direct code first, zero fluff, ~81% fewer total tokens).
 
-Read the detailed benchmark report: **[`CHIIKAWA_APPS_COMPARISON.md`](file:///Users/raf/Downloads/AI-Agent-Skills/CHIIKAWA_APPS_COMPARISON.md)**.
+Read the detailed benchmark report: **[`demo/CHIIKAWA_APPS_COMPARISON.md`](file:///Users/raf/Downloads/AI-Agent-Skills/demo/CHIIKAWA_APPS_COMPARISON.md)**.
 
 ### 🎬 Side-by-Side Video Demonstration
 
@@ -269,24 +278,24 @@ Read the detailed benchmark report: **[`CHIIKAWA_APPS_COMPARISON.md`](file:///Us
   </tr>
   <tr>
     <td align="center">
-      <video src="assets/videos/standard.mp4" controls="controls" width="100%"></video>
+      <video src="demo/assets/videos/standard.mp4" controls="controls" width="100%"></video>
       <br>
-      <a href="assets/videos/standard.mp4">▶️ View standard.mp4</a>
+      <a href="demo/assets/videos/standard.mp4">▶️ View standard.mp4</a>
     </td>
     <td align="center">
-      <video src="assets/videos/efficient.mp4" controls="controls" width="100%"></video>
+      <video src="demo/assets/videos/efficient.mp4" controls="controls" width="100%"></video>
       <br>
-      <a href="assets/videos/efficient.mp4">▶️ View efficient.mp4</a>
+      <a href="demo/assets/videos/efficient.mp4">▶️ View efficient.mp4</a>
     </td>
   </tr>
   <tr>
     <td align="center">
       <i>485 lines • Modular Clean Architecture with pure domain physics</i><br>
-      <code>apps/chiikawa-character-standard/</code>
+      <code>demo/apps/chiikawa-character-standard/</code>
     </td>
     <td align="center">
       <i>303 lines • Consolidated Screen (-37% lines, ~81% token savings)</i><br>
-      <code>apps/chiikawa-character-efficient/</code>
+      <code>demo/apps/chiikawa-character-efficient/</code>
     </td>
   </tr>
 </table>
