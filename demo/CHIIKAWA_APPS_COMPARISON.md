@@ -6,8 +6,7 @@ This benchmark compares two **fully runnable Gradle Android projects** generated
 
 ---
 
-## 🎯 The User Prompt
-
+## 🎯 The user's prompt, which contains grammatically random or nonsensical words.
 > *"Build cute character using canvas and it interactive x,y,z and haptic feedback like the head following the drag and when release it comeback to its psition, like nested or something, so its not moving but kinda strectch. like chiikawa or something"*
 
 ---
