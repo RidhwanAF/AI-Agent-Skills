@@ -1,347 +1,207 @@
-# 🤖 AI Agent Skills for Android Development
+# 🚀 AI-Engineer-Skills
 
-A curated collection of **AI coding agent skills** that enforce modern Android engineering best practices, clean architecture, and idiomatic Kotlin patterns across your entire team.
+A curated, enterprise-grade suite of **interconnected, modular AI coding agent skills** designed to turn your AI coding assistant (Gemini, Claude Code, Cursor, Codex, Copilot, Windsurf) into an autonomous, rigorous senior software engineering team.
 
-These skills work as instruction sets that AI coding assistants read and follow — ensuring consistent, production-quality code output regardless of which AI tool your team uses.
+Inspired by the precision, multi-agent parallelism, and anti-slop principles of [pstack](https://github.com/cursor/plugins/tree/main/pstack), **AI-Engineer-Skills** connects all specialized skills into an intelligent mesh with **`/engineer-mode`** as the universal adaptive entry point.
+
+---
+
+## 🧭 Navigation & Module Hub
+
+Every skill module has its own comprehensive documentation, workflow diagrams, and prompt lists. Use the links below to navigate across the suite:
+
+| Hub Directory | Core Domain | Skills Included | Direct Documentation Link |
+|---|---|---|---|
+| 🚀 **`engineer-mode/`** | Master Entry Point & Playbooks | `/engineer-mode` | [Engineer Mode Guide](engineer-mode/README.md) |
+| 📱 **`android-skills/`** | Modular Android Suite & Google CLI | `/android-architecture`, `/compose-ui`, `/compose-maplibre`, `/android-testing`, `/gradle-build-hygiene` | [Android Skills Guide](android-skills/README.md) |
+| ⚛️ **`react-ts-skills/`** | Modular React TS Suite | `/react-ts-architecture`, `/react-ui-components`, `/react-state-management`, `/react-testing` | [React TS Skills Guide](react-ts-skills/README.md) |
+| 🔍 **`diagnostic-skills/`** | Diagnostics, ADR, Design & Logs | `/error-detective`, `/adr-analyze`, `/app-design`, `/changelog-recorder` | [Diagnostic Skills Guide](diagnostic-skills/README.md) |
+| 🌿 **`git-skills/`** | Version Control & PR Shipping | `/git-assistant` | [Git Skills Guide](git-skills/README.md) |
+
+---
+
+## 🕸️ The Connected Skills Mesh
+
+In traditional setups, AI skills run as disconnected silos. In **AI-Engineer-Skills**, all 15 skills know about and collaborate with the entire team:
+
+```mermaid
+flowchart TD
+    EM(["🚀 /engineer-mode<br/>(Master Adaptive Orchestrator)"])
+
+    subgraph ArchitectureLayer ["📐 Architecture & Decision Layer"]
+        AD(["📐 /app-design<br/>(UML Class, Sequence, Use Cases)"])
+        ADR(["📜 /adr-analyze<br/>(MADR Grounded in Official Docs)"])
+        CR(["📝 /changelog-recorder<br/>(Timestamped File Generation)"])
+    end
+
+    subgraph AndroidSuite ["📱 Modular Android Suite"]
+        AA(["🏛️ /android-architecture<br/>(Clean Arch, KMP Pure Domain)"])
+        CUI(["🎨 /compose-ui<br/>(Component Files, Modifier Rule)"])
+        ML(["🗺️ /compose-maplibre<br/>(MapLibre Native, Lifecycle)"])
+        AT(["🧪 /android-testing<br/>(Turbine, MockK, ComposeRule)"])
+        GBH(["🐘 /gradle-build-hygiene<br/>(libs.versions.toml, Official AGP)"])
+    end
+
+    subgraph ReactSuite ["⚛️ Modular React TS Suite"]
+        RTA(["🏛️ /react-ts-architecture<br/>(Frontend Clean Arch, Zod)"])
+        RUI(["🎨 /react-ui-components<br/>(Accessible Modular UI, Prop Order)"])
+        RSM(["⚡ /react-state-management<br/>(TanStack Query, Zustand)"])
+        RT(["🧪 /react-testing<br/>(Vitest, Testing Library, MSW)"])
+    end
+
+    subgraph QualityAndShipping ["🔍 Verification & Shipping"]
+        ED(["🔍 /error-detective<br/>(Interactive Triage, Pie Score)"])
+        GA(["🌿 /git-assistant<br/>(Conventional Commits, Safe PRs)"])
+    end
+
+    GoogleCLI[("🛠️ Google android-cli<br/>(Official Tool & Skill)")]
+
+    %% Orchestrator connections
+    EM -->|Model Architecture| AD
+    EM -->|Record Decision| ADR
+    EM -->|Log Progress| CR
+    EM -->|Android Architecture| AA
+    EM -->|Compose UI Components| CUI
+    EM -->|Web Architecture| RTA
+    EM -->|Web UI Components| RUI
+    EM -->|Investigate Bug| ED
+    EM -->|Commit & Ship| GA
+
+    %% Cross-skill handoffs
+    AD -->|Document Choice| ADR
+    AD -->|Android Blueprint| AA
+    AD -->|Web Blueprint| RTA
+
+    AA -->|StateFlow to| CUI
+    AA -->|Domain Entities to| AT
+    CUI -->|Tested via| AT
+    CUI -->|Maps to| ML
+    GBH -->|Grounded Deps to| AA
+    AA -->|Device Ops & Doctor| GoogleCLI
+
+    RTA -->|Domain Models to| RUI
+    RSM -->|Server/Client State to| RUI
+    RUI -->|Component Tested via| RT
+
+    CUI -->|Render Crashes to| ED
+    RUI -->|Hydration Bugs to| ED
+    ED -->|Verified Fixes Logged in| CR
+    CR -->|Staged for Commit by| GA
+```
+
+---
+
+## 🎯 Universal Entry Point: `/engineer-mode`
+
+When you begin any non-trivial task, invoke `/engineer-mode`. It functions like an experienced engineering lead:
+
+1. **Assesses Intent**: Analyzes your initial prompt for domain, scope, and technical constraints.
+2. **Interactive Triage**: If your goal is broad or ambiguous, it presents an interactive questionnaire with curated playbooks:
+   - `[1]` **Error Investigation** (`/error-detective`)
+   - `[2]` **App System Design & UML** (`/app-design`)
+   - `[3]` **Architecture Decision Record** (`/adr-analyze`)
+   - `[4]` **Android Engineering Suite** (`/android-architecture`, `/compose-ui`, `/compose-maplibre`, `/android-testing`, `/gradle-build-hygiene`)
+   - `[5]` **React + TypeScript Modern Web Suite** (`/react-ts-architecture`, `/react-ui-components`, `/react-state-management`, `/react-testing`)
+   - `[6]` **Changelog Documentation** (`/changelog-recorder`)
+   - `[7]` **Git Shipping & PR Creation** (`/git-assistant`)
+   - `[8]` **End-to-End Autonomous Delivery** (Design ➔ ADR ➔ Modular Code ➔ Testing ➔ Changelog ➔ Ship)
+3. **Coordinates Routing**: Hands off work to specialized domain experts and preserves all context across turns.
 
 ---
 
 ## 📦 What's Included
 
-| Skill | Description |
-|-------|-------------|
-| **`android-expert`** | Comprehensive Android engineering guide: Jetpack Compose UI, Coroutines & Flow, MVVM/MVI, Hilt DI, shared element transitions with Coil, `PredictiveBackHandler`, `kotlin.time.Duration` enforcement, dead code cleanup, deprecation avoidance, DataStore over SharedPreferences, and Android 14+ restrictions. |
-| **`android-clean-architecture`** | Enforces Clean Architecture layer boundaries, multi-module dependency rules, Dagger Hilt DI scope management, and Navigation 3 type-safe routes. |
-| **`android-data-layer`** | Best practices for Retrofit, Room Database, Jetpack DataStore, and `kotlinx.serialization` — prevents data layer leakage into domain/presentation. |
-| **`android-testing`** | Automated unit test generation standards for ViewModels, UseCases, Repositories, and Compose UI components. |
-| **`compose-ui-preview-design`** | Edge-to-edge window insets, Material 3 previews, Compose state stability (`@Immutable`/`@Stable`), haptic feedback patterns, and fake offline repository mocking. |
-| **`compose-ui-maplibre`** | Jetpack Compose UI patterns with MapLibre Compose Material 3 integration and lifecycle safety. |
-| **`gradle-build-hygiene`** | Version catalog (`libs.versions.toml`) management, R8/ProGuard keep rules, and Room database migration safety. |
-| **`agent-audit-workflow`** | Pre-edit codebase analysis, changelog documentation, and static verification workflow. |
-| **`android-project-onboarding-architect`** | Auto-triggers at task start to check project initialization, set up stack configs, and enforce global Android best practices. |
-| **`android-cli`** | Instructions for using the `android` CLI tool — project creation, device deployment, AVD management, SDK inspection, and official docs lookup. |
+### 📱 1. Modular Android Engineering
+- **`/android-architecture`**: Strict Clean Architecture. Domain layer contains **zero `android.*` framework code** and is shared/ready for Kotlin Multiplatform (`commonMain`). Room for caching, Retrofit for network, Dagger Hilt DI, single-expression extension mappers, and mandatory KDocs.
+- **`/compose-ui`**: Modern Jetpack Compose UI. Enforces **modular component file separation** (never 1 giant file; separate screen, content, cards, state, and preview). Enforces the **Modifier Rule**: in declaration, `modifier: Modifier = Modifier` is the top optional parameter; at call site consumption, it is passed at the very bottom. State stability (`@Immutable`/`@Stable`, immutable collections), edge-to-edge system insets, and purposeful tactile haptics.
+- **`/compose-maplibre`**: MapLibre Native in Compose. Lifecycle-safe MapView handling, vector tile rendering, GeoJSON caching, Material 3 floating control overlays, and camera animations.
+- **`/android-testing`**: Automated test engineering. Turbine for Coroutines Flow testing, MockK and clean offline fakes for UseCase/ViewModel isolation, ComposeTestRule semantic UI tests, and zero flaky sleeps.
+- **`/gradle-build-hygiene`**: Centralized Version Catalog (`gradle/libs.versions.toml`). R8/ProGuard keep rules, compileSdk/targetSdk best practices, and **strict grounding in official Google AGP documentation without guesswork**.
+- **Google `android-cli` Routing**: Custom commands seamlessly route to the official Google `android-cli` package (`android doctor`, `android init`, `android run`, `android doc`).
+
+### ⚛️ 2. Modular React + TypeScript Web Engineering
+- **`/react-ts-architecture`**: Frontend Clean Architecture. Pure TypeScript domain models and business validators (zero DOM or UI dependencies), schema validation with Zod, DTO-to-Domain mappers, and strict type discipline (zero `any`, discriminated unions, `satisfies`).
+- **`/react-ui-components`**: Accessible modern UI components. Enforces **modular component file decomposition** (never 1 monolithic file). Prop ordering rule (mandatory data/callbacks top, optional styling/className bottom), Tailwind CSS design tokens, and WCAG 2.2 AA accessibility.
+- **`/react-state-management`**: TanStack Query (React Query) for server state caching, background sync, and optimistic mutations with rollback. Zustand for atomic, lightweight client UI state.
+- **`/react-testing`**: User-centric automated testing using Vitest, React Testing Library, and Mock Service Worker (MSW) network interception.
+
+### 🔍 3. Diagnostics, ADR, App Design & Living Docs
+- **`/error-detective`**: Interactive bug triage. Asks error type and affected module (or autonomously scans logs/codebase if unsure). Pinpoints root cause, implements verified fix, and produces post-mortem reports in `/docs/error-fix/` with a **Mermaid Pie Chart Score**.
+- **`/adr-analyze`**: Architecture Decision Records. Evaluates technical trade-offs grounded in official vendor documentation (Google Android Architecture Guide, React Docs, W3C/MDN). Generates MADR records in `/docs/adr/ADR-XXXX-<title>.md`.
+- **`/app-design`**: Enterprise visual modeling. Generates UML class diagrams, sequence flows, state machines, and use case specifications in `/docs/architecture/` in English.
+- **`/changelog-recorder`**: Permanent chronological changelogs in `/docs/changelogs/` with strict timestamp naming conventions: `YYYY-MM-DD_HH-mm-ss_<main-change-title>.md`, detailing modified files, KMP/architecture impact, and test verification proof.
+
+### 🌿 4. Git Assistant & Version Control
+- **`/git-assistant`**: Safety-first Git operations. Atomic staging, conventional commits (`feat`, `fix`, `refactor`, `perf`, `docs`, `test`, `chore`), safe pulls with rebase, 3-way conflict resolution without data loss, pre-rebase safety tags, and briefing-style PR descriptions.
 
 ---
 
-## ⚡ Two Editions Available
+## ⚡ Installation & Synchronization (Windows, macOS & Linux)
 
-| Edition | Directory | Best For | Description |
-|---|---|---|---|
-| **Standard Edition** | [`skills/`](file:///Users/raf/Downloads/AI-Agent-Skills/skills/) | Deep Architecture & Learning | In-depth documentation, full architectural explanations, exhaustive code patterns, and complete rationale. |
-| **Token-Efficient Edition** | [`AI-Skills-Token-Efficient/`](file:///Users/raf/Downloads/AI-Agent-Skills/AI-Skills-Token-Efficient/) | Limited Company AI Credits / Fast Responses | Ultra-compact (~85% fewer tokens), straight-to-the-point rules, direct code answers, zero conversational filler, no unnecessary web searches. |
+We provide an interactive **cross-platform Python installation script** along with native double-clickable launchers:
 
----
+```
+AI-Engineer-Skills/
+├── install.py          # Universal Python installer (Windows, macOS, Linux)
+├── install.bat         # Windows Command Prompt / File Explorer Launcher
+├── install.ps1         # Windows PowerShell Launcher
+├── install.command     # macOS Finder Double-Clickable Launcher
+└── install.sh          # Linux / macOS / WSL Terminal Launcher
+```
 
-## 🚀 Installation
+### Option A: Windows (Double-Click or Command Prompt)
+1. Double-click **`install.bat`** in Windows File Explorer (or run `install.bat` in CMD / `.\install.ps1` in PowerShell).
+2. The script checks for Python 3 (installs it automatically via `winget` if missing) and launches the installer.
+3. Checks for Google's official `android-cli` and prompts for target AI agents!
 
-### Step 1: Clone this repo
+### Option B: macOS (Double-Click in Finder)
+1. Double-click **`install.command`** in macOS Finder.
+2. The script checks for Python 3 (installs it via Homebrew if missing) and launches the installer.
 
+### Option C: Linux / macOS Terminal
 ```bash
-git clone https://github.com/RidhwanAF/AI-Agent-Skills.git
-cd AI-Agent-Skills
+cd AI-Engineer-Skills
+./install.sh
 ```
-
-### Step 2: Choose your edition and copy to your AI agent
-
-Select either **`skills/*`** (Standard) or **`AI-Skills-Token-Efficient/*`** (Token-Efficient for limited company credits), then copy to your AI agent's directory:
-
----
-
-### Google Gemini CLI / Gemini Code Assist
-
+*Or execute directly with Python:*
 ```bash
-# Create the skills directory if it doesn't exist
-mkdir -p ~/.gemini/config/skills
-
-# Copy all skills
-cp -r AI-Agent-Skills/skills/* ~/.gemini/config/skills/
+python3 install.py
 ```
 
-**Skills location:** `~/.gemini/config/skills/<skill-name>/SKILL.md`
-
----
-
-### Claude Code (Anthropic)
-
+### Option D: Non-Interactive / Scripted Install
 ```bash
-mkdir -p ~/.claude/skills
+# Install to all agents and auto-setup tools
+python3 install.py --all --auto-install-android-cli
 
-cp -r AI-Agent-Skills/skills/* ~/.claude/skills/
-```
-
-**Skills location:** `~/.claude/skills/<skill-name>/SKILL.md`
-
----
-
-### OpenAI Codex CLI
-
-```bash
-mkdir -p ~/.codex/skills
-
-cp -r AI-Agent-Skills/skills/* ~/.codex/skills/
-```
-
-**Skills location:** `~/.codex/skills/<skill-name>/SKILL.md`
-
----
-
-### GitHub Copilot (CLI / Agent Mode)
-
-```bash
-mkdir -p ~/.copilot/skills
-
-cp -r AI-Agent-Skills/skills/* ~/.copilot/skills/
-```
-
-**Skills location:** `~/.copilot/skills/<skill-name>/SKILL.md`
-
----
-
-### Cursor
-
-```bash
-mkdir -p ~/.cursor/skills
-
-cp -r AI-Agent-Skills/skills/* ~/.cursor/skills/
-```
-
-**Skills location:** `~/.cursor/skills/<skill-name>/SKILL.md`
-
-> **Tip:** In Cursor, you can also reference skills in your `.cursorrules` file at the project root.
-
----
-
-### Windsurf (Codeium)
-
-```bash
-mkdir -p ~/.codeium/windsurf/skills
-
-cp -r AI-Agent-Skills/skills/* ~/.codeium/windsurf/skills/
-```
-
-**Skills location:** `~/.codeium/windsurf/skills/<skill-name>/SKILL.md`
-
----
-
-### Project-Level Installation (Any AI Agent)
-
-You can also install skills at the **project level** so they only apply to a specific repo. This is useful for sharing skills with your team via version control.
-
-```bash
-# For Gemini
-mkdir -p <project-root>/.gemini/skills
-cp -r AI-Agent-Skills/skills/* <project-root>/.gemini/skills/
-
-# For Claude
-mkdir -p <project-root>/.claude/skills
-cp -r AI-Agent-Skills/skills/* <project-root>/.claude/skills/
-
-# For Codex
-mkdir -p <project-root>/.codex/skills
-cp -r AI-Agent-Skills/skills/* <project-root>/.codex/skills/
-```
-
-> **Note:** Project-level skills typically take precedence over global skills when both exist.
-
----
-
-## 📝 Quick Install Script (All Agents at Once)
-
-Run this one-liner to install skills to **all** supported AI agents globally.
-
-### Option A: Token-Efficient Edition (Recommended for limited credits)
-```bash
-git clone https://github.com/RidhwanAF/AI-Agent-Skills.git
-cd AI-Agent-Skills
-
-for agent_dir in ~/.gemini/config/skills ~/.gemini/skills ~/.claude/skills ~/.codex/skills ~/.copilot/skills ~/.cursor/skills; do
-  mkdir -p "$agent_dir"
-  cp -r AI-Skills-Token-Efficient/* "$agent_dir/"
-  echo "✅ Installed Token-Efficient skills to $agent_dir"
-done
-```
-
-### Option B: Standard Edition (In-depth architecture & rationale)
-```bash
-git clone https://github.com/RidhwanAF/AI-Agent-Skills.git
-cd AI-Agent-Skills
-
-for agent_dir in ~/.gemini/config/skills ~/.gemini/skills ~/.claude/skills ~/.codex/skills ~/.copilot/skills ~/.cursor/skills; do
-  mkdir -p "$agent_dir"
-  cp -r skills/* "$agent_dir/"
-  echo "✅ Installed Standard skills to $agent_dir"
-done
+# Install only to Gemini and Claude
+python3 install.py --agents 1,2 --skip-android-cli
 ```
 
 ---
 
-## 🔄 Updating Skills
+## 🤖 Supported AI Agents
 
-To pull the latest updates and re-sync:
-
-```bash
-cd AI-Agent-Skills
-git pull origin main
-
-# Re-sync to all agents
-for agent_dir in ~/.gemini/config/skills ~/.gemini/skills ~/.claude/skills ~/.codex/skills ~/.copilot/skills ~/.cursor/skills; do
-  mkdir -p "$agent_dir"
-  cp -r skills/* "$agent_dir/"
-  echo "✅ Updated $agent_dir"
-done
-```
+| Number | AI Coding Agent | Global Skills Directory |
+|---|---|---|
+| **1** | **Google Gemini / Antigravity** | `~/.agents/skills` & `~/.gemini/config/skills` |
+| **2** | **Claude Code (Anthropic)** | `~/.claude/skills` |
+| **3** | **Cursor** | `~/.cursor/skills` |
+| **4** | **OpenAI Codex CLI** | `~/.codex/skills` |
+| **5** | **GitHub Copilot (CLI / Agent)** | `~/.copilot/skills` |
+| **6** | **Windsurf (Codeium)** | `~/.codeium/windsurf/skills` |
+| **7** | **Roo Code / Cline** | `~/.roo/skills` & `~/.cline/skills` |
 
 ---
 
-## 📂 Folder Structure
+## 🧹 Intelligent Lifecycle & Cleanup Management
 
-```
-AI-Agent-Skills/
-├── README.md
-├── skills/                             # Standard Edition (In-depth)
-│   ├── agent-audit-workflow/
-│   ├── android-clean-architecture/
-│   ├── android-cli/
-│   ├── android-data-layer/
-│   ├── android-expert/
-│   ├── android-project-onboarding-architect/
-│   ├── android-testing/
-│   ├── compose-ui-maplibre/
-│   ├── compose-ui-preview-design/
-│   └── gradle-build-hygiene/
-├── AI-Skills-Token-Efficient/          # Token-Efficient Edition (~85% fewer tokens)
-│   ├── agent-audit-workflow/
-│   ├── android-clean-architecture/
-│   ├── android-cli/
-│   ├── android-data-layer/
-│   ├── android-expert/
-│   ├── android-project-onboarding-architect/
-│   ├── android-testing/
-│   ├── compose-ui-maplibre/
-│   ├── compose-ui-preview-design/
-│   └── gradle-build-hygiene/
-└── demo/                               # Interactive Demo & Benchmark
-    ├── CHIIKAWA_APPS_COMPARISON.md     # Full comparison report
-    ├── apps/                           # Runnable Android projects
-    │   ├── chiikawa-character-standard/
-    │   └── chiikawa-character-efficient/
-    └── assets/
-        └── videos/                     # Demo screen recordings
-            ├── standard.mp4
-            └── efficient.mp4
-```
+The installer handles configuration hygiene automatically:
+- **Legacy Cleanup**: Automatically detects and removes outdated standalone or monolithic skills (e.g. `android-expert`, `react-ts-expert`, `android-clean-architecture`, custom `android-cli`, `android-data-layer`, `compose-ui-preview-design`) to avoid polluting your global skills folder.
+- **Unselected Agent Pruning**: If you previously installed skills to an agent and later unselect that agent, the installer safely purges our managed skills from that agent's global folder.
+- **Manifest Tracking**: Writes state to `~/.ai-engineer-skills-manifest.json` for reproducible synchronization.
 
 ---
 
-## 🧠 How Skills Work
+## 📄 License & Community
 
-Each skill is a `SKILL.md` markdown file with:
-
-1. **YAML Frontmatter** — `name` and `description` metadata
-2. **Detailed Instructions** — Rules, patterns, code examples, and anti-patterns
-
-When you use an AI coding agent (Gemini, Claude, Codex, etc.), it automatically reads the `SKILL.md` files from its skills directory and follows the instructions when generating or modifying code.
-
-### Example: What the `android-expert` skill enforces
-
-```kotlin
-// ❌ Without skill — AI might generate this
-val retryDelay = 3000L
-delay(retryDelay)
-Handler(Looper.getMainLooper()).postDelayed({ refresh() }, 5000)
-val prefs = getSharedPreferences("settings", MODE_PRIVATE)
-
-// ✅ With skill — AI generates this instead
-val retryDelay = 3.seconds
-delay(retryDelay)
-lifecycleScope.launch { delay(5.seconds); refresh() }
-val settings = context.settingsDataStore.data.first()
-```
-
----
-
-## 🧸 Runnable Demo Apps: Chiikawa Stretchy Character
-
-Inside [`demo/apps/`](file:///Users/raf/Downloads/AI-Agent-Skills/demo/apps/) are two **fully runnable, independent Gradle Android projects** generated from the exact same user prompt to benchmark both skills editions:
-
-- **[demo/apps/chiikawa-character-standard/](file:///Users/raf/Downloads/AI-Agent-Skills/demo/apps/chiikawa-character-standard/)** — Built using **Standard Edition** (modular Clean Architecture, pure domain physics, KDocs).
-- **[demo/apps/chiikawa-character-efficient/](file:///Users/raf/Downloads/AI-Agent-Skills/demo/apps/chiikawa-character-efficient/)** — Built using **Token-Efficient Edition** (direct code first, zero fluff, ~81% fewer total tokens).
-
-Read the detailed benchmark report: **[`demo/CHIIKAWA_APPS_COMPARISON.md`](file:///Users/raf/Downloads/AI-Agent-Skills/demo/CHIIKAWA_APPS_COMPARISON.md)**.
-
-### 🎬 Side-by-Side Video Demonstration
-
-<table>
-  <tr>
-    <th width="50%" align="center">🏛️ Standard Edition (Clean Architecture)</th>
-    <th width="50%" align="center">⚡ Token-Efficient Edition (Direct Code)</th>
-  </tr>
-  <tr>
-    <td align="center">
-      <video src="demo/assets/videos/standard.mp4" controls="controls" width="100%"></video>
-      <br>
-      <a href="demo/assets/videos/standard.mp4">▶️ View standard.mp4</a>
-    </td>
-    <td align="center">
-      <video src="demo/assets/videos/efficient.mp4" controls="controls" width="100%"></video>
-      <br>
-      <a href="demo/assets/videos/efficient.mp4">▶️ View efficient.mp4</a>
-    </td>
-  </tr>
-  <tr>
-    <td align="center">
-      <i>485 lines • Modular Clean Architecture with pure domain physics</i><br>
-      <code>demo/apps/chiikawa-character-standard/</code>
-    </td>
-    <td align="center">
-      <i>303 lines • Consolidated Screen (-37% lines, ~81% token savings)</i><br>
-      <code>demo/apps/chiikawa-character-efficient/</code>
-    </td>
-  </tr>
-</table>
-
-Both apps feature:
-- 🌸 **Mochi Elastic Physics:** Squash-and-stretch with volume preservation on Canvas.
-- 📐 **3D Perspective Tilt (Z-Axis):** Interactive spherical rotation and facial parallax.
-- 📳 **Haptic Feedback:** `SegmentTick`, `GestureThresholdActivate`, and `Confirm` snap-back.
-- 🍮 **Spring Return:** Jelly-like bouncy return when released.
-
-To open and run:
-Open either folder in **Android Studio** and click **Run**, or run `./gradlew assembleDebug`.
-
----
-
-## 🏆 Built With These Skills — Published on Google Play
-
-These skills aren't just theory — they power **real apps published on the Google Play Store**.
-
-### 📱 Popup Anything
-
-<a href="https://play.google.com/store/apps/details?id=com.raf.popupanything">
-  <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" width="200"/>
-</a>
-
-The **Find My Device** feature in this app was **completely built by [Google Antigravity](https://github.com/google-gemini/antigravity)** AI agent using these skills — from architecture to implementation. No manual coding involved for that feature.
-
-### ⚔️ Gomi Samurai
-
-<a href="https://play.google.com/store/apps/details?id=com.raf.gomisamurai">
-  <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" width="200"/>
-</a>
-
-This app was **100% built by AI from scratch** — including all the in-game images and assets. The video demo was created using public Gemini AI from the web.
-
-> These apps demonstrate that with the right set of skills, AI coding agents can produce **production-quality, Play Store-ready Android applications**.
-
-## 🤝 Contributing
-
-1. Fork this repo
-2. Add or modify skills in the `skills/` directory
-3. Each skill must have a `SKILL.md` with YAML frontmatter (`name`, `description`)
-4. Submit a Pull Request
-
----
-
-## 📄 License
-
-This project is open source. Feel free to use, modify, and share these skills with your team.
+Open-source and designed to elevate AI coding assistants into genuine senior engineering partners. Fork it, customize your playbooks, and submit Pull Requests!
