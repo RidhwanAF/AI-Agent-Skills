@@ -13,7 +13,7 @@ Every skill module has its own comprehensive documentation, workflow diagrams, a
 | Hub Directory | Core Domain | Skills Included | Direct Documentation Link |
 |---|---|---|---|
 | 🚀 **`engineer-mode/`** | Master Entry Point & Playbooks | `/engineer-mode` | [Engineer Mode Guide](engineer-mode/README.md) |
-| 📱 **`android-skills/`** | Modular Android Suite & Google CLI | `/android-architecture`, `/compose-ui`, `/compose-maplibre`, `/android-testing`, `/gradle-build-hygiene` | [Android Skills Guide](android-skills/README.md) |
+| 📱 **`android-skills/`** | Modular Android Suite & Google CLI | `/android-architecture`, `/compose-ui`, `/compose-maplibre`, `/android-testing`, `/gradle-build-hygiene`, `/android-cli-router` | [Android Skills Guide](android-skills/README.md) |
 | ⚛️ **`react-ts-skills/`** | Modular React TS Suite | `/react-ts-architecture`, `/react-ui-components`, `/react-state-management`, `/react-testing` | [React TS Skills Guide](react-ts-skills/README.md) |
 | 🔍 **`diagnostic-skills/`** | Diagnostics, ADR, Design & Logs | `/error-detective`, `/adr-analyze`, `/app-design`, `/changelog-recorder` | [Diagnostic Skills Guide](diagnostic-skills/README.md) |
 | 🌿 **`git-skills/`** | Version Control & PR Shipping | `/git-assistant` | [Git Skills Guide](git-skills/README.md) |
@@ -49,7 +49,7 @@ Double-click **`install.command`** in macOS Finder.
 
 ## 🕸️ The Connected Skills Mesh
 
-In traditional setups, AI skills run as disconnected silos. In **AI-Engineer-Skills**, all 15 skills know about and collaborate with the entire team:
+In traditional setups, AI skills run as disconnected silos. In **AI-Engineer-Skills**, all 16 skills know about and collaborate with the entire team:
 
 ```mermaid
 flowchart TD
@@ -67,6 +67,7 @@ flowchart TD
         ML(["🗺️ /compose-maplibre<br/>(MapLibre Native, Lifecycle)"])
         AT(["🧪 /android-testing<br/>(Turbine, MockK, ComposeRule)"])
         GBH(["🐘 /gradle-build-hygiene<br/>(libs.versions.toml, Official AGP)"])
+        ACR(["📱 /android-cli-router<br/>(Routes to Official CLI)"])
     end
 
     subgraph ReactSuite ["⚛️ Modular React TS Suite"]
@@ -89,6 +90,7 @@ flowchart TD
     EM -->|Log Progress| CR
     EM -->|Android Architecture| AA
     EM -->|Compose UI Components| CUI
+    EM -->|Android CLI Operations| ACR
     EM -->|Web Architecture| RTA
     EM -->|Web UI Components| RUI
     EM -->|Investigate Bug| ED
@@ -104,7 +106,7 @@ flowchart TD
     CUI -->|Tested via| AT
     CUI -->|Maps to| ML
     GBH -->|Grounded Deps to| AA
-    AA -->|Device Ops & Doctor| GoogleCLI
+    ACR -->|Dispatches to| GoogleCLI
 
     RTA -->|Domain Models to| RUI
     RSM -->|Server/Client State to| RUI
@@ -144,7 +146,7 @@ When you begin any non-trivial task, invoke `/engineer-mode`. It functions like 
 - **`/compose-maplibre`**: MapLibre Native in Compose. Lifecycle-safe MapView handling, vector tile rendering, GeoJSON caching, Material 3 floating control overlays, and camera animations.
 - **`/android-testing`**: Automated test engineering. Turbine for Coroutines Flow testing, MockK and clean offline fakes for UseCase/ViewModel isolation, ComposeTestRule semantic UI tests, and zero flaky sleeps.
 - **`/gradle-build-hygiene`**: Centralized Version Catalog (`gradle/libs.versions.toml`). R8/ProGuard keep rules, compileSdk/targetSdk best practices, and **strict grounding in official Google AGP documentation without guesswork**.
-- **Google `android-cli` Routing**: Custom commands seamlessly route to the official Google `android-cli` package (`android doctor`, `android init`, `android run`, `android doc`).
+- **`/android-cli-router`**: Seamlessly dispatches high-level Android workflows to the official Google `android-cli` package and skill (`android doctor`, `android init`, `android run`, `android doc`), managing AVDs and project initializations without naming conflicts.
 
 ### ⚛️ 2. Modular React + TypeScript Web Engineering
 - **`/react-ts-architecture`**: Frontend Clean Architecture. Pure TypeScript domain models and business validators (zero DOM or UI dependencies), schema validation with Zod, DTO-to-Domain mappers, and strict type discipline (zero `any`, discriminated unions, `satisfies`).
@@ -180,7 +182,7 @@ When you begin any non-trivial task, invoke `/engineer-mode`. It functions like 
 ## 🧹 Intelligent Lifecycle & Cleanup Management
 
 The installer handles configuration hygiene automatically:
-- **Legacy Cleanup**: Automatically detects and removes outdated standalone or monolithic skills (e.g. `android-expert`, `react-ts-expert`, `android-clean-architecture`, custom `android-cli`, `android-data-layer`, `compose-ui-preview-design`) to avoid polluting your global skills folder.
+- **Legacy Cleanup**: Automatically detects and removes outdated standalone or monolithic skills (e.g. `android-expert`, `react-ts-expert`, `android-clean-architecture`, `android-data-layer`, `compose-ui-preview-design`) to avoid polluting your global skills folder, while strictly protecting official vendor skills (e.g. Google's `android-cli`).
 - **Unselected Agent Pruning**: If you previously installed skills to an agent and later unselect that agent, the installer safely purges our managed skills from that agent's global folder.
 - **Manifest Tracking**: Writes state to `~/.ai-engineer-skills-manifest.json` for reproducible synchronization.
 

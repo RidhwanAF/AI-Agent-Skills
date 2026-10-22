@@ -16,14 +16,14 @@ flowchart LR
     GA(["🌿 /git-assistant"])
     
     EM(["🚀 /engineer-mode"])
-    AE(["📱 /android-expert"])
-    RE(["⚛️ /react-ts-expert"])
+    AA(["📱 Modular Android Suite"])
+    RA(["⚛️ Modular React TS Suite"])
     ED(["🔍 /error-detective"])
     ADR(["📜 /adr-analyze"])
 
     EM -->|Shipping Request| GA
-    AE -->|Staging Android Feature| GA
-    RE -->|Staging Web Feature| GA
+    AA -->|Staging Android Feature| GA
+    RA -->|Staging Web Feature| GA
     ED -->|Staging Bug Fix & Post-Mortem| GA
     ADR -->|Staging ADR Records| GA
 ```

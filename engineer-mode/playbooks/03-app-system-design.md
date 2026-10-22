@@ -7,8 +7,8 @@ Produce formal software architecture blueprints, UML diagrams, use case specific
 - **Primary Driver**: [`app-design`](../../diagnostic-skills/app-design/SKILL.md)
 - **Domain Hand-offs**:
   - Decision Recording ➔ [`adr-analyze`](../../diagnostic-skills/adr-analyze/SKILL.md)
-  - Android Construction ➔ [`android-expert`](../../android-skills/android-expert/SKILL.md)
-  - Web Construction ➔ [`react-ts-expert`](../../react-ts-skills/react-ts-expert/SKILL.md)
+  - Android Construction ➔ Modular Android Suite ([`android-architecture`](../../android-skills/android-architecture/SKILL.md), [`compose-ui`](../../android-skills/compose-ui/SKILL.md))
+  - Web Construction ➔ Modular React TS Suite ([`react-ts-architecture`](../../react-ts-skills/react-ts-architecture/SKILL.md), [`react-ui-components`](../../react-ts-skills/react-ui-components/SKILL.md))
 
 ---
 

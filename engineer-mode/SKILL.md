@@ -114,7 +114,7 @@ What would you like to accomplish today?
    - Evaluate architecture choices, ground against official Google/W3C docs, and generate MADR entries in `/docs/adr/`.
 
 4. 📱 **[4] Android Engineering Suite**
-   - Clean Architecture (`/android-architecture`), Modular Compose UI (`/compose-ui`), MapLibre (`/compose-maplibre`), Testing (`/android-testing`), Gradle hygiene (`/gradle-build-hygiene`), and Google `android-cli` routing.
+   - Clean Architecture (`/android-architecture`), Modular Compose UI (`/compose-ui`), MapLibre (`/compose-maplibre`), Testing (`/android-testing`), Gradle hygiene (`/gradle-build-hygiene`), and Android CLI routing (`/android-cli-router`).
 
 5. ⚛️ **[5] React + TypeScript Modern Web Suite**
    - Frontend Clean Architecture (`/react-ts-architecture`), Accessible Modular UI (`/react-ui-components`), State Sync (`/react-state-management`), and Vitest Testing (`/react-testing`).

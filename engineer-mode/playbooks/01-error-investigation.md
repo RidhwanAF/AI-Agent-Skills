@@ -6,8 +6,8 @@ Systematically isolate, reproduce, root-cause, fix, and document software errors
 ## Interconnected Skills
 - **Primary Driver**: [`error-detective`](../../diagnostic-skills/error-detective/SKILL.md)
 - **Domain Hand-offs**:
-  - Android fixes ➔ [`android-expert`](../../android-skills/android-expert/SKILL.md)
-  - Web/React fixes ➔ [`react-ts-expert`](../../react-ts-skills/react-ts-expert/SKILL.md)
+  - Android fixes ➔ Modular Android Suite ([`android-architecture`](../../android-skills/android-architecture/SKILL.md), [`compose-ui`](../../android-skills/compose-ui/SKILL.md), [`android-testing`](../../android-skills/android-testing/SKILL.md))
+  - Web/React fixes ➔ Modular React TS Suite ([`react-ts-architecture`](../../react-ts-skills/react-ts-architecture/SKILL.md), [`react-ui-components`](../../react-ts-skills/react-ui-components/SKILL.md), [`react-testing`](../../react-ts-skills/react-testing/SKILL.md))
   - Documentation & Commits ➔ [`git-assistant`](../../git-skills/git-assistant/SKILL.md)
 
 ---

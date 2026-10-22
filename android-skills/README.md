@@ -1,6 +1,6 @@
 # 📱 Android Engineering Skills Suite
 
-Welcome to the **Android Engineering Skills Suite**. Rather than bundling all capabilities into a single monolithic skill, this module provides **5 specialized, modular skills** that collaborate seamlessly to enforce enterprise Clean Architecture, pure KMP-ready business logic, modular Jetpack Compose UI decomposition, geospatial mapping, automated testing, and official-docs-grounded Gradle hygiene.
+Welcome to the **Android Engineering Skills Suite**. Rather than bundling all capabilities into a single monolithic skill, this module provides **6 specialized, modular skills** that collaborate seamlessly to enforce enterprise Clean Architecture, pure KMP-ready business logic, modular Jetpack Compose UI decomposition, geospatial mapping, automated testing, official Google CLI dispatch, and official-docs-grounded Gradle hygiene.
 
 ---
 
@@ -25,6 +25,7 @@ Welcome to the **Android Engineering Skills Suite**. Rather than bundling all ca
 | [**`compose-maplibre/`**](./compose-maplibre/README.md) | `/compose-maplibre` | MapLibre Native in Compose with lifecycle safety, GeoJSON caching, Material 3 overlays, and camera animations. | MapView composable wrappers and overlays |
 | [**`android-testing/`**](./android-testing/README.md) | `/android-testing` | Automated test engineering: Turbine for Coroutines Flow, MockK/Fakes for UseCases, ComposeTestRule semantic UI tests. | Unit and UI test suites |
 | [**`gradle-build-hygiene/`**](./gradle-build-hygiene/README.md) | `/gradle-build-hygiene` | Version Catalog (`libs.versions.toml`) management, R8/ProGuard rules, official Google AGP documentation grounding without guesswork. | `libs.versions.toml`, `build.gradle.kts` |
+| [**`android-cli-router/`**](./android-cli-router/README.md) | `/android-cli-router` | Dispatches high-level workflows to the official Google `android-cli` binary and official skill (`android doctor`, `android init`, `android run`, `android doc`). | Official CLI command execution, virtual device management |
 
 ---
 

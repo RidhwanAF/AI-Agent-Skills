@@ -17,14 +17,14 @@ flowchart LR
     
     EM(["🚀 /engineer-mode"])
     AD(["📐 /app-design"])
-    AE(["📱 /android-expert"])
-    RE(["⚛️ /react-ts-expert"])
+    AA(["📱 Modular Android Suite"])
+    RA(["⚛️ Modular React TS Suite"])
     GA(["🌿 /git-assistant"])
 
     EM -->|Architectural Assessment| ADR
     AD -->|Document System Blueprint| ADR
-    ADR -->|Android Standards| AE
-    ADR -->|Web Standards| RE
+    ADR -->|Android Standards| AA
+    ADR -->|Web Standards| RA
     ADR -->|Commit ADR Documents| GA
 ```
 

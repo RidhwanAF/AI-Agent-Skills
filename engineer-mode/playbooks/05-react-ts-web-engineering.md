@@ -4,7 +4,7 @@
 Deliver enterprise-grade web applications using React 19, strict TypeScript 5+, modern frameworks (Next.js App Router / Vite), modern styling (Tailwind CSS / CSS modules), state management (TanStack Query / Zustand), WCAG 2.2 AA accessibility, and Core Web Vitals optimization.
 
 ## Interconnected Skills
-- **Primary Driver**: [`react-ts-expert`](../../react-ts-skills/react-ts-expert/SKILL.md)
+- **Primary Driver**: Modular React TS Suite ([`react-ts-architecture`](../../react-ts-skills/react-ts-architecture/SKILL.md), [`react-ui-components`](../../react-ts-skills/react-ui-components/SKILL.md), [`react-state-management`](../../react-ts-skills/react-state-management/SKILL.md), [`react-testing`](../../react-ts-skills/react-testing/SKILL.md))
 - **Connected Skills**:
   - System Modeling ➔ [`app-design`](../../diagnostic-skills/app-design/SKILL.md)
   - Error Debugging ➔ [`error-detective`](../../diagnostic-skills/error-detective/SKILL.md)

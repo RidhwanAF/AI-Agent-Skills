@@ -16,14 +16,14 @@ flowchart LR
     ED(["🔍 /error-detective"])
     
     EM(["🚀 /engineer-mode"])
-    AE(["📱 /android-expert"])
-    RE(["⚛️ /react-ts-expert"])
+    AA(["📱 Modular Android Suite"])
+    RA(["⚛️ Modular React TS Suite"])
     ADR(["📜 /adr-analyze"])
     GA(["🌿 /git-assistant"])
 
     EM -->|Dispatches Incident| ED
-    ED -->|Android Code Fix| AE
-    ED -->|Web Code Fix| RE
+    ED -->|Android Code Fix| AA
+    ED -->|Web Code Fix| RA
     ED -->|Architectural Defect| ADR
     ED -->|Verified Fix Committed| GA
 ```
