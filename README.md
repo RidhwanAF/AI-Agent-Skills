@@ -1,6 +1,6 @@
 # 🚀 AI-Engineer-Skills
 
-A curated, enterprise-grade suite of **interconnected AI coding agent skills** designed to turn your AI coding assistant (Gemini, Claude Code, Cursor, Codex, Copilot, Windsurf) into an autonomous, rigorous senior software engineering team.
+A curated, enterprise-grade suite of **interconnected, modular AI coding agent skills** designed to turn your AI coding assistant (Gemini, Claude Code, Cursor, Codex, Copilot, Windsurf) into an autonomous, rigorous senior software engineering team.
 
 Inspired by the precision, multi-agent parallelism, and anti-slop principles of [pstack](https://github.com/cursor/plugins/tree/main/pstack), **AI-Engineer-Skills** connects all specialized skills into an intelligent mesh with **`/engineer-mode`** as the universal adaptive entry point.
 
@@ -10,68 +10,83 @@ Inspired by the precision, multi-agent parallelism, and anti-slop principles of 
 
 Every skill module has its own comprehensive documentation, workflow diagrams, and prompt lists. Use the links below to navigate across the suite:
 
-| Hub Directory | Core Domain | Slash Commands | Direct Documentation Link |
+| Hub Directory | Core Domain | Skills Included | Direct Documentation Link |
 |---|---|---|---|
 | 🚀 **`engineer-mode/`** | Master Entry Point & Playbooks | `/engineer-mode` | [Engineer Mode Guide](engineer-mode/README.md) |
-| 📱 **`android-skills/`** | In-Depth Android, Compose & Google CLI | `/android-expert` | [Android Skills Guide](android-skills/README.md) |
-| ⚛️ **`react-ts-skills/`** | React 19, TypeScript 5, Next.js, Vite | `/react-ts-expert` | [React TS Skills Guide](react-ts-skills/README.md) |
-| 🔍 **`diagnostic-skills/`** | Error Triage, ADR Decisions, UML Modeling | `/error-detective`, `/adr-analyze`, `/app-design` | [Diagnostic Skills Guide](diagnostic-skills/README.md) |
-| 🌿 **`git-skills/`** | Version Control, Safe Rebase, PR Briefs | `/git-assistant` | [Git Skills Guide](git-skills/README.md) |
+| 📱 **`android-skills/`** | Modular Android Suite & Google CLI | `/android-architecture`, `/compose-ui`, `/compose-maplibre`, `/android-testing`, `/gradle-build-hygiene` | [Android Skills Guide](android-skills/README.md) |
+| ⚛️ **`react-ts-skills/`** | Modular React TS Suite | `/react-ts-architecture`, `/react-ui-components`, `/react-state-management`, `/react-testing` | [React TS Skills Guide](react-ts-skills/README.md) |
+| 🔍 **`diagnostic-skills/`** | Diagnostics, ADR, Design & Logs | `/error-detective`, `/adr-analyze`, `/app-design`, `/changelog-recorder` | [Diagnostic Skills Guide](diagnostic-skills/README.md) |
+| 🌿 **`git-skills/`** | Version Control & PR Shipping | `/git-assistant` | [Git Skills Guide](git-skills/README.md) |
 
 ---
 
 ## 🕸️ The Connected Skills Mesh
 
-In traditional setups, AI skills run as disconnected silos. In **AI-Engineer-Skills**, every skill knows about and collaborates with the entire team:
+In traditional setups, AI skills run as disconnected silos. In **AI-Engineer-Skills**, all 15 skills know about and collaborate with the entire team:
 
 ```mermaid
 flowchart TD
-    EM(["🚀 /engineer-mode<br/>(Adaptive Playbook Orchestrator)"])
+    EM(["🚀 /engineer-mode<br/>(Master Adaptive Orchestrator)"])
 
-    subgraph DesignAndDecide ["📐 Architecture & Decision Layer"]
+    subgraph ArchitectureLayer ["📐 Architecture & Decision Layer"]
         AD(["📐 /app-design<br/>(UML Class, Sequence, Use Cases)"])
         ADR(["📜 /adr-analyze<br/>(MADR Grounded in Official Docs)"])
+        CR(["📝 /changelog-recorder<br/>(Timestamped File Generation)"])
     end
 
-    subgraph ImplementationLayer ["💻 Production Implementation Layer"]
-        AE(["📱 /android-expert<br/>(Compose, Clean Arch, Room, Hilt)"])
-        RE(["⚛️ /react-ts-expert<br/>(React 19, TS 5, Next.js, TanStack)"])
+    subgraph AndroidSuite ["📱 Modular Android Suite"]
+        AA(["🏛️ /android-architecture<br/>(Clean Arch, KMP Pure Domain)"])
+        CUI(["🎨 /compose-ui<br/>(Component Files, Modifier Rule)"])
+        ML(["🗺️ /compose-maplibre<br/>(MapLibre Native, Lifecycle)"])
+        AT(["🧪 /android-testing<br/>(Turbine, MockK, ComposeRule)"])
+        GBH(["🐘 /gradle-build-hygiene<br/>(libs.versions.toml, Official AGP)"])
     end
 
-    subgraph QualityAndShipping ["🔍 Verification & Shipping Layer"]
-        ED(["🔍 /error-detective<br/>(Triage, Root Cause, /docs/error-fix/)"])
+    subgraph ReactSuite ["⚛️ Modular React TS Suite"]
+        RTA(["🏛️ /react-ts-architecture<br/>(Frontend Clean Arch, Zod)"])
+        RUI(["🎨 /react-ui-components<br/>(Accessible Modular UI, Prop Order)"])
+        RSM(["⚡ /react-state-management<br/>(TanStack Query, Zustand)"])
+        RT(["🧪 /react-testing<br/>(Vitest, Testing Library, MSW)"])
+    end
+
+    subgraph QualityAndShipping ["🔍 Verification & Shipping"]
+        ED(["🔍 /error-detective<br/>(Interactive Triage, Pie Score)"])
         GA(["🌿 /git-assistant<br/>(Conventional Commits, Safe PRs)"])
     end
 
     GoogleCLI[("🛠️ Google android-cli<br/>(Official Tool & Skill)")]
 
     %% Orchestrator connections
-    EM -->|Model System| AD
-    EM -->|Decide & Record| ADR
-    EM -->|Build Android| AE
-    EM -->|Build Web| RE
+    EM -->|Model Architecture| AD
+    EM -->|Record Decision| ADR
+    EM -->|Log Progress| CR
+    EM -->|Android Architecture| AA
+    EM -->|Compose UI Components| CUI
+    EM -->|Web Architecture| RTA
+    EM -->|Web UI Components| RUI
     EM -->|Investigate Bug| ED
     EM -->|Commit & Ship| GA
 
     %% Cross-skill handoffs
     AD -->|Document Choice| ADR
-    AD -->|Android Blueprint| AE
-    AD -->|Web Blueprint| RE
+    AD -->|Android Blueprint| AA
+    AD -->|Web Blueprint| RTA
 
-    AE -->|Device Ops & Doctor| GoogleCLI
-    AE -->|Crashes / Errors| ED
-    AE -->|Key Decisions| ADR
-    AE -->|Commit Code| GA
+    AA -->|StateFlow to| CUI
+    AA -->|Domain Entities to| AT
+    CUI -->|Tested via| AT
+    CUI -->|Maps to| ML
+    GBH -->|Grounded Deps to| AA
+    AA -->|Device Ops & Doctor| GoogleCLI
 
-    RE -->|Hydration / Errors| ED
-    RE -->|Framework Choices| ADR
-    RE -->|Commit Code| GA
+    RTA -->|Domain Models to| RUI
+    RSM -->|Server/Client State to| RUI
+    RUI -->|Component Tested via| RT
 
-    ED -->|Apply Android Fix| AE
-    ED -->|Apply Web Fix| RE
-    ED -->|Safe Commit & Tag| GA
-
-    ADR -->|Commit Decision| GA
+    CUI -->|Render Crashes to| ED
+    RUI -->|Hydration Bugs to| ED
+    ED -->|Verified Fixes Logged in| CR
+    CR -->|Staged for Commit by| GA
 ```
 
 ---
@@ -85,77 +100,65 @@ When you begin any non-trivial task, invoke `/engineer-mode`. It functions like 
    - `[1]` **Error Investigation** (`/error-detective`)
    - `[2]` **App System Design & UML** (`/app-design`)
    - `[3]` **Architecture Decision Record** (`/adr-analyze`)
-   - `[4]` **In-Depth Android Engineering** (`/android-expert`)
-   - `[5]` **React + TypeScript Modern Web** (`/react-ts-expert`)
-   - `[6]` **Git Shipping & PR Creation** (`/git-assistant`)
-   - `[7]` **End-to-End Autonomous Delivery** (Design ➔ ADR ➔ Code ➔ Triage ➔ Ship)
+   - `[4]` **Android Engineering Suite** (`/android-architecture`, `/compose-ui`, `/compose-maplibre`, `/android-testing`, `/gradle-build-hygiene`)
+   - `[5]` **React + TypeScript Modern Web Suite** (`/react-ts-architecture`, `/react-ui-components`, `/react-state-management`, `/react-testing`)
+   - `[6]` **Changelog Documentation** (`/changelog-recorder`)
+   - `[7]` **Git Shipping & PR Creation** (`/git-assistant`)
+   - `[8]` **End-to-End Autonomous Delivery** (Design ➔ ADR ➔ Modular Code ➔ Testing ➔ Changelog ➔ Ship)
 3. **Coordinates Routing**: Hands off work to specialized domain experts and preserves all context across turns.
 
 ---
 
 ## 📦 What's Included
 
-### 1. In-Depth Android Engineering (`/android-expert`)
-- **Single Consolidated Master Skill**: Replaces fragmented sub-skills with one comprehensive, production-tested Android knowledge base.
-- **Clean Architecture**: Strict separation of Domain (pure Kotlin), Data (Room/Retrofit/DataStore), and Presentation (Compose).
-- **Jetpack Compose UI**: Edge-to-edge system insets, state stability (`@Immutable`/`@Stable`), purposeful `LocalHapticFeedback`, and predictive back navigation.
-- **Zero Hardcoded Strings**: Multi-language localization with mandatory semantic prefixes (`label_`, `msg_`, `title_`, `action_`, `error_`, `hint_`, `desc_`).
-- **Idiomatic Kotlin**: Strong preference for concise single-expression one-liners (`fun ... = ...`), expression getters, and mandatory `kotlin.time.Duration` (`5.seconds`).
-- **Official Google `android-cli` Routing**: Custom commands seamlessly route to the official Google `android-cli` package (`android doctor`, `android init`, `android run`, `android doc`).
+### 📱 1. Modular Android Engineering
+- **`/android-architecture`**: Strict Clean Architecture. Domain layer contains **zero `android.*` framework code** and is shared/ready for Kotlin Multiplatform (`commonMain`). Room for caching, Retrofit for network, Dagger Hilt DI, single-expression extension mappers, and mandatory KDocs.
+- **`/compose-ui`**: Modern Jetpack Compose UI. Enforces **modular component file separation** (never 1 giant file; separate screen, content, cards, state, and preview). Enforces the **Modifier Rule**: in declaration, `modifier: Modifier = Modifier` is the top optional parameter; at call site consumption, it is passed at the very bottom. State stability (`@Immutable`/`@Stable`, immutable collections), edge-to-edge system insets, and purposeful tactile haptics.
+- **`/compose-maplibre`**: MapLibre Native in Compose. Lifecycle-safe MapView handling, vector tile rendering, GeoJSON caching, Material 3 floating control overlays, and camera animations.
+- **`/android-testing`**: Automated test engineering. Turbine for Coroutines Flow testing, MockK and clean offline fakes for UseCase/ViewModel isolation, ComposeTestRule semantic UI tests, and zero flaky sleeps.
+- **`/gradle-build-hygiene`**: Centralized Version Catalog (`gradle/libs.versions.toml`). R8/ProGuard keep rules, compileSdk/targetSdk best practices, and **strict grounding in official Google AGP documentation without guesswork**.
+- **Google `android-cli` Routing**: Custom commands seamlessly route to the official Google `android-cli` package (`android doctor`, `android init`, `android run`, `android doc`).
 
-### 2. React + TypeScript Web Engineering (`/react-ts-expert`)
-- **Modern Standards**: React 19, TypeScript 5+, Next.js App Router (RSC + Actions) and Vite SPA architectures.
-- **Strict Type Discipline**: Zero `any` policy, discriminated unions for state modeling, `satisfies` operator, and exhaustive pattern checks.
-- **State Management**: TanStack Query for server synchronization and caching; lightweight Zustand stores for client state.
-- **Design & A11y**: Mobile-first Tailwind CSS, WCAG 2.2 AA accessibility, keyboard navigation, and visible focus indicators.
-- **Core Web Vitals**: High LCP prioritization, zero Cumulative Layout Shift (CLS), and minimized Interaction to Next Paint (INP).
+### ⚛️ 2. Modular React + TypeScript Web Engineering
+- **`/react-ts-architecture`**: Frontend Clean Architecture. Pure TypeScript domain models and business validators (zero DOM or UI dependencies), schema validation with Zod, DTO-to-Domain mappers, and strict type discipline (zero `any`, discriminated unions, `satisfies`).
+- **`/react-ui-components`**: Accessible modern UI components. Enforces **modular component file decomposition** (never 1 monolithic file). Prop ordering rule (mandatory data/callbacks top, optional styling/className bottom), Tailwind CSS design tokens, and WCAG 2.2 AA accessibility.
+- **`/react-state-management`**: TanStack Query (React Query) for server state caching, background sync, and optimistic mutations with rollback. Zustand for atomic, lightweight client UI state.
+- **`/react-testing`**: User-centric automated testing using Vitest, React Testing Library, and Mock Service Worker (MSW) network interception.
 
-### 3. Error Detective & Incident Reporting (`/error-detective`)
-- **Interactive Triage**: Systematically asks for error category and affected module (or autonomously inspects logs, test failures, and diffs if unsure).
-- **Root Cause Isolation**: Maps stack traces to exact line numbers and architectural invariants.
-- **Incident Post-Mortems**: Generates structured reports in `/docs/error-fix/YYYY-MM-DD-<slug>.md` with Mermaid sequence diagrams and a **Mermaid Pie Chart Score**:
-  ```mermaid
-  pie title Incident Severity & Resolution Score
-      "Resolution Confidence" : 85
-      "Root Cause Severity" : 10
-      "Regression Risk" : 5
-  ```
+### 🔍 3. Diagnostics, ADR, App Design & Living Docs
+- **`/error-detective`**: Interactive bug triage. Asks error type and affected module (or autonomously scans logs/codebase if unsure). Pinpoints root cause, implements verified fix, and produces post-mortem reports in `/docs/error-fix/` with a **Mermaid Pie Chart Score**.
+- **`/adr-analyze`**: Architecture Decision Records. Evaluates technical trade-offs grounded in official vendor documentation (Google Android Architecture Guide, React Docs, W3C/MDN). Generates MADR records in `/docs/adr/ADR-XXXX-<title>.md`.
+- **`/app-design`**: Enterprise visual modeling. Generates UML class diagrams, sequence flows, state machines, and use case specifications in `/docs/architecture/` in English.
+- **`/changelog-recorder`**: Permanent chronological changelogs in `/docs/changelogs/` with strict timestamp naming conventions: `YYYY-MM-DD_HH-mm-ss_<main-change-title>.md`, detailing modified files, KMP/architecture impact, and test verification proof.
 
-### 4. Architecture Decision Records (`/adr-analyze`)
-- **Official Documentation Grounding**: Evaluates trade-offs against official vendor standards (Google Android Architecture Guidelines, React Docs, W3C/MDN).
-- **MADR Format**: Generates standardized records in `/docs/adr/ADR-XXXX-<title>.md` with context, decision drivers, considered options, pros/cons, and citations.
-- **Registry Index**: Maintains `<project-root>/docs/adr/README.md` automatically.
-
-### 5. App Design & UML Modeling (`/app-design`)
-- **Visual System Specifications**: Generates UML class diagrams, sequence flows, UI state machines, and use case specifications in `/docs/architecture/`.
-- **Clean Separation**: Visually isolates Presentation, Domain, and Data layer boundaries.
-- **100% English**: All documentation, diagrams, and use case tables are written in clear, professional English.
-
-### 6. Git Assistant & Safe Shipping (`/git-assistant`)
-- **Safety First**: Prohibits destructive force-pushes and blind `git add .` operations; creates automatic pre-rebase safety tags.
-- **Conventional Commits**: Enforces standardized commit messages (`feat`, `fix`, `refactor`, `perf`, `docs`, `test`, `chore`).
-- **3-Way Conflict Resolution**: Explains divergence and resolves merge conflicts cleanly without dropping code.
-- **PR Briefings**: Formats executive Pull Request descriptions complete with motivation, testing evidence, and links to `/docs/`.
+### 🌿 4. Git Assistant & Version Control
+- **`/git-assistant`**: Safety-first Git operations. Atomic staging, conventional commits (`feat`, `fix`, `refactor`, `perf`, `docs`, `test`, `chore`), safe pulls with rebase, 3-way conflict resolution without data loss, pre-rebase safety tags, and briefing-style PR descriptions.
 
 ---
 
-## ⚡ Installation & Synchronization
+## ⚡ Installation & Synchronization (Windows, macOS & Linux)
 
-We provide an interactive **Python installation script** along with double-clickable launchers:
+We provide an interactive **cross-platform Python installation script** along with native double-clickable launchers:
 
 ```
 AI-Engineer-Skills/
-├── install.py          # Universal Python installer
-├── install.command     # macOS Finder double-clickable launcher
-└── install.sh          # Linux / macOS / WSL terminal launcher
+├── install.py          # Universal Python installer (Windows, macOS, Linux)
+├── install.bat         # Windows Command Prompt / File Explorer Launcher
+├── install.ps1         # Windows PowerShell Launcher
+├── install.command     # macOS Finder Double-Clickable Launcher
+└── install.sh          # Linux / macOS / WSL Terminal Launcher
 ```
 
-### Option A: Double-Click Launcher (macOS)
-1. Double-click **`install.command`** in macOS Finder.
-2. The script checks for Python 3 (installs it via Homebrew if missing), launches the installer, and checks for Google's official `android-cli`.
-3. Select your AI coding agents, and the script installs the skills automatically!
+### Option A: Windows (Double-Click or Command Prompt)
+1. Double-click **`install.bat`** in Windows File Explorer (or run `install.bat` in CMD / `.\install.ps1` in PowerShell).
+2. The script checks for Python 3 (installs it automatically via `winget` if missing) and launches the installer.
+3. Checks for Google's official `android-cli` and prompts for target AI agents!
 
-### Option B: Terminal Command (macOS / Linux / Windows WSL)
+### Option B: macOS (Double-Click in Finder)
+1. Double-click **`install.command`** in macOS Finder.
+2. The script checks for Python 3 (installs it via Homebrew if missing) and launches the installer.
+
+### Option C: Linux / macOS Terminal
 ```bash
 cd AI-Engineer-Skills
 ./install.sh
@@ -165,7 +168,7 @@ cd AI-Engineer-Skills
 python3 install.py
 ```
 
-### Option C: Non-Interactive / Scripted Install
+### Option D: Non-Interactive / Scripted Install
 ```bash
 # Install to all agents and auto-setup tools
 python3 install.py --all --auto-install-android-cli
@@ -193,7 +196,7 @@ python3 install.py --agents 1,2 --skip-android-cli
 ## 🧹 Intelligent Lifecycle & Cleanup Management
 
 The installer handles configuration hygiene automatically:
-- **Legacy Cleanup**: Automatically detects and removes outdated standalone skills (e.g. `android-clean-architecture`, custom `android-cli`, `android-data-layer`, `compose-ui-preview-design`) to avoid polluting your global skills folder.
+- **Legacy Cleanup**: Automatically detects and removes outdated standalone or monolithic skills (e.g. `android-expert`, `react-ts-expert`, `android-clean-architecture`, custom `android-cli`, `android-data-layer`, `compose-ui-preview-design`) to avoid polluting your global skills folder.
 - **Unselected Agent Pruning**: If you previously installed skills to an agent and later unselect that agent, the installer safely purges our managed skills from that agent's global folder.
 - **Manifest Tracking**: Writes state to `~/.ai-engineer-skills-manifest.json` for reproducible synchronization.
 

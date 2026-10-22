@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-AI-Engineer-Skills Installer
+AI-Engineer-Skills Universal Installer
 Interactive installation, tool verification, and synchronization script for AI coding agent skills.
+Cross-platform support: Windows, macOS, and Linux.
 Supports: Google Gemini / Antigravity, Claude Code, Cursor, Codex, Copilot, Windsurf, Roo Code / Cline.
 """
 
@@ -43,33 +44,45 @@ def print_banner():
 
 REPO_ROOT = Path(__file__).resolve().parent
 
-# Mapping of managed skills to source directories within the repository
+# Mapping of all 15 modular managed skills to source directories
 MANAGED_SKILLS = {
+    # Core Orchestration
     "engineer-mode": REPO_ROOT / "engineer-mode",
-    "android-expert": REPO_ROOT / "android-skills" / "android-expert",
-    "react-ts-expert": REPO_ROOT / "react-ts-skills" / "react-ts-expert",
+    # Modular Android Suite
+    "android-architecture": REPO_ROOT / "android-skills" / "android-architecture",
+    "compose-ui": REPO_ROOT / "android-skills" / "compose-ui",
+    "compose-maplibre": REPO_ROOT / "android-skills" / "compose-maplibre",
+    "android-testing": REPO_ROOT / "android-skills" / "android-testing",
+    "gradle-build-hygiene": REPO_ROOT / "android-skills" / "gradle-build-hygiene",
+    # Modular React TS Suite
+    "react-ts-architecture": REPO_ROOT / "react-ts-skills" / "react-ts-architecture",
+    "react-ui-components": REPO_ROOT / "react-ts-skills" / "react-ui-components",
+    "react-state-management": REPO_ROOT / "react-ts-skills" / "react-state-management",
+    "react-testing": REPO_ROOT / "react-ts-skills" / "react-testing",
+    # Diagnostics, ADR, Design & Changelogs
     "error-detective": REPO_ROOT / "diagnostic-skills" / "error-detective",
     "adr-analyze": REPO_ROOT / "diagnostic-skills" / "adr-analyze",
     "app-design": REPO_ROOT / "diagnostic-skills" / "app-design",
+    "changelog-recorder": REPO_ROOT / "diagnostic-skills" / "changelog-recorder",
+    # Version Control
     "git-assistant": REPO_ROOT / "git-skills" / "git-assistant",
 }
 
 # Legacy skills from previous standalone installations that must be cleaned up
 LEGACY_SKILLS = [
-    "android-cli",  # Custom skill removed in favor of routing to official Google android-cli
+    "android-expert",        # Replaced by modular Android skills
+    "react-ts-expert",       # Replaced by modular React TS skills
+    "android-cli",           # Custom skill removed in favor of routing to official Google android-cli
     "android-clean-architecture",
     "android-data-layer",
     "android-project-onboarding-architect",
-    "android-testing",
-    "compose-ui-maplibre",
     "compose-ui-preview-design",
-    "gradle-build-hygiene",
     "agent-audit-workflow",
 ]
 
 HOME = Path.home()
 
-# Target AI Agents configuration
+# Target AI Agents configuration (works across Windows, macOS, and Linux)
 SUPPORTED_AGENTS = {
     "1": {
         "id": "gemini",
@@ -207,7 +220,6 @@ def check_and_setup_android_cli(non_interactive=False, auto_install=False):
         try:
             res = subprocess.run(cmd, shell=True, check=True)
             print(f"{Style.GREEN}✓ Google Android CLI installation finished.{Style.RESET}")
-            # Try running android init
             if shutil.which("android"):
                 subprocess.run(["android", "init"], check=False)
             return True
@@ -334,7 +346,7 @@ def install_skills(selected_agent_keys, dry_run=False):
             if removed_legacy:
                 print(f"  {Style.YELLOW}↳ Cleaned up {len(removed_legacy)} legacy skill(s): {', '.join(removed_legacy)}{Style.RESET}")
 
-            # Copy current managed skills
+            # Copy current modular managed skills
             installed_count = 0
             for skill_name, src_path in MANAGED_SKILLS.items():
                 if not src_path.exists():
@@ -344,7 +356,7 @@ def install_skills(selected_agent_keys, dry_run=False):
                     installed_count += 1
 
             if installed_count > 0:
-                print(f"  {Style.GREEN}✓ Installed {installed_count} managed skills into {target_dir}{Style.RESET}")
+                print(f"  {Style.GREEN}✓ Installed {installed_count} managed modular skills into {target_dir}{Style.RESET}")
 
     # 2. Process unselected agents: Delete skills from their directories if present
     unselected_keys = [k for k in SUPPORTED_AGENTS.keys() if k not in selected_agent_keys]
@@ -365,7 +377,7 @@ def install_skills(selected_agent_keys, dry_run=False):
     if not dry_run:
         try:
             manifest_data = {
-                "version": "2.0.0",
+                "version": "2.1.0",
                 "active_agents": selected_agent_ids,
                 "managed_skills": list(MANAGED_SKILLS.keys()),
             }
@@ -379,14 +391,22 @@ def print_summary(selected_agent_keys):
     print(f"{Style.GREEN}{Style.BOLD} 🎉 Installation & Synchronization Successfully Completed!{Style.RESET}")
     print(f"{Style.GREEN}{Style.BOLD}========================================================================{Style.RESET}\n")
 
-    print(f"{Style.BOLD}Active Skills Installed:{Style.RESET}")
-    print(f"  • {Style.CYAN}/engineer-mode{Style.RESET}    ➔ Master adaptive entry point & playbook orchestrator")
-    print(f"  • {Style.CYAN}/android-expert{Style.RESET}   ➔ In-depth Android (Compose, Clean Arch, routes to Google android-cli)")
-    print(f"  • {Style.CYAN}/react-ts-expert{Style.RESET}  ➔ In-depth React + TypeScript (React 19, Next.js, Vite, Tailwind)")
-    print(f"  • {Style.CYAN}/error-detective{Style.RESET}  ➔ Interactive triage, root cause, /docs/error-fix/ with Pie score")
-    print(f"  • {Style.CYAN}/adr-analyze{Style.RESET}      ➔ Architectural Decision Records grounded in official docs")
-    print(f"  • {Style.CYAN}/app-design{Style.RESET}       ➔ Visual system modeling, UML diagrams, use case specifications")
-    print(f"  • {Style.CYAN}/git-assistant{Style.RESET}    ➔ Safety-first Git operations, conventional commits, PR briefs\n")
+    print(f"{Style.BOLD}Active Skills Installed ({len(MANAGED_SKILLS)} Modular Skills):{Style.RESET}")
+    print(f"  • {Style.CYAN}/engineer-mode{Style.RESET}           ➔ Adaptive master orchestrator & playbook router")
+    print(f"  • {Style.CYAN}/android-architecture{Style.RESET}   ➔ Clean Architecture, pure KMP-ready domain, Room/Retrofit")
+    print(f"  • {Style.CYAN}/compose-ui{Style.RESET}              ➔ Modular Compose UI (never 1 file), modifier rule, haptics")
+    print(f"  • {Style.CYAN}/compose-maplibre{Style.RESET}        ➔ MapLibre in Compose, lifecycle safety, GeoJSON caching")
+    print(f"  • {Style.CYAN}/android-testing{Style.RESET}         ➔ Turbine Flow tests, MockK fakes, ComposeTestRule")
+    print(f"  • {Style.CYAN}/gradle-build-hygiene{Style.RESET}   ➔ libs.versions.toml, R8 rules, official docs grounding")
+    print(f"  • {Style.CYAN}/react-ts-architecture{Style.RESET}  ➔ Frontend Clean Architecture, pure domain, Zod, strict TS")
+    print(f"  • {Style.CYAN}/react-ui-components{Style.RESET}   ➔ Accessible modular UI (never 1 file), prop order, Tailwind")
+    print(f"  • {Style.CYAN}/react-state-management{Style.RESET} ➔ TanStack Query (server state), Zustand (client state)")
+    print(f"  • {Style.CYAN}/react-testing{Style.RESET}          ➔ Vitest, React Testing Library, MSW network mocking")
+    print(f"  • {Style.CYAN}/error-detective{Style.RESET}        ➔ Interactive triage, root cause, /docs/error-fix/ report")
+    print(f"  • {Style.CYAN}/adr-analyze{Style.RESET}            ➔ Architecture Decision Records grounded in official docs")
+    print(f"  • {Style.CYAN}/app-design{Style.RESET}             ➔ Visual UML class/sequence/state models in English")
+    print(f"  • {Style.CYAN}/changelog-recorder{Style.RESET}     ➔ Timestamped logs: /docs/changelogs/YYYY-MM-DD_HH-mm-ss_*.md")
+    print(f"  • {Style.CYAN}/git-assistant{Style.RESET}           ➔ Safety-first Git operations, conventional commits, PRs\n")
 
     print(f"{Style.BOLD}Selected Agents:{Style.RESET}")
     for k in selected_agent_keys:

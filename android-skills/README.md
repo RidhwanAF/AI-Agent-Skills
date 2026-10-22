@@ -1,6 +1,6 @@
-# 📱 Android Engineering Skills
+# 📱 Android Engineering Skills Suite
 
-Welcome to the **Android Engineering Skills** documentation. This module contains the master, consolidated **Android In-Depth Expert** (`/android-expert`) skill, incorporating enterprise Clean Architecture, modern Jetpack Compose UI, Coroutines & Flow, reactive data persistence, Gradle hygiene, and seamless routing to Google's official `android-cli`.
+Welcome to the **Android Engineering Skills Suite**. Rather than bundling all capabilities into a single monolithic skill, this module provides **5 specialized, modular skills** that collaborate seamlessly to enforce enterprise Clean Architecture, pure KMP-ready business logic, modular Jetpack Compose UI decomposition, geospatial mapping, automated testing, and official-docs-grounded Gradle hygiene.
 
 ---
 
@@ -8,102 +8,122 @@ Welcome to the **Android Engineering Skills** documentation. This module contain
 
 | Hub Directory | Domain | Direct Link |
 |---|---|---|
-| 🏠 **Root Hub** | Full Suite Overview & Installer | [Root README](../README.md) |
-| 🚀 **Engineer Mode** | Master Entry Point & Playbook Router | [Engineer Mode README](../engineer-mode/README.md) |
+| 🏠 **Root Hub** | Full Suite Overview & Universal Installer | [Root README](../README.md) |
+| 🚀 **Engineer Mode** | Master Entry Point & Adaptive Playbook Router | [Engineer Mode README](../engineer-mode/README.md) |
 | ⚛️ **React TS Skills** | Next.js, Vite, TypeScript, Tailwind, Web Vitals | [React TS README](../react-ts-skills/README.md) |
-| 🔍 **Diagnostic Skills** | Error Detective, ADR Detection, App Design | [Diagnostic README](../diagnostic-skills/README.md) |
+| 🔍 **Diagnostic Skills** | Error Detective, ADR Detection, App Design, Changelogs | [Diagnostic README](../diagnostic-skills/README.md) |
 | 🌿 **Git Skills** | Branching, Safe Rebase, Conflict Resolution, PRs | [Git README](../git-skills/README.md) |
 
 ---
 
-## 🏗️ Architecture Blueprint
+## 📦 Modular Android Skills Matrix
 
-The skill enforces strict **Clean Architecture (MVVM/MVI)** separation across all Android applications:
+| Skill Directory | Slash Command | Primary Purpose | Deliverables |
+|---|---|---|---|
+| **`android-architecture/`** | `/android-architecture` | Enforce Clean Architecture with pure Kotlin domain (zero `android.*` framework code, KMP-ready), Room/Retrofit data layer, Hilt DI, and KDocs. | Domain UseCases, Repository contracts, Room DAOs |
+| **`compose-ui/`** | `/compose-ui` | Modern Jetpack Compose UI. Enforces multi-file decomposition (never 1 giant file), strict modifier parameter rules, state stability, and haptics. | Screen, Content, Component, and Preview files |
+| **`compose-maplibre/`** | `/compose-maplibre` | MapLibre Native in Compose with lifecycle safety, GeoJSON caching, Material 3 overlays, and camera animations. | MapView composable wrappers and overlays |
+| **`android-testing/`** | `/android-testing` | Automated test engineering: Turbine for Coroutines Flow, MockK/Fakes for UseCases, ComposeTestRule semantic UI tests. | Unit and UI test suites |
+| **`gradle-build-hygiene/`** | `/gradle-build-hygiene` | Version Catalog (`libs.versions.toml`) management, R8/ProGuard rules, official Google AGP documentation grounding without guesswork. | `libs.versions.toml`, `build.gradle.kts` |
+
+---
+
+## 🏗️ Architecture Blueprint: Pure Domain & KMP Readiness
 
 ```mermaid
 flowchart TD
-    subgraph UI ["🎨 Presentation Layer"]
-        Screen["Compose Screen Component<br/>(@Immutable state, Haptics)"]
-        VM["ViewModel<br/>(StateFlow<UiState>, UiEvent)"]
-        Screen -->|Observes state / Emits events| VM
+    subgraph PresentationLayer ["🎨 Presentation: /compose-ui"]
+        Screen["Screen Container (ViewModel Observer)"]
+        Components["Modular Child Components (Cards, Bars)"]
+        Screen --> Components
     end
 
-    subgraph Business ["🧠 Domain Layer (Pure Kotlin)"]
-        UC["UseCase / Interactor<br/>(operator fun invoke)"]
-        Entity["Domain Model / Value Classes"]
+    subgraph DomainLayer ["🧠 Pure Domain: /android-architecture (KMP commonMain)"]
+        direction TB
+        UC["UseCase (Single-expression invoke)"]
+        Entity["Pure Domain Models & Value Classes"]
+        RepoContract["Repository Interface"]
         UC --> Entity
+        UC --> RepoContract
     end
 
-    subgraph Storage ["💾 Data Layer"]
-        Repo["Repository Implementation"]
-        RoomDB[("Room Database<br/>(Local Cache)")]
-        RemoteAPI["Retrofit API<br/>(Remote Backend)"]
+    subgraph DataLayer ["💾 Data Layer: /android-architecture"]
+        RepoImpl["Repository Implementation"]
+        RoomDB[("Room Database (Local)")]
+        RetrofitAPI["Retrofit API (Remote)"]
         Mappers["Single-Expression Extension Mappers"]
-
-        Repo --> RoomDB
-        Repo --> RemoteAPI
-        Repo --> Mappers
+        RepoImpl --> RoomDB
+        RepoImpl --> RetrofitAPI
+        RepoImpl --> Mappers
     end
 
-    VM -->|Executes| UC
-    UC -->|Interacts through| RepoInterface["Repository Interface (Domain)"]
-    Repo -.->|Implements| RepoInterface
+    Screen -->|Executes| UC
+    RepoImpl -.->|Implements| RepoContract
 ```
 
 ---
 
-## 🛠️ Google Android CLI Integration
+## 🎨 Compose UI: File Separation & Modifier Ordering
 
-Rather than duplicating custom CLI helper scripts, this skill routes directly to Google's official `android-cli`:
+### 1. Multi-File Decomposition (Never 1 Giant File)
+Each Compose screen must be decomposed into dedicated, testable files:
+- `CartScreen.kt`: Stateful container handling ViewModel observation.
+- `CartContent.kt`: Stateless layout organizing child components.
+- `CartItemCard.kt`: Isolated item card component in `components/`.
+- `CartUiState.kt`: Immutable state class with immutable collections.
+- `CartPreview.kt`: Light and dark mode previews.
 
-```mermaid
-sequenceDiagram
-    autonumber
-    actor Dev as Developer / AI Agent
-    participant AE as /android-expert
-    participant GoogleCLI as Google android-cli (Official)
-    participant Device as Android Emulator / Hardware
+### 2. The Modifier Rule
+- **In Composable Declaration**: The `modifier: Modifier = Modifier` must be the **top parameter among optional arguments** (right after mandatory data and callbacks).
+- **At the Call Site (Consumption)**: Pass the `modifier` chain at the **very bottom of the call arguments** so data arguments stay visible:
 
-    Dev->>AE: Run app on emulator / Check device health
-    AE->>GoogleCLI: Route to official command (e.g. android doctor, android run)
-    GoogleCLI->>Device: Execute adb / gradle / emulator task
-    Device-->>GoogleCLI: Output / Screenshot / Diagnostics
-    GoogleCLI-->>AE: Structured execution result
-    AE-->>Dev: Clean summary & next steps
+```kotlin
+// Declaration: modifier is TOP of optional parameters
+@Composable
+fun CartItemCard(
+    item: CartItemUiModel,
+    onDeleteClick: (String) -> Unit,
+    modifier: Modifier = Modifier,      // TOP of optional params
+    isHighlighted: Boolean = false,
+) { ... }
+
+// Call site: modifier is passed at the VERY BOTTOM
+CartItemCard(
+    item = currentItem,
+    onDeleteClick = { viewModel.onEvent(CartEvent.Delete(it)) },
+    isHighlighted = true,
+    modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 16.dp, vertical = 8.dp) // BOTTOM of arguments
+)
 ```
 
 ---
 
-## 📋 Capabilities & Rule Matrix
+## 🛠️ Google Android CLI Routing
 
-| Area | Rule / Standard | Enforcement Detail |
-|---|---|---|
-| **Domain Layer** | Pure Kotlin Isolation | Zero dependencies on `android.*`, no `@Serializable`, no database annotations. |
-| **Data Layer** | Clean Repositories & Mappers | Hide Retrofit & Room behind domain interfaces. Use one-liner extension mappers. |
-| **Presentation** | Compose UI State Stability | Single ViewModel per screen, `@Immutable` state classes, immutable collections. |
-| **Haptic Feedback** | Purposeful Tactile Response | Use `LocalHapticFeedback.current` with strictly mapped `HapticFeedbackType`. |
-| **Strings & i18n** | Zero Hardcoded Strings | Extract to `strings.xml` with semantic prefixes (`label_`, `msg_`, `title_`, etc.). |
-| **Kotlin Idioms** | One-Liner Expressions | Prefer `fun ... = ...`, expression getters, and `kotlin.time.Duration` extensions. |
-| **Platform Compliance** | Android 14+ Guardrails | Foreground service types, predictive back gestures, photo picker. |
+When you need device automation, emulator execution, or SDK inspection, the Android skills route directly to Google's official `android-cli`:
+- Run APK on device: `android run`
+- Health check: `android doctor`
+- Layout & visual inspection: `android layout`, `android screen`
+- Official docs search: `android doc`
 
 ---
 
 ## ⚡ How to Trigger
 
-You can trigger the Android Expert directly or via `/engineer-mode`:
-
 ```text
-/android-expert create a clean architecture shopping cart screen with Jetpack Compose
+/android-architecture design an offline-first repository with pure KMP domain models
 ```
 ```text
-/android-expert implement an offline-first Room repository with single-expression mappers
+/compose-ui decompose a checkout screen into modular component files with strict modifier ordering
 ```
 ```text
-/android-expert audit this ViewModel for recomposition stability and coroutine safety
+/compose-maplibre render GeoJSON polygon layers with lifecycle-safe MapView in Compose
 ```
-
-### Connected Skill Hand-offs:
-- Encountering a crash or ANR? ➔ Routes to [Error Detective](../diagnostic-skills/README.md)
-- Making a major architecture decision? ➔ Routes to [ADR Analyze](../diagnostic-skills/README.md)
-- Modeling module relationships? ➔ Routes to [App Design](../diagnostic-skills/README.md)
-- Ready to commit clean code? ➔ Routes to [Git Assistant](../git-skills/README.md)
+```text
+/android-testing generate Turbine unit tests for CartViewModel and a ComposeTestRule UI test
+```
+```text
+/gradle-build-hygiene update libs.versions.toml to Kotlin 2.0.21 referencing official docs
+```

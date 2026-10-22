@@ -1,6 +1,6 @@
-# ⚛️ React + TypeScript Web Skills
+# ⚛️ React + TypeScript Web Skills Suite
 
-Welcome to the **React + TypeScript Web Skills** documentation. This module contains the master **React + TypeScript Expert** (`/react-ts-expert`) skill, providing production standards for React 19, TypeScript 5+, Next.js App Router, Vite, Tailwind CSS, TanStack Query, Zustand, WCAG 2.2 AA accessibility, and Web Vitals performance.
+Welcome to the **React + TypeScript Web Skills Suite**. Just like our Android suite, this module is decomposed into **4 specialized, modular skills** that enforce enterprise Frontend Clean Architecture, accessible modular UI component decomposition, robust state synchronization, and automated testing with Vitest.
 
 ---
 
@@ -8,79 +8,103 @@ Welcome to the **React + TypeScript Web Skills** documentation. This module cont
 
 | Hub Directory | Domain | Direct Link |
 |---|---|---|
-| 🏠 **Root Hub** | Full Suite Overview & Installer | [Root README](../README.md) |
-| 🚀 **Engineer Mode** | Master Entry Point & Playbook Router | [Engineer Mode README](../engineer-mode/README.md) |
-| 📱 **Android Skills** | Kotlin, Compose, Clean Architecture, Google android-cli | [Android README](../android-skills/README.md) |
-| 🔍 **Diagnostic Skills** | Error Detective, ADR Detection, App Design | [Diagnostic README](../diagnostic-skills/README.md) |
+| 🏠 **Root Hub** | Full Suite Overview & Universal Installer | [Root README](../README.md) |
+| 🚀 **Engineer Mode** | Master Entry Point & Adaptive Playbook Router | [Engineer Mode README](../engineer-mode/README.md) |
+| 📱 **Android Skills** | Clean Arch, Compose, MapLibre, Testing, Gradle | [Android README](../android-skills/README.md) |
+| 🔍 **Diagnostic Skills** | Error Detective, ADR Detection, App Design, Changelogs | [Diagnostic README](../diagnostic-skills/README.md) |
 | 🌿 **Git Skills** | Branching, Safe Rebase, Conflict Resolution, PRs | [Git README](../git-skills/README.md) |
+
+---
+
+## 📦 Modular React TS Skills Matrix
+
+| Skill Directory | Slash Command | Primary Purpose | Deliverables |
+|---|---|---|---|
+| **`react-ts-architecture/`** | `/react-ts-architecture` | Enforces Frontend Clean Architecture, pure domain models & Zod schemas (zero DOM code), strict type discipline (zero any, discriminated unions, `satisfies`). | Domain types, validators, typed API clients |
+| **`react-ui-components/`** | `/react-ui-components` | Accessible modular UI components. Enforces multi-file separation (never 1 giant file), strict prop ordering (data top, className bottom), Tailwind CSS, WCAG 2.2 AA. | Modular component, container, and type files |
+| **`react-state-management/`** | `/react-state-management` | Governs server and client state synchronization. TanStack Query for server caching/optimistic mutations, Zustand for atomic client state slices. | Custom query hooks, mutation handlers, stores |
+| **`react-testing/`** | `/react-testing` | Directs automated user-centric testing with Vitest, React Testing Library, and Mock Service Worker (MSW). | Unit, component, and integration test suites |
 
 ---
 
 ## 🏗️ Architecture Blueprint
 
-The skill enforces strict **Frontend Clean Architecture** across web codebases:
-
 ```mermaid
 flowchart TD
-    subgraph UI ["🎨 Presentation Layer"]
-        Page["Page / Layout (Next.js Server Component)"]
-        InteractiveComp["Interactive Component ('use client')"]
-        CustomHook["Custom Presentation Hook"]
-        Page --> InteractiveComp
-        InteractiveComp --> CustomHook
+    subgraph PresentationLayer ["🎨 Presentation: /react-ui-components"]
+        Page["Page / Layout Container"]
+        Components["Modular Child Components (Cards, Bars)"]
+        Page --> Components
     end
 
-    subgraph Domain ["🧠 Domain / Application Layer"]
-        DomainType["Domain Models (Discriminated Unions)"]
-        ZodSchema["Runtime Schema Validation (Zod)"]
-        PureLogic["Business Logic & Pure Calculations"]
-        CustomHook --> DomainType
-        CustomHook --> ZodSchema
-        CustomHook --> PureLogic
+    subgraph DomainLayer ["🧠 Pure Domain: /react-ts-architecture"]
+        direction TB
+        DomainModels["Domain Types & Discriminated Unions"]
+        ZodSchemas["Zod Schema Validators"]
+        PureLogic["Business Logic & Validation Functions"]
+        DomainModels --> PureLogic
     end
 
-    subgraph Data ["💾 Data Layer"]
-        TanStackQuery["TanStack Query (useQuery / useMutation)"]
-        HttpClient["HTTP Client (Fetch / Ky)"]
+    subgraph DataLayer ["💾 State & Data: /react-state-management"]
+        direction TB
+        TanStack["TanStack Query (useQuery / useMutation)"]
+        ApiClient["HTTP API Client"]
         Mappers["DTO-to-Domain Mappers"]
-        CustomHook --> TanStackQuery
-        TanStackQuery --> HttpClient
-        HttpClient --> Mappers
+        TanStack --> ApiClient
+        ApiClient --> Mappers
     end
+
+    Page -->|Executes Hooks| TanStack
+    Components -->|Consumes Models| DomainModels
+    Mappers -->|Constructs| DomainModels
 ```
 
 ---
 
-## 📋 Capabilities & Rule Matrix
+## 🎨 UI Component Decomposition & Prop Ordering Rules
 
-| Area | Rule / Standard | Enforcement Detail |
-|---|---|---|
-| **Type Safety** | Zero-Any Policy | Strict TypeScript 5+, `unknown` with narrowing, `satisfies`, branded types. |
-| **State Modeling** | Discriminated Unions | Never disjoint booleans; model `status: 'idle' \| 'loading' \| 'success' \| 'error'`. |
-| **Server State** | TanStack Query | Query keys as tuples, configured `staleTime`, optimistic mutation rollbacks. |
-| **Client State** | Zustand / Context | Atomic store slices with granular selectors to eliminate unnecessary re-renders. |
-| **Styling** | Tailwind CSS / CSS Modules | Mobile-first responsive design, dark mode tokens, strict spacing scales. |
-| **Accessibility** | WCAG 2.2 AA Standard | Semantic HTML, full keyboard navigation, focus trap in modals, visible focus rings. |
-| **Core Web Vitals** | High Performance | High LCP fetchpriority, zero CLS via explicit dimensions, low INP via transitions. |
+### 1. Multi-File Decomposition (Never 1 Giant File)
+Each web feature must be split into dedicated, cohesive files:
+- `CartPage.tsx`: Server Component handling routing and metadata.
+- `CartContainer.tsx`: Client component managing state and user events.
+- `CartItemCard.tsx`: Isolated presentation card component in `components/`.
+- `CartTypes.ts`: Component-specific prop interfaces and view models.
+
+### 2. The Prop Ordering Rule
+- **In Component Definition**: Mandatory data and event callbacks MUST be on top; optional configuration, `className`, and `children` must be at the bottom.
+- **At the Call Site**: Pass data first, and place long `className` layout styling at the **very bottom of the tag**:
+
+```tsx
+// Definition: Data first, className at the bottom
+export interface CartItemCardProps {
+  item: CartItemModel;
+  onRemove: (id: string) => void;
+  isHighlighted?: boolean;
+  className?: string; // BOTTOM of props
+}
+
+// Call site: Data first, className at the VERY BOTTOM
+<CartItemCard
+  item={cartItem}
+  onRemove={(id) => handleRemove(id)}
+  isHighlighted={cartItem.isPending}
+  className="w-full max-w-xl mx-auto p-4 border rounded-xl"
+/>
+```
 
 ---
 
 ## ⚡ How to Trigger
 
-You can trigger the React TS Expert directly or via `/engineer-mode`:
-
 ```text
-/react-ts-expert build a responsive checkout flow with React 19, Zod validation, and Tailwind
+/react-ts-architecture define a domain model and Zod schema for multi-step checkout
 ```
 ```text
-/react-ts-expert create a typed TanStack Query hook with optimistic updates and caching
+/react-ui-components create an accessible modal dialog with focus trap and Tailwind CSS
 ```
 ```text
-/react-ts-expert audit this Next.js App Router component for WCAG 2.2 accessibility and INP performance
+/react-state-management build an optimistic cart mutation hook with TanStack Query
 ```
-
-### Connected Skill Hand-offs:
-- Encountering a hydration mismatch or TypeScript error? ➔ Routes to [Error Detective](../diagnostic-skills/README.md)
-- Making a library choice (e.g. state management or styling framework)? ➔ Routes to [ADR Analyze](../diagnostic-skills/README.md)
-- Modeling component hierarchy or state machines? ➔ Routes to [App Design](../diagnostic-skills/README.md)
-- Ready to commit and open a PR? ➔ Routes to [Git Assistant](../git-skills/README.md)
+```text
+/react-testing write Vitest tests for the checkout form using MSW network handlers
+```
