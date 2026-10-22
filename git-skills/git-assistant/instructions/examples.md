@@ -46,3 +46,28 @@ Refer to ADR: [docs/adr/ADR-0002-modular-ui-composition.md](docs/adr/ADR-0002-mo
 ## 📦 Detailed Changelog
 Generated changelog record: [docs/changelogs/2026-10-22_21-15-00_decompose-product-screen.md](docs/changelogs/2026-10-22_21-15-00_decompose-product-screen.md)
 ```
+
+---
+
+## 3. Interactive Push & Merge Confirmation Prompt (Mandatory)
+
+```text
+Agent:
+I have prepared the commit locally:
+- Branch: feature/modular-cart
+- Commit: a1b2c3d feat(cart): decompose cart screen into modular composables
+- Status: 4 files changed, 120 insertions(+), 85 deletions(-)
+- Tests: All unit tests passed (42/42)
+
+How would you like to proceed with shipping?
+[A] Push to remote branch (`git push origin feature/modular-cart`)
+[B] Push and create Pull Request / Merge
+[C] Keep changes local only (Do not push)
+
+User: A
+
+Agent:
+Proceeding to push branch 'feature/modular-cart' to origin...
+Running: git push origin feature/modular-cart
+✓ Pushed successfully to origin/feature/modular-cart.
+```

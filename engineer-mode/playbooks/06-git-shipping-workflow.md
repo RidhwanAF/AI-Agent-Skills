@@ -23,7 +23,9 @@ flowchart TD
     Commit --> Sync{"Sync with Remote<br/>(git pull --rebase)"}
     Sync -->|Conflict| Resolve["Visual 3-Way Conflict Resolution"]
     Resolve --> Sync
-    Sync -->|Clean| Push["Push to Remote"]
+    Sync -->|Clean| ConfirmGate{"🚨 Ask User for Confirmation:<br/>Push / Push & Merge / Keep Local?"}
+    ConfirmGate -->|Keep Local| KeepLocal["Keep Commits Local (Done)"]
+    ConfirmGate -->|Approved| Push["Push to Remote"]
     Push --> PRBrief["Generate PR Briefing Document"]
 ```
 
@@ -47,8 +49,23 @@ flowchart TD
 - Always update local branches with `git pull --rebase origin <base-branch>`.
 - If conflicts arise, inspect both sides, explain the divergence, and preserve valid changes with safety backup tags.
 
-### Step 4: PR Briefing
-- Produce an executive summary for PR reviewers:
+### Step 4: Mandatory User Confirmation Gate (NEVER Auto-Push)
+- **Zero Auto-Push Policy**: The agent must **NEVER** push to remote or merge branches automatically.
+- Present the current branch, commit summary, and destination, and prompt the user:
+  ```text
+  Branch: <branch>
+  Commit: <hash> <message>
+  Target: origin/<branch>
+
+  How would you like to proceed?
+  [A] Push to Remote (git push origin <branch>)
+  [B] Push and Create Pull Request / Merge
+  [C] Keep Changes Local Only (Do not push)
+  ```
+- **Stop and wait for user response**. Only execute `git push` or branch merging when the user chooses [A] or [B].
+
+### Step 5: Push Execution & PR Briefing (Upon Approval)
+- If approved, execute the push and produce an executive summary for PR reviewers:
   - **Summary**: Concise overview of changes.
   - **Motivation**: Why this was necessary.
   - **Impact**: Affected modules and performance implications.

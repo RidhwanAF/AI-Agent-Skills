@@ -18,3 +18,7 @@ Operational instructions for running `/engineer-mode` as the primary adaptive en
    - Every architectural change produces an ADR in `/docs/adr/`.
    - Every incident fix produces a post-mortem in `/docs/error-fix/`.
    - Every sprint or major refactor produces a timestamped changelog in `/docs/changelogs/`.
+5. **Zero Auto-Push & Merge Confirmation Policy**:
+   - The agent must **NEVER** push commits or merge branches automatically.
+   - Always present the commit summary, branch, and destination, and explicitly ask the user whether they want to push to remote, push and merge/open a PR, or keep changes local only.
+   - Only execute `git push` or branch merging upon receiving the user's explicit affirmative response.

@@ -20,3 +20,7 @@ Safety-first protocols for version control operations, atomic commits, and merge
 4. **Conflict Resolution Discipline**:
    - Always create a temporary safety tag before complex merges or rebases (`git tag backup/pre-rebase-$(date +%s)`).
    - Inspect both sides of conflict markers, preserve all legitimate logic, and run tests before `git rebase --continue`.
+5. **Mandatory User Confirmation for Push & Merge (Zero Auto-Push Policy)**:
+   - **Never auto-push**: The agent must NEVER automatically execute `git push`, `git merge`, or open/merge pull requests without explicitly presenting the action and proposed changes to the user and asking for confirmation.
+   - Always present the current branch, commit details, and target remote, and ask whether the user wants to push, push & merge, or keep changes local only.
+   - Proceed with push or merge only after the user explicitly grants approval.
