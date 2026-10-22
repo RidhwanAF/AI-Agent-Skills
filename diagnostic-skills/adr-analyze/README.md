@@ -1,6 +1,6 @@
 # 📜 Architecture Decision Record (ADR) Skill
 
-Captures, evaluates, and documents significant architectural decisions across Android and Web projects. Ensures technical choices are systematically reasoned with trade-offs, grounded in official documentation (Google, React, W3C, MDN), and archived in standardized MADR format in `/docs/adr/`.
+Captures, evaluates, and documents significant architectural decisions across Android and Web projects. Ensures technical choices are systematically reasoned with trade-offs, grounded in official documentation (Google, React, W3C, MDN), and presented with an immediate **executive summary**, **visual Mermaid pie chart scoring**, and a **detailed multi-criteria decision matrix** before the in-depth technical analysis in `/docs/adr/`.
 
 ---
 
@@ -29,9 +29,9 @@ flowchart TD
 
 | Path | Purpose | Description |
 | :--- | :--- | :--- |
-| [`SKILL.md`](./SKILL.md) | Agent Skill Definition | Core instructions and triggers for MADR evaluation. |
-| [`instructions/guidelines.md`](./instructions/guidelines.md) | Agent Execution Protocol | Grounding in official documentation, MADR formatting, and index table maintenance. |
-| [`instructions/examples.md`](./instructions/examples.md) | Production Documentation Example | Real-world MADR record in `/docs/adr/` with Mermaid diagram. |
+| [`SKILL.md`](./SKILL.md) | Agent Skill Definition | Core triggers, executive summary, Mermaid pie chart scoring, and MADR template. |
+| [`instructions/guidelines.md`](./instructions/guidelines.md) | Agent Execution Protocol | Executive summary first rule, weighted scoring rubric, and official docs grounding. |
+| [`instructions/examples.md`](./instructions/examples.md) | Production Documentation Example | Real-world MADR record featuring executive summary, Mermaid pie chart, and scoring matrix. |
 
 ---
 
