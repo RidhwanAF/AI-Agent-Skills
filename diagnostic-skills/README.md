@@ -20,10 +20,10 @@ Welcome to the **Diagnostic, ADR, App Design & Changelog Skills** documentation.
 
 | Skill Directory | Slash Command | Primary Purpose | Deliverables |
 |---|---|---|---|
-| **`error-detective/`** | `/error-detective`, `/error-detection` | Interactive error triage (asks error type & module or auto-analyzes), root cause fix, post-mortem generation. | `/docs/error-fix/*.md` with Mermaid Pie Score |
-| **`adr-analyze/`** | `/adr-analyze` | Architecture Decision Records grounded in official documentation (Google, React, W3C/MDN). | `/docs/adr/ADR-XXXX-*.md` and index |
-| **`app-design/`** | `/app-design` | Visual system modeling, UML class, sequence, and state diagrams, use case specifications in English. | `/docs/architecture/*.md` |
-| **`changelog-recorder/`** | `/changelog-recorder`, `/changelog` | Detailed, timestamped changelog generation with strict naming (`YYYY-MM-DD_HH-mm-ss_<title>.md`). | `/docs/changelogs/` and index |
+| [**`error-detective/`**](./error-detective/README.md) | `/error-detective`, `/error-detection` | Interactive error triage (asks error type & module or auto-analyzes), root cause fix, post-mortem generation. | `/docs/error-fix/*.md` with Mermaid Pie Score |
+| [**`adr-analyze/`**](./adr-analyze/README.md) | `/adr-analyze` | Architecture Decision Records grounded in official documentation (Google, React, W3C/MDN). | `/docs/adr/ADR-XXXX-*.md` and index |
+| [**`app-design/`**](./app-design/README.md) | `/app-design` | Visual system modeling, UML class, sequence, and state diagrams, use case specifications in English. | `/docs/architecture/*.md` |
+| [**`changelog-recorder/`**](./changelog-recorder/README.md) | `/changelog-recorder`, `/changelog` | Detailed, timestamped changelog generation with strict naming (`YYYY-MM-DD_HH-mm-ss_<title>.md`). | `/docs/changelogs/` and index |
 
 ---
 
