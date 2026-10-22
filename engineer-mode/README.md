@@ -16,6 +16,17 @@ Welcome to **Engineer Mode**, the central command post and intelligent orchestra
 
 ---
 
+## 📂 Subfolder Structure
+
+| Path | Purpose | Description |
+| :--- | :--- | :--- |
+| [`SKILL.md`](./SKILL.md) | Agent Skill Definition | Master prompt instructions, questionnaire, and routing table. |
+| [`playbooks/README.md`](./playbooks/README.md) | Playbook Catalog Registry | Complete index and overview of the 8 execution playbooks. |
+| [`instructions/guidelines.md`](./instructions/guidelines.md) | Agent Execution Protocol | Master orchestration protocols and gating rules. |
+| [`instructions/examples.md`](./instructions/examples.md) | Production Workflow Examples | Interactive triage dialogue and multi-skill routing chains. |
+
+---
+
 ## 💡 How It Works
 
 Instead of guessing or generating boilerplate code, `/engineer-mode` performs an **adaptive assessment**. It matches your goal against curated engineering playbooks, interviews you on critical constraints, and routes work dynamically across specialized modular skills:

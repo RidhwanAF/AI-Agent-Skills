@@ -28,23 +28,21 @@ class Style:
     MAGENTA = "\033[35m"
 
 def print_banner():
-    banner = f"""{Style.CYAN}{Style.BOLD}
-========================================================================
-   ___   ____       ____             _                      ____   _     _ _ _      
-  / _ \ |___ \     |  _ \           (_)                    / ___| | |   (_) | |___  
- / /_\ \  __) |____| |_) | ___  __ _ _ _ __   ___  ___ _ __\___ \ | |/ / | | / __| 
- |  _  | / __/_____|  _ < / _ \/ _` | | '_ \ / _ \/ _ \ '__|___) ||   <  | | | \__ \ 
- |_| |_||_____|    |_| \_\  __/ (_| | | | | |  __/  __/ |  |____/ |_|\_\_|_|_|___/ 
-                          \___|\__, |_|_| |_|\___|\___|_|                       
-                               |___/                                            
-========================================================================{Style.RESET}
-{Style.BOLD}   Modern AI Engineer Skills Suite • Connected Skills • Zero Code Slop{Style.RESET}
-"""
-    print(banner)
+    art = r"""========================================================================
+  ____      _     _____            _                    _     ____   _     _ _ _      
+ |  _ \    / \   |  ___|          / \   __ _  ___ _ __ | |_  / ___| | |   (_) | |___  
+ | |_) |  / _ \  | |_    _____   / _ \ / _` |/ _ \ '_ \| __| \___ \ | |/ / | | / __| 
+ |  _ <  / ___ \ |  _|  |_____| / ___ \ (_| |  __/ | | | |_   ___) ||   <  | | | \__ \ 
+ |_| \_\/_/   \_\|_|           /_/   \_\__, |\___|_| |_|\__| |____/ |_|\_\_|_|_|___/ 
+                                       |___/                                        
+========================================================================"""
+    print(f"{Style.CYAN}{Style.BOLD}{art}{Style.RESET}")
+    print(f"{Style.BOLD}   RAF - Agent Skills • Connected Skills • Zero Code Slop{Style.RESET}\n")
 
-REPO_ROOT = Path(__file__).resolve().parent
+# In installer/ subfolder, REPO_ROOT is the parent folder
+REPO_ROOT = Path(__file__).resolve().parent.parent
 
-# Mapping of all 15 modular managed skills to source directories
+# Mapping of all 16 modular managed skills to source directories
 MANAGED_SKILLS = {
     # Core Orchestration
     "engineer-mode": REPO_ROOT / "engineer-mode",
@@ -54,6 +52,7 @@ MANAGED_SKILLS = {
     "compose-maplibre": REPO_ROOT / "android-skills" / "compose-maplibre",
     "android-testing": REPO_ROOT / "android-skills" / "android-testing",
     "gradle-build-hygiene": REPO_ROOT / "android-skills" / "gradle-build-hygiene",
+    "android-cli-router": REPO_ROOT / "android-skills" / "android-cli-router",
     # Modular React TS Suite
     "react-ts-architecture": REPO_ROOT / "react-ts-skills" / "react-ts-architecture",
     "react-ui-components": REPO_ROOT / "react-ts-skills" / "react-ui-components",
@@ -72,13 +71,17 @@ MANAGED_SKILLS = {
 LEGACY_SKILLS = [
     "android-expert",        # Replaced by modular Android skills
     "react-ts-expert",       # Replaced by modular React TS skills
-    "android-cli",           # Custom skill removed in favor of routing to official Google android-cli
     "android-clean-architecture",
     "android-data-layer",
     "android-project-onboarding-architect",
     "compose-ui-preview-design",
     "agent-audit-workflow",
 ]
+
+# Official vendor skills that must NEVER be deleted under any circumstances!
+PROTECTED_OFFICIAL_SKILLS = {
+    "android-cli",  # Official skill installed by Google Android CLI (android init)
+}
 
 HOME = Path.home()
 
@@ -164,17 +167,51 @@ def get_official_android_cli_install_cmd():
         return 'curl -fsSL https://dl.google.com/android/cli/latest/windows_x86_64/install.cmd -o "%TEMP%\\i.cmd" && "%TEMP%\\i.cmd"'
     return None
 
+def find_android_cli():
+    """Dynamically resolves the path to the official Google Android CLI binary."""
+    found = shutil.which("android")
+    if found:
+        return found
+    candidates = [
+        Path("/usr/local/bin/android"),
+        Path("/opt/homebrew/bin/android"),
+        HOME / ".local" / "bin" / "android",
+        HOME / "bin" / "android",
+    ]
+    for cand in candidates:
+        if cand.exists() and os.access(cand, os.X_OK):
+            return str(cand)
+    return None
+
+def run_android_init():
+    """Runs 'android init' to ensure official Google skills are installed and synchronized alongside custom skills."""
+    cli_path = find_android_cli()
+    if not cli_path:
+        return False
+    try:
+        print(f"\n{Style.BOLD}🔄 Synchronizing Official Google Android CLI Skills ('{cli_path} init')...{Style.RESET}")
+        res = subprocess.run([cli_path, "init"], capture_output=True, text=True, timeout=30)
+        if res.returncode == 0:
+            print(f"{Style.GREEN}✓ Official Google Android CLI skills synchronized successfully.{Style.RESET}")
+            return True
+        else:
+            print(f"  {Style.DIM}(android init note: {res.stdout.strip() or res.stderr.strip()}){Style.RESET}")
+            return False
+    except Exception as e:
+        print(f"  {Style.DIM}(Could not run android init: {e}){Style.RESET}")
+        return False
+
 def check_and_setup_android_cli(non_interactive=False, auto_install=False):
     print(f"\n{Style.BOLD}🔧 Checking Required Tools: Google Android CLI{Style.RESET}")
-    android_path = shutil.which("android")
+    android_path = find_android_cli()
 
     if android_path:
         print(f"{Style.GREEN}✓ Found Google Android CLI:{Style.RESET} {android_path}")
         
         # Run android update
         try:
-            print(f"  Checking for updates via 'android update'...")
-            res = subprocess.run(["android", "update"], capture_output=True, text=True, timeout=15)
+            print(f"  Checking for updates via '{android_path} update'...")
+            res = subprocess.run([android_path, "update"], capture_output=True, text=True, timeout=15)
             if res.returncode == 0:
                 print(f"  {Style.GREEN}✓ android update completed successfully.{Style.RESET}")
             else:
@@ -183,15 +220,7 @@ def check_and_setup_android_cli(non_interactive=False, auto_install=False):
             print(f"  {Style.DIM}(android update note: {e}){Style.RESET}")
 
         # Run android init
-        try:
-            print(f"  Running 'android init'...")
-            res = subprocess.run(["android", "init"], capture_output=True, text=True, timeout=15)
-            if res.returncode == 0:
-                print(f"  {Style.GREEN}✓ android init completed successfully.{Style.RESET}")
-            else:
-                print(f"  {Style.DIM}android init note: {res.stdout.strip() or res.stderr.strip()}{Style.RESET}")
-        except Exception as e:
-            print(f"  {Style.DIM}(android init note: {e}){Style.RESET}")
+        run_android_init()
         return True
 
     print(f"{Style.YELLOW}⚠️  Google Android CLI ('android') was not found on your PATH.{Style.RESET}")
@@ -220,8 +249,9 @@ def check_and_setup_android_cli(non_interactive=False, auto_install=False):
         try:
             res = subprocess.run(cmd, shell=True, check=True)
             print(f"{Style.GREEN}✓ Google Android CLI installation finished.{Style.RESET}")
-            if shutil.which("android"):
-                subprocess.run(["android", "init"], check=False)
+            cli_path = find_android_cli()
+            if cli_path:
+                run_android_init()
             return True
         except Exception as e:
             print(f"{Style.RED}❌ Installation failed: {e}{Style.RESET}")
@@ -305,6 +335,8 @@ def copy_skill(source_path: Path, target_dir: Path, skill_name: str) -> bool:
 def cleanup_legacy_skills(target_dir: Path):
     removed = []
     for legacy_name in LEGACY_SKILLS:
+        if legacy_name in PROTECTED_OFFICIAL_SKILLS:
+            continue
         legacy_path = target_dir / legacy_name
         if legacy_path.exists():
             if safe_remove_path(legacy_path):
@@ -313,7 +345,7 @@ def cleanup_legacy_skills(target_dir: Path):
 
 def remove_managed_skills(target_dir: Path):
     removed = []
-    all_to_remove = list(MANAGED_SKILLS.keys()) + LEGACY_SKILLS
+    all_to_remove = [k for k in (list(MANAGED_SKILLS.keys()) + LEGACY_SKILLS) if k not in PROTECTED_OFFICIAL_SKILLS]
     for name in all_to_remove:
         path = target_dir / name
         if path.exists():
@@ -321,8 +353,8 @@ def remove_managed_skills(target_dir: Path):
                 removed.append(name)
     return removed
 
-def install_skills(selected_agent_keys, dry_run=False):
-    print(f"\n{Style.BOLD}🚀 Installing Unified AI-Engineer-Skills Suite...{Style.RESET}\n")
+def install_skills(selected_agent_keys, dry_run=False, skip_android_cli=False):
+    print(f"\n{Style.BOLD}🚀 Installing Unified RAF - Agent Skills Suite...{Style.RESET}\n")
     
     selected_agent_ids = [SUPPORTED_AGENTS[k]["id"] for k in selected_agent_keys]
     
@@ -341,7 +373,7 @@ def install_skills(selected_agent_keys, dry_run=False):
                 print(f"  {Style.DIM}(Could not create directory {target_dir}: {e}){Style.RESET}")
                 continue
             
-            # Clean up old legacy skills
+            # Clean up old legacy skills (official skills are protected)
             removed_legacy = cleanup_legacy_skills(target_dir)
             if removed_legacy:
                 print(f"  {Style.YELLOW}↳ Cleaned up {len(removed_legacy)} legacy skill(s): {', '.join(removed_legacy)}{Style.RESET}")
@@ -373,7 +405,11 @@ def install_skills(selected_agent_keys, dry_run=False):
                     if removed:
                         print(f"  {Style.YELLOW}✓ Removed {len(removed)} skill(s) from unselected agent at {target_dir}{Style.RESET}")
 
-    # 3. Update manifest file
+    # 3. Synchronize official Google Android CLI skills alongside custom suite
+    if not dry_run and not skip_android_cli:
+        run_android_init()
+
+    # 4. Update manifest file
     if not dry_run:
         try:
             manifest_data = {
@@ -398,6 +434,7 @@ def print_summary(selected_agent_keys):
     print(f"  • {Style.CYAN}/compose-maplibre{Style.RESET}        ➔ MapLibre in Compose, lifecycle safety, GeoJSON caching")
     print(f"  • {Style.CYAN}/android-testing{Style.RESET}         ➔ Turbine Flow tests, MockK fakes, ComposeTestRule")
     print(f"  • {Style.CYAN}/gradle-build-hygiene{Style.RESET}   ➔ libs.versions.toml, R8 rules, official docs grounding")
+    print(f"  • {Style.CYAN}/android-cli-router{Style.RESET}     ➔ Dispatches actions to official Google android-cli")
     print(f"  • {Style.CYAN}/react-ts-architecture{Style.RESET}  ➔ Frontend Clean Architecture, pure domain, Zod, strict TS")
     print(f"  • {Style.CYAN}/react-ui-components{Style.RESET}   ➔ Accessible modular UI (never 1 file), prop order, Tailwind")
     print(f"  • {Style.CYAN}/react-state-management{Style.RESET} ➔ TanStack Query (server state), Zustand (client state)")
@@ -415,7 +452,7 @@ def print_summary(selected_agent_keys):
     print(f"  Type {Style.BOLD}{Style.CYAN}/engineer-mode{Style.RESET} to begin your adaptive engineering workflow!\n")
 
 def main():
-    parser = argparse.ArgumentParser(description="AI-Engineer-Skills Universal Installer")
+    parser = argparse.ArgumentParser(description="RAF - Agent Skills Universal Installer")
     parser.add_argument("--all", "-a", action="store_true", help="Install to all supported AI agents")
     parser.add_argument("--agents", type=str, help="Comma-separated agent keys to install (e.g. '1,3')")
     parser.add_argument("--auto-install-android-cli", action="store_true", help="Automatically install Google Android CLI if missing")
@@ -444,7 +481,7 @@ def main():
         selected_keys = prompt_agent_selection(non_interactive=args.non_interactive)
 
     # Perform installation
-    install_skills(selected_keys, dry_run=args.dry_run)
+    install_skills(selected_keys, dry_run=args.dry_run, skip_android_cli=args.skip_android_cli)
     print_summary(selected_keys)
 
 if __name__ == "__main__":

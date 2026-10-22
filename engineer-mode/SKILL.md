@@ -114,7 +114,7 @@ What would you like to accomplish today?
    - Evaluate architecture choices, ground against official Google/W3C docs, and generate MADR entries in `/docs/adr/`.
 
 4. 📱 **[4] Android Engineering Suite**
-   - Clean Architecture (`/android-architecture`), Modular Compose UI (`/compose-ui`), MapLibre (`/compose-maplibre`), Testing (`/android-testing`), Gradle hygiene (`/gradle-build-hygiene`), and Google `android-cli` routing.
+   - Clean Architecture (`/android-architecture`), Modular Compose UI (`/compose-ui`), MapLibre (`/compose-maplibre`), Testing (`/android-testing`), Gradle hygiene (`/gradle-build-hygiene`), and Android CLI routing (`/android-cli-router`).
 
 5. ⚛️ **[5] React + TypeScript Modern Web Suite**
    - Frontend Clean Architecture (`/react-ts-architecture`), Accessible Modular UI (`/react-ui-components`), State Sync (`/react-state-management`), and Vitest Testing (`/react-testing`).
@@ -142,6 +142,6 @@ What would you like to accomplish today?
 | **3** | [App System Design](playbooks/03-app-system-design.md) | `/app-design`, UML, sequence, architecture | `app-design`, domain skills | `/docs/architecture/` with Mermaid UML class & sequence |
 | **4** | [Android Engineering](playbooks/04-android-deep-engineering.md) | Android, Compose, Kotlin, Room, Gradle | `android-architecture`, `compose-ui`, `android-testing`, `gradle-build-hygiene` | Modular source files, KDocs, unit tests |
 | **5** | [React TS Engineering](playbooks/05-react-ts-web-engineering.md) | React, Next.js, Vite, TypeScript | `react-ts-architecture`, `react-ui-components`, `react-state-management`, `react-testing` | Strict TS components, hooks, tests |
-| **6** | [Git Shipping Workflow](playbooks/06-git-shipping-workflow.md) | `/git-assistant`, commit, push, PR, merge | `git-assistant` | Clean conventional commits, PR brief |
+| **6** | [Git Shipping Workflow](playbooks/06-git-shipping-workflow.md) | `/git-assistant`, commit, push, PR, merge | `git-assistant` | Conventional commits, PR brief (Mandatory user confirmation before push/merge) |
 | **7** | [Architecture Refactoring](playbooks/07-architecture-refactoring.md) | `/engineer-mode refactor`, technical debt | `engineer-mode`, `app-design`, `adr-analyze` | Refactored modules, ADR records, tests |
 | **8** | [Changelog Documentation](playbooks/08-changelog-documentation.md) | `/changelog-recorder`, `/changelog` | `changelog-recorder`, `git-assistant` | `/docs/changelogs/YYYY-MM-DD_HH-mm-ss_*.md` |

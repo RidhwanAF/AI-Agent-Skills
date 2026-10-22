@@ -6,8 +6,8 @@ Capture, evaluate, and formalize crucial technical decisions. Ground architectur
 ## Interconnected Skills
 - **Primary Driver**: [`adr-analyze`](../../diagnostic-skills/adr-analyze/SKILL.md)
 - **Domain Hand-offs**:
-  - Android Architecture ➔ [`android-expert`](../../android-skills/android-expert/SKILL.md)
-  - Web Architecture ➔ [`react-ts-expert`](../../react-ts-skills/react-ts-expert/SKILL.md)
+  - Android Architecture ➔ Modular Android Suite ([`android-architecture`](../../android-skills/android-architecture/SKILL.md), [`gradle-build-hygiene`](../../android-skills/gradle-build-hygiene/SKILL.md))
+  - Web Architecture ➔ Modular React TS Suite ([`react-ts-architecture`](../../react-ts-skills/react-ts-architecture/SKILL.md), [`react-state-management`](../../react-ts-skills/react-state-management/SKILL.md))
   - Modeling & UML ➔ [`app-design`](../../diagnostic-skills/app-design/SKILL.md)
   - Publishing & Versioning ➔ [`git-assistant`](../../git-skills/git-assistant/SKILL.md)
 

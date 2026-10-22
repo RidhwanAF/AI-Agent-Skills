@@ -4,9 +4,9 @@
 Execute mission-critical Android development enforcing modern Clean Architecture, idiomatic Kotlin 2.x, Jetpack Compose UI state stability, reactive data flows, Dagger Hilt DI, Gradle version catalog hygiene, and strict Android 14+ platform restrictions.
 
 ## Interconnected Skills
-- **Primary Driver**: [`android-expert`](../../android-skills/android-expert/SKILL.md)
+- **Primary Driver**: Modular Android Suite ([`android-architecture`](../../android-skills/android-architecture/SKILL.md), [`compose-ui`](../../android-skills/compose-ui/SKILL.md), [`compose-maplibre`](../../android-skills/compose-maplibre/SKILL.md), [`android-testing`](../../android-skills/android-testing/SKILL.md), [`gradle-build-hygiene`](../../android-skills/gradle-build-hygiene/SKILL.md), [`android-cli-router`](../../android-skills/android-cli-router/SKILL.md))
 - **Connected Skills**:
-  - Official Android CLI ➔ Hand-off to official Google `android-cli` (`android doctor`, `android init`, `android run`)
+  - Official Android CLI ➔ Hand-off to [`android-cli-router`](../../android-skills/android-cli-router/SKILL.md) (dispatches to official Google `android-cli`)
   - Error Debugging ➔ [`error-detective`](../../diagnostic-skills/error-detective/SKILL.md)
   - Architecture Recording ➔ [`adr-analyze`](../../diagnostic-skills/adr-analyze/SKILL.md)
   - Source Control ➔ [`git-assistant`](../../git-skills/git-assistant/SKILL.md)

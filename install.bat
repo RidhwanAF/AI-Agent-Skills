@@ -1,8 +1,8 @@
 @echo off
 REM ==============================================================================
-REM AI-Engineer-Skills Windows Launcher (Command Prompt / File Explorer)
-REM Checks for Python 3, attempts automated installation via winget if missing,
-REM and executes the universal installer.
+REM RAF - Agent Skills One-Click Windows Launcher (Command Prompt / File Explorer)
+REM Checks for Python 3, installs via winget if missing,
+REM and routes to the installer in installer\install.py
 REM ==============================================================================
 
 setlocal enabledelayedexpansion
@@ -10,7 +10,7 @@ setlocal enabledelayedexpansion
 cd /d "%~dp0"
 
 echo ========================================================================
-echo    AI-Engineer-Skills Windows Installer Launcher
+echo    RAF - Agent Skills One-Click Windows Installer
 echo ========================================================================
 
 REM Check if python is available
@@ -36,7 +36,7 @@ if "%PY_CMD%"=="" (
         echo [*] Installing Python 3 via winget...
         winget install -e --id Python.Python.3.12 --accept-package-agreements --accept-source-agreements
         if %ERRORLEVEL% equ 0 (
-            echo [v] Python 3 installed successfully. Please restart this script if PATH has not refreshed.
+            echo [v] Python 3 installed successfully.
             set "PY_CMD=python"
         ) else (
             echo [x] Automated winget installation failed.
@@ -51,8 +51,8 @@ if "%PY_CMD%"=="" (
     )
 )
 
-echo [*] Launching Python installer with: %PY_CMD%
-%PY_CMD% install.py %*
+echo [*] Launching installer: %PY_CMD% installer\install.py
+%PY_CMD% installer\install.py %*
 
 if %ERRORLEVEL% neq 0 (
     echo [x] Installer exited with an error code.

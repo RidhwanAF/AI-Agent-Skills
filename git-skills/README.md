@@ -16,6 +16,14 @@ Welcome to the **Git Assistant Skills** documentation. This module contains the 
 
 ---
 
+## 🗂️ Skills in this Directory
+
+| Skill Directory | Slash Command | Primary Purpose | Deliverables |
+|---|---|---|---|
+| [**`git-assistant/`**](./git-assistant/README.md) | `/git-assistant` | Safety-first version control: atomic commits, safe rebase, 3-way conflict resolution, PR briefings. | Git commits, PR briefings, conflict resolution |
+
+---
+
 ## 🌳 Branching & Shipping Workflow
 
 ```mermaid

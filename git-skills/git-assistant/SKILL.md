@@ -16,14 +16,14 @@ flowchart LR
     GA(["🌿 /git-assistant"])
     
     EM(["🚀 /engineer-mode"])
-    AE(["📱 /android-expert"])
-    RE(["⚛️ /react-ts-expert"])
+    AA(["📱 Modular Android Suite"])
+    RA(["⚛️ Modular React TS Suite"])
     ED(["🔍 /error-detective"])
     ADR(["📜 /adr-analyze"])
 
     EM -->|Shipping Request| GA
-    AE -->|Staging Android Feature| GA
-    RE -->|Staging Web Feature| GA
+    AA -->|Staging Android Feature| GA
+    RA -->|Staging Web Feature| GA
     ED -->|Staging Bug Fix & Post-Mortem| GA
     ADR -->|Staging ADR Records| GA
 ```
@@ -32,9 +32,25 @@ flowchart LR
 
 ## 🛡️ 1. Core Git Safety Principles
 
-1. **Never Force Push Blindly**: Prohibit raw `git push --force`. Always use `git push --force-with-lease` only when explicitly rebasing personal feature branches. Never force-push to `main` or `develop`.
-2. **Never Blindly `git add .`**: Always inspect `git status` and stage related files intentionally (`git add <file1> <file2>`) to prevent committing temporary build artifacts, credentials, or `.DS_Store` files.
-3. **Safety Backup Tags Before Destructive Operations**: Prior to running rebases or complex merges, create a temporary reference tag (`git tag backup/pre-rebase-$(date +%s)`).
+1. **Mandatory User Confirmation Before Push / Merge (Zero Auto-Push Policy)**:
+   - **NEVER AUTO-PUSH**: The agent must **NEVER** automatically execute `git push`, `git merge`, or open/merge pull requests without explicitly presenting the action and proposed changes to the user and asking for confirmation first.
+   - Always prompt the user with interactive options before running any push or merge command:
+     ```markdown
+     ### 🌿 Git Assistant: Confirmation Required
+
+     The following changes are staged/committed on branch `<branch>`:
+     - **Latest Commit**: `<hash>` `<commit message>`
+     - **Remote Target**: `origin/<branch>`
+
+     **How would you like to proceed?**
+     - [A] **Push to Remote** (`git push origin <branch>`)
+     - [B] **Push and Create Pull Request / Merge**
+     - [C] **Keep Changes Local Only** (Do not push)
+     ```
+   - Execution of any push or merge operation **MUST pause and await the user's explicit approval**. If the user selects [C] or declines, keep all commits local only.
+2. **Never Force Push Blindly**: Prohibit raw `git push --force`. Always use `git push --force-with-lease` only when explicitly rebasing personal feature branches. Never force-push to `main` or `develop`.
+3. **Never Blindly `git add .`**: Always inspect `git status` and stage related files intentionally (`git add <file1> <file2>`) to prevent committing temporary build artifacts, credentials, or `.DS_Store` files.
+4. **Safety Backup Tags Before Destructive Operations**: Prior to running rebases or complex merges, create a temporary reference tag (`git tag backup/pre-rebase-$(date +%s)`).
 
 ---
 

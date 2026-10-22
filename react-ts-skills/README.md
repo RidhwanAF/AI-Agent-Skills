@@ -20,10 +20,10 @@ Welcome to the **React + TypeScript Web Skills Suite**. Just like our Android su
 
 | Skill Directory | Slash Command | Primary Purpose | Deliverables |
 |---|---|---|---|
-| **`react-ts-architecture/`** | `/react-ts-architecture` | Enforces Frontend Clean Architecture, pure domain models & Zod schemas (zero DOM code), strict type discipline (zero any, discriminated unions, `satisfies`). | Domain types, validators, typed API clients |
-| **`react-ui-components/`** | `/react-ui-components` | Accessible modular UI components. Enforces multi-file separation (never 1 giant file), strict prop ordering (data top, className bottom), Tailwind CSS, WCAG 2.2 AA. | Modular component, container, and type files |
-| **`react-state-management/`** | `/react-state-management` | Governs server and client state synchronization. TanStack Query for server caching/optimistic mutations, Zustand for atomic client state slices. | Custom query hooks, mutation handlers, stores |
-| **`react-testing/`** | `/react-testing` | Directs automated user-centric testing with Vitest, React Testing Library, and Mock Service Worker (MSW). | Unit, component, and integration test suites |
+| [**`react-ts-architecture/`**](./react-ts-architecture/README.md) | `/react-ts-architecture` | Enforces Frontend Clean Architecture, pure domain models & Zod schemas (zero DOM code), strict type discipline (zero any, discriminated unions, `satisfies`). | Domain types, validators, typed API clients |
+| [**`react-ui-components/`**](./react-ui-components/README.md) | `/react-ui-components` | Accessible modular UI components. Enforces multi-file separation (never 1 giant file), strict prop ordering (data top, className bottom), Tailwind CSS, WCAG 2.2 AA. | Modular component, container, and type files |
+| [**`react-state-management/`**](./react-state-management/README.md) | `/react-state-management` | Governs server and client state synchronization. TanStack Query for server caching/optimistic mutations, Zustand for atomic client state slices. | Custom query hooks, mutation handlers, stores |
+| [**`react-testing/`**](./react-testing/README.md) | `/react-testing` | Directs automated user-centric testing with Vitest, React Testing Library, and Mock Service Worker (MSW). | Unit, component, and integration test suites |
 
 ---
 
