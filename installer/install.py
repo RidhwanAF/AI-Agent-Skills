@@ -440,7 +440,7 @@ def print_summary(selected_agent_keys):
     print(f"  • {Style.CYAN}/react-state-management{Style.RESET} ➔ TanStack Query (server state), Zustand (client state)")
     print(f"  • {Style.CYAN}/react-testing{Style.RESET}          ➔ Vitest, React Testing Library, MSW network mocking")
     print(f"  • {Style.CYAN}/error-detective{Style.RESET}        ➔ Interactive triage, root cause, /docs/error-fix/ report")
-    print(f"  • {Style.CYAN}/adr-analyze{Style.RESET}            ➔ Architecture Decision Records grounded in official docs")
+    print(f"  • {Style.CYAN}/adr-analyze{Style.RESET}            ➔ Architecture Decision Records with executive summary & Mermaid pie score")
     print(f"  • {Style.CYAN}/app-design{Style.RESET}             ➔ Visual UML class/sequence/state models in English")
     print(f"  • {Style.CYAN}/changelog-recorder{Style.RESET}     ➔ Timestamped logs: /docs/changelogs/YYYY-MM-DD_HH-mm-ss_*.md")
     print(f"  • {Style.CYAN}/git-assistant{Style.RESET}           ➔ Safety-first Git operations, conventional commits, PRs\n")

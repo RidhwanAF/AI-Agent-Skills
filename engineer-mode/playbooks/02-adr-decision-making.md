@@ -37,9 +37,10 @@ flowchart TD
   - React/Web: `react.dev`, `typescriptlang.org`, `w3.org`
   - No unsupported hearsay or deprecated paradigms.
 
-### Step 3: Format in MADR
+### Step 3: Format in MADR with Executive Summary & Visual Scoring
 - Create `/docs/adr/ADR-XXXX-<title-in-kebab-case>.md`.
-- Fill required sections: Status, Context, Decision Drivers, Considered Options, Pros & Cons, Decision Outcome, Official Citations, Consequences.
+- Place an **Executive Summary** and a visual **Mermaid Pie Chart Score** paired with a quantitative decision matrix immediately at the top before the detailed explanations.
+- Fill all in-depth technical sections: Context, Decision Drivers, Considered Options, Pros & Cons, Decision Outcome, Official Citations, Architectural Blueprint, Consequences.
 
 ### Step 4: Index & Cross-Link
 - Append new entry into `/docs/adr/README.md` with status badge and decision summary.
