@@ -1,5 +1,5 @@
 # ==============================================================================
-# AI-Engineer-Skills One-Click Windows PowerShell Launcher
+# RAF - Agent Skills One-Click Windows PowerShell Launcher
 # Checks for Python 3, installs via winget if missing,
 # and routes to the installer in installer\install.py
 # ==============================================================================
@@ -19,7 +19,7 @@ $ErrorActionPreference = "Stop"
 Set-Location -Path $PSScriptRoot
 
 Write-Host "========================================================================" -ForegroundColor Cyan
-Write-Host "   AI-Engineer-Skills One-Click PowerShell Installer" -ForegroundColor Cyan
+Write-Host "   RAF - Agent Skills One-Click PowerShell Installer" -ForegroundColor Cyan
 Write-Host "========================================================================" -ForegroundColor Cyan
 
 # Check for Python

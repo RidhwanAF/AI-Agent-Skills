@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# AI-Engineer-Skills One-Click Terminal Launcher (Linux / macOS / WSL)
+# RAF - Agent Skills One-Click Terminal Launcher (Linux / macOS / WSL)
 # Adaptively locates a verified Python 3 (3.8+) executable across standard paths
 # and version managers, bypassing broken environment shims, and launches installer.
 # ==============================================================================

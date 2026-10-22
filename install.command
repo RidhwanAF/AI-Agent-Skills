@@ -10,7 +10,7 @@ set -e
 cd "$(dirname "$0")"
 
 echo "========================================================================"
-echo "   AI-Engineer-Skills One-Click Installer"
+echo "   RAF - Agent Skills One-Click Installer"
 echo "========================================================================"
 
 # Dynamically locate a verified, working Python 3.8+ executable for ANY user/system

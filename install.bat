@@ -1,6 +1,6 @@
 @echo off
 REM ==============================================================================
-REM AI-Engineer-Skills One-Click Windows Launcher (Command Prompt / File Explorer)
+REM RAF - Agent Skills One-Click Windows Launcher (Command Prompt / File Explorer)
 REM Checks for Python 3, installs via winget if missing,
 REM and routes to the installer in installer\install.py
 REM ==============================================================================
@@ -10,7 +10,7 @@ setlocal enabledelayedexpansion
 cd /d "%~dp0"
 
 echo ========================================================================
-echo    AI-Engineer-Skills One-Click Windows Installer
+echo    RAF - Agent Skills One-Click Windows Installer
 echo ========================================================================
 
 REM Check if python is available

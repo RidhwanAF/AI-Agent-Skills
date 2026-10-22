@@ -29,16 +29,15 @@ class Style:
 
 def print_banner():
     art = r"""========================================================================
-   ___   ____       ____             _                      ____   _     _ _ _      
-  / _ \ |___ \     |  _ \           (_)                    / ___| | |   (_) | |___  
- / /_\ \  __) |____| |_) | ___  __ _ _ _ __   ___  ___ _ __\___ \ | |/ / | | / __| 
- |  _  | / __/_____|  _ < / _ \/ _` | | '_ \ / _ \/ _ \ '__|___) ||   <  | | | \__ \ 
- |_| |_||_____|    |_| \_\  __/ (_| | | | | |  __/  __/ |  |____/ |_|\_\_|_|_|___/ 
-                          \___|\__, |_|_| |_|\___|\___|_|                       
-                               |___/                                            
+  ____      _     _____            _                    _     ____  _     _ _ _      
+ |  _ \    / \   |  ___|          / \   __ _  ___ _ __ | |_  / ___|| |__ (_) | |___  
+ | |_) |  / _ \  | |_    _____   / _ \ / _` |/ _ \ '_ \| __| \___ \| '_ \| | | / __| 
+ |  _ <  / ___ \ |  _|  |_____| / ___ \ (_| |  __/ | | | |_   ___) | | | | | | \__ \ 
+ |_| \_\/_/   \_\|_|           /_/   \_\__, |\___|_| |_|\__| |____/|_| |_|_|_|_|___/ 
+                                       |___/                                        
 ========================================================================"""
     print(f"{Style.CYAN}{Style.BOLD}{art}{Style.RESET}")
-    print(f"{Style.BOLD}   Modern AI Engineer Skills Suite • Connected Skills • Zero Code Slop{Style.RESET}\n")
+    print(f"{Style.BOLD}   RAF - Agent Skills • Connected Skills • Zero Code Slop{Style.RESET}\n")
 
 # In installer/ subfolder, REPO_ROOT is the parent folder
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -321,7 +320,7 @@ def remove_managed_skills(target_dir: Path):
     return removed
 
 def install_skills(selected_agent_keys, dry_run=False):
-    print(f"\n{Style.BOLD}🚀 Installing Unified AI-Engineer-Skills Suite...{Style.RESET}\n")
+    print(f"\n{Style.BOLD}🚀 Installing Unified RAF - Agent Skills Suite...{Style.RESET}\n")
     
     selected_agent_ids = [SUPPORTED_AGENTS[k]["id"] for k in selected_agent_keys]
     
@@ -414,7 +413,7 @@ def print_summary(selected_agent_keys):
     print(f"  Type {Style.BOLD}{Style.CYAN}/engineer-mode{Style.RESET} to begin your adaptive engineering workflow!\n")
 
 def main():
-    parser = argparse.ArgumentParser(description="AI-Engineer-Skills Universal Installer")
+    parser = argparse.ArgumentParser(description="RAF - Agent Skills Universal Installer")
     parser.add_argument("--all", "-a", action="store_true", help="Install to all supported AI agents")
     parser.add_argument("--agents", type=str, help="Comma-separated agent keys to install (e.g. '1,3')")
     parser.add_argument("--auto-install-android-cli", action="store_true", help="Automatically install Google Android CLI if missing")
