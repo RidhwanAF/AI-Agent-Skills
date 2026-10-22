@@ -20,6 +20,33 @@ Every skill module has its own comprehensive documentation, workflow diagrams, a
 
 ---
 
+## ⚡ Quick One-Click Installation
+
+The root repository contains only clean, native **one-click launchers** that forward to the dedicated `installer/` subfolder:
+
+```
+AI-Engineer-Skills/
+├── install.bat         # 🪟 Windows File Explorer / CMD (auto-winget Python)
+├── install.ps1         # 🪟 Windows PowerShell Launcher
+├── install.command     # 🍏 macOS Finder Double-Click Launcher (auto-brew Python)
+├── install.sh          # 🐧 Linux / macOS / WSL Terminal Launcher
+└── installer/
+    └── install.py      # 🐍 Universal Python 3 Installer & Tool Checker
+```
+
+### 1. Windows (Double-Click or Command Prompt)
+Double-click **`install.bat`** in File Explorer (or run `install.bat` in CMD / `.\install.ps1` in PowerShell).
+
+### 2. macOS (Double-Click in Finder)
+Double-click **`install.command`** in macOS Finder.
+
+### 3. Linux / macOS Terminal
+```bash
+./install.sh
+```
+
+---
+
 ## 🕸️ The Connected Skills Mesh
 
 In traditional setups, AI skills run as disconnected silos. In **AI-Engineer-Skills**, all 15 skills know about and collaborate with the entire team:
@@ -133,49 +160,6 @@ When you begin any non-trivial task, invoke `/engineer-mode`. It functions like 
 
 ### 🌿 4. Git Assistant & Version Control
 - **`/git-assistant`**: Safety-first Git operations. Atomic staging, conventional commits (`feat`, `fix`, `refactor`, `perf`, `docs`, `test`, `chore`), safe pulls with rebase, 3-way conflict resolution without data loss, pre-rebase safety tags, and briefing-style PR descriptions.
-
----
-
-## ⚡ Installation & Synchronization (Windows, macOS & Linux)
-
-We provide an interactive **cross-platform Python installation script** along with native double-clickable launchers:
-
-```
-AI-Engineer-Skills/
-├── install.py          # Universal Python installer (Windows, macOS, Linux)
-├── install.bat         # Windows Command Prompt / File Explorer Launcher
-├── install.ps1         # Windows PowerShell Launcher
-├── install.command     # macOS Finder Double-Clickable Launcher
-└── install.sh          # Linux / macOS / WSL Terminal Launcher
-```
-
-### Option A: Windows (Double-Click or Command Prompt)
-1. Double-click **`install.bat`** in Windows File Explorer (or run `install.bat` in CMD / `.\install.ps1` in PowerShell).
-2. The script checks for Python 3 (installs it automatically via `winget` if missing) and launches the installer.
-3. Checks for Google's official `android-cli` and prompts for target AI agents!
-
-### Option B: macOS (Double-Click in Finder)
-1. Double-click **`install.command`** in macOS Finder.
-2. The script checks for Python 3 (installs it via Homebrew if missing) and launches the installer.
-
-### Option C: Linux / macOS Terminal
-```bash
-cd AI-Engineer-Skills
-./install.sh
-```
-*Or execute directly with Python:*
-```bash
-python3 install.py
-```
-
-### Option D: Non-Interactive / Scripted Install
-```bash
-# Install to all agents and auto-setup tools
-python3 install.py --all --auto-install-android-cli
-
-# Install only to Gemini and Claude
-python3 install.py --agents 1,2 --skip-android-cli
-```
 
 ---
 

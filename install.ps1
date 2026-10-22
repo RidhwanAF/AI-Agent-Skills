@@ -1,7 +1,7 @@
 # ==============================================================================
-# AI-Engineer-Skills Windows PowerShell Launcher
-# Checks for Python 3, attempts automated installation via winget if missing,
-# and executes the universal installer.
+# AI-Engineer-Skills One-Click Windows PowerShell Launcher
+# Checks for Python 3, installs via winget if missing,
+# and routes to the installer in installer\install.py
 # ==============================================================================
 
 [CmdletBinding()]
@@ -19,7 +19,7 @@ $ErrorActionPreference = "Stop"
 Set-Location -Path $PSScriptRoot
 
 Write-Host "========================================================================" -ForegroundColor Cyan
-Write-Host "   AI-Engineer-Skills PowerShell Installer Launcher" -ForegroundColor Cyan
+Write-Host "   AI-Engineer-Skills One-Click PowerShell Installer" -ForegroundColor Cyan
 Write-Host "========================================================================" -ForegroundColor Cyan
 
 # Check for Python
@@ -50,7 +50,7 @@ if (-not $pythonCmd) {
     }
 }
 
-# Forward parameters to install.py
+# Forward parameters to installer/install.py
 $pyArgs = @()
 if ($All) { $pyArgs += "--all" }
 if ($Agents) { $pyArgs += "--agents"; $pyArgs += $Agents }
@@ -59,7 +59,7 @@ if ($SkipAndroidCli) { $pyArgs += "--skip-android-cli" }
 if ($DryRun) { $pyArgs += "--dry-run" }
 if ($NonInteractive) { $pyArgs += "--non-interactive" }
 
-Write-Host "[*] Executing install.py..." -ForegroundColor Cyan
-& python install.py @pyArgs
+Write-Host "[*] Executing installer\install.py..." -ForegroundColor Cyan
+& python installer\install.py @pyArgs
 
-Write-Host "`nInstallation script completed." -ForegroundColor Green
+Write-Host "`nInstallation completed." -ForegroundColor Green

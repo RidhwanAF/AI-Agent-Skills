@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# AI-Engineer-Skills Double-Clickable Launcher (macOS Finder)
-# Automatically checks for Python 3, installs it if missing, and runs install.py
+# AI-Engineer-Skills One-Click macOS Launcher (Finder Double-Clickable)
+# Automatically checks for Python 3, installs via brew if missing,
+# and routes to the installer in installer/install.py
 # ==============================================================================
 
 set -e
 
-# Change directory to this script's directory
 cd "$(dirname "$0")"
 
 echo "========================================================================"
-echo "   AI-Engineer-Skills Installer Launcher"
+echo "   AI-Engineer-Skills One-Click Installer"
 echo "========================================================================"
 
 # Check if python3 is installed
@@ -35,8 +35,8 @@ if ! command -v python3 >/dev/null 2>&1; then
     fi
 fi
 
-# Run the Python installer
-python3 install.py "$@"
+# Route directly to the installer subfolder
+python3 installer/install.py "$@"
 
 echo ""
 read -p "Installation finished. Press [Enter] to close this window..."

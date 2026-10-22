@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# AI-Engineer-Skills Terminal Installer (Linux / macOS / WSL)
-# Automatically checks for Python 3, installs it if missing, and runs install.py
+# AI-Engineer-Skills One-Click Terminal Launcher (Linux / macOS / WSL)
+# Automatically checks for Python 3, installs if missing,
+# and routes to the installer in installer/install.py
 # ==============================================================================
 
 set -e
@@ -35,5 +36,5 @@ if ! command -v python3 >/dev/null 2>&1; then
     fi
 fi
 
-# Execute Python installer
-exec python3 install.py "$@"
+# Route directly to the installer subfolder
+exec python3 installer/install.py "$@"

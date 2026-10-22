@@ -42,7 +42,8 @@ def print_banner():
 """
     print(banner)
 
-REPO_ROOT = Path(__file__).resolve().parent
+# In installer/ subfolder, REPO_ROOT is the parent folder
+REPO_ROOT = Path(__file__).resolve().parent.parent
 
 # Mapping of all 15 modular managed skills to source directories
 MANAGED_SKILLS = {
