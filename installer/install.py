@@ -28,8 +28,7 @@ class Style:
     MAGENTA = "\033[35m"
 
 def print_banner():
-    banner = f"""{Style.CYAN}{Style.BOLD}
-========================================================================
+    art = r"""========================================================================
    ___   ____       ____             _                      ____   _     _ _ _      
   / _ \ |___ \     |  _ \           (_)                    / ___| | |   (_) | |___  
  / /_\ \  __) |____| |_) | ___  __ _ _ _ __   ___  ___ _ __\___ \ | |/ / | | / __| 
@@ -37,10 +36,9 @@ def print_banner():
  |_| |_||_____|    |_| \_\  __/ (_| | | | | |  __/  __/ |  |____/ |_|\_\_|_|_|___/ 
                           \___|\__, |_|_| |_|\___|\___|_|                       
                                |___/                                            
-========================================================================{Style.RESET}
-{Style.BOLD}   Modern AI Engineer Skills Suite • Connected Skills • Zero Code Slop{Style.RESET}
-"""
-    print(banner)
+========================================================================"""
+    print(f"{Style.CYAN}{Style.BOLD}{art}{Style.RESET}")
+    print(f"{Style.BOLD}   Modern AI Engineer Skills Suite • Connected Skills • Zero Code Slop{Style.RESET}\n")
 
 # In installer/ subfolder, REPO_ROOT is the parent folder
 REPO_ROOT = Path(__file__).resolve().parent.parent
