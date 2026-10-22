@@ -13,7 +13,7 @@ Every skill module has its own comprehensive documentation, workflow diagrams, a
 | Hub Directory | Core Domain | Skills Included | Direct Documentation Link |
 |---|---|---|---|
 | 🚀 **`engineer-mode/`** | Master Entry Point & Playbooks | `/engineer-mode` | [Engineer Mode Guide](engineer-mode/README.md) |
-| 📱 **`android-skills/`** | Modular Android Suite & Google CLI | `/android-architecture`, `/compose-ui`, `/compose-maplibre`, `/android-testing`, `/gradle-build-hygiene`, `/android-cli-router` | [Android Skills Guide](android-skills/README.md) |
+| 📱 **`android-skills/`** | Modular Android Suite & Google CLI | `/android-architecture`, `/compose-ui`, `/compose-google-maps`, `/compose-maplibre`, `/koin-di`, `/android-testing`, `/gradle-build-hygiene`, `/android-cli-router` | [Android Skills Guide](android-skills/README.md) |
 | ⚛️ **`react-ts-skills/`** | Modular React TS Suite | `/react-ts-architecture`, `/react-ui-components`, `/react-state-management`, `/react-testing` | [React TS Skills Guide](react-ts-skills/README.md) |
 | 🔍 **`diagnostic-skills/`** | Diagnostics, ADR, Design & Logs | `/error-detective`, `/adr-analyze`, `/app-design`, `/changelog-recorder` | [Diagnostic Skills Guide](diagnostic-skills/README.md) |
 | 🌿 **`git-skills/`** | Version Control & PR Shipping | `/git-assistant` | [Git Skills Guide](git-skills/README.md) |
@@ -49,7 +49,7 @@ Double-click **`install.command`** in macOS Finder.
 
 ## 🕸️ The Connected Skills Mesh
 
-In traditional setups, AI skills run as disconnected silos. In **AI-Engineer-Skills**, all 16 skills know about and collaborate with the entire team:
+In traditional setups, AI skills run as disconnected silos. In **AI-Engineer-Skills**, all 18 skills know about and collaborate with the entire team:
 
 ```mermaid
 flowchart TD
@@ -64,7 +64,9 @@ flowchart TD
     subgraph AndroidSuite ["📱 Modular Android Suite"]
         AA(["🏛️ /android-architecture<br/>(Clean Arch, KMP Pure Domain)"])
         CUI(["🎨 /compose-ui<br/>(Component Files, Modifier Rule)"])
-        ML(["🗺️ /compose-maplibre<br/>(MapLibre Native, Lifecycle)"])
+        CGM(["🗺️ /compose-google-maps<br/>(Official Google Maps SDK)"])
+        ML(["🗺️ /compose-maplibre<br/>(MapLibre Native, Open Tiles)"])
+        KDI(["💉 /koin-di<br/>(Pragmatic KMP & Android DI)"])
         AT(["🧪 /android-testing<br/>(Turbine, MockK, ComposeRule)"])
         GBH(["🐘 /gradle-build-hygiene<br/>(libs.versions.toml, Official AGP)"])
         ACR(["📱 /android-cli-router<br/>(Routes to Official CLI)"])
@@ -91,6 +93,8 @@ flowchart TD
     EM -->|Android Architecture| AA
     EM -->|Compose UI Components| CUI
     EM -->|Android CLI Operations| ACR
+    EM -->|Google Maps Platform| CGM
+    EM -->|Koin Dependency Injection| KDI
     EM -->|Web Architecture| RTA
     EM -->|Web UI Components| RUI
     EM -->|Investigate Bug| ED
@@ -104,7 +108,10 @@ flowchart TD
     AA -->|StateFlow to| CUI
     AA -->|Domain Entities to| AT
     CUI -->|Tested via| AT
+    CUI -->|Maps to| CGM
     CUI -->|Maps to| ML
+    AA -->|Domain Contracts to| KDI
+    KDI -->|Injects into| CUI
     GBH -->|Grounded Deps to| AA
     ACR -->|Dispatches to| GoogleCLI
 
@@ -143,7 +150,9 @@ When you begin any non-trivial task, invoke `/engineer-mode`. It functions like 
 ### 📱 1. Modular Android Engineering
 - **`/android-architecture`**: Strict Clean Architecture. Domain layer contains **zero `android.*` framework code** and is shared/ready for Kotlin Multiplatform (`commonMain`). Room for caching, Retrofit for network, Dagger Hilt DI, single-expression extension mappers, and mandatory KDocs.
 - **`/compose-ui`**: Modern Jetpack Compose UI. Enforces **modular component file separation** (never 1 giant file; separate screen, content, cards, state, and preview). Enforces the **Modifier Rule**: in declaration, `modifier: Modifier = Modifier` is the top optional parameter; at call site consumption, it is passed at the very bottom. State stability (`@Immutable`/`@Stable`, immutable collections), edge-to-edge system insets, and purposeful tactile haptics.
+- **`/compose-google-maps`**: Official Google Maps Platform SDK in Jetpack Compose (`com.google.maps.android:maps-compose`). Declarative camera control with `rememberCameraPositionState`, performant marker clustering with `maps-compose-utils`, cloud/JSON styling, and lifecycle-safe location permissions grounded in official Google Maps Platform docs.
 - **`/compose-maplibre`**: MapLibre Native in Compose. Lifecycle-safe MapView handling, vector tile rendering, GeoJSON caching, Material 3 floating control overlays, and camera animations.
+- **`/koin-di`**: Pragmatic Dependency Injection for Android, Compose, and Kotlin Multiplatform using Koin. Enforces modern Constructor DSL (`singleOf`, `viewModelOf`), Compose screen injection (`koinViewModel()`), layer module decomposition, and static graph verification with `checkModules()` / `verify()`.
 - **`/android-testing`**: Automated test engineering. Turbine for Coroutines Flow testing, MockK and clean offline fakes for UseCase/ViewModel isolation, ComposeTestRule semantic UI tests, and zero flaky sleeps.
 - **`/gradle-build-hygiene`**: Centralized Version Catalog (`gradle/libs.versions.toml`). R8/ProGuard keep rules, compileSdk/targetSdk best practices, and **strict grounding in official Google AGP documentation without guesswork**.
 - **`/android-cli-router`**: Seamlessly dispatches high-level Android workflows to the official Google `android-cli` package and skill (`android doctor`, `android init`, `android run`, `android doc`), managing AVDs and project initializations without naming conflicts.

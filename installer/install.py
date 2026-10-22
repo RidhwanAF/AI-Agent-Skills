@@ -42,7 +42,7 @@ def print_banner():
 # In installer/ subfolder, REPO_ROOT is the parent folder
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
-# Mapping of all 16 modular managed skills to source directories
+# Mapping of all 18 modular managed skills to source directories
 MANAGED_SKILLS = {
     # Core Orchestration
     "engineer-mode": REPO_ROOT / "engineer-mode",
@@ -50,9 +50,11 @@ MANAGED_SKILLS = {
     "android-architecture": REPO_ROOT / "android-skills" / "android-architecture",
     "compose-ui": REPO_ROOT / "android-skills" / "compose-ui",
     "compose-maplibre": REPO_ROOT / "android-skills" / "compose-maplibre",
+    "compose-google-maps": REPO_ROOT / "android-skills" / "compose-google-maps",
     "android-testing": REPO_ROOT / "android-skills" / "android-testing",
     "gradle-build-hygiene": REPO_ROOT / "android-skills" / "gradle-build-hygiene",
     "android-cli-router": REPO_ROOT / "android-skills" / "android-cli-router",
+    "koin-di": REPO_ROOT / "android-skills" / "koin-di",
     # Modular React TS Suite
     "react-ts-architecture": REPO_ROOT / "react-ts-skills" / "react-ts-architecture",
     "react-ui-components": REPO_ROOT / "react-ts-skills" / "react-ui-components",
@@ -432,9 +434,11 @@ def print_summary(selected_agent_keys):
     print(f"  • {Style.CYAN}/android-architecture{Style.RESET}   ➔ Clean Architecture, pure KMP-ready domain, Room/Retrofit")
     print(f"  • {Style.CYAN}/compose-ui{Style.RESET}              ➔ Modular Compose UI (never 1 file), modifier rule, haptics")
     print(f"  • {Style.CYAN}/compose-maplibre{Style.RESET}        ➔ MapLibre in Compose, lifecycle safety, GeoJSON caching")
+    print(f"  • {Style.CYAN}/compose-google-maps{Style.RESET}    ➔ Official Google Maps in Compose, clustering, camera animations")
     print(f"  • {Style.CYAN}/android-testing{Style.RESET}         ➔ Turbine Flow tests, MockK fakes, ComposeTestRule")
     print(f"  • {Style.CYAN}/gradle-build-hygiene{Style.RESET}   ➔ libs.versions.toml, R8 rules, official docs grounding")
     print(f"  • {Style.CYAN}/android-cli-router{Style.RESET}     ➔ Dispatches actions to official Google android-cli")
+    print(f"  • {Style.CYAN}/koin-di{Style.RESET}                 ➔ Pragmatic Koin DI for Android & KMP, Constructor DSL, verify()")
     print(f"  • {Style.CYAN}/react-ts-architecture{Style.RESET}  ➔ Frontend Clean Architecture, pure domain, Zod, strict TS")
     print(f"  • {Style.CYAN}/react-ui-components{Style.RESET}   ➔ Accessible modular UI (never 1 file), prop order, Tailwind")
     print(f"  • {Style.CYAN}/react-state-management{Style.RESET} ➔ TanStack Query (server state), Zustand (client state)")
