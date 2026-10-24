@@ -117,3 +117,39 @@ class UserRepositoryImpl @Inject constructor(
     }
 }
 ```
+
+---
+
+## Example 3: Presentation Layer (`@HiltViewModel` & Non-Deprecated Compose Import)
+
+```kotlin
+package com.example.presentation.user
+
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel // ✅ MANDATORY NON-DEPRECATED IMPORT
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.domain.usecase.GetUserUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+
+// ❌ FORBIDDEN DEPRECATED IMPORT:
+// import androidx.hilt.navigation.compose.hiltViewModel
+
+@HiltViewModel
+class UserViewModel @Inject constructor(
+    private val getUserUseCase: GetUserUseCase,
+) : ViewModel() {
+    // Expose StateFlow<UserUiState>
+}
+
+@Composable
+fun UserScreen(
+    modifier: Modifier = Modifier,              // ✅ Declaration: VERY TOP (#1 parameter)
+    viewModel: UserViewModel = hiltViewModel(), // ✅ Uses androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+) {
+    // Observe state via collectAsStateWithLifecycle()
+}
+```

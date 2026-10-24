@@ -24,19 +24,19 @@ import org.maplibre.android.maps.Style
 
 @Composable
 fun InteractiveMapScreen(
+    modifier: Modifier = Modifier, // ✅ Declaration: VERY TOP parameter
     styleUrl: String,
     onRecenterClick: () -> Unit,
-    modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier.fillMaxSize()) {
         MapLibreSurface(
             styleUrl = styleUrl,
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize(), // ✅ Call site: VERY BOTTOM argument
         )
 
         FloatingActionButton(
             onClick = onRecenterClick,
-            modifier = Modifier
+            modifier = Modifier // ✅ Call site: VERY BOTTOM argument
                 .align(Alignment.BottomEnd)
                 .padding(16.dp),
         ) {
@@ -47,8 +47,8 @@ fun InteractiveMapScreen(
 
 @Composable
 fun MapLibreSurface(
+    modifier: Modifier = Modifier, // ✅ Declaration: VERY TOP parameter
     styleUrl: String,
-    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current

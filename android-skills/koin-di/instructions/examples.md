@@ -86,15 +86,15 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ProfileScreen(
+    modifier: Modifier = Modifier, // ✅ Declaration: VERY TOP parameter
     viewModel: ProfileViewModel = koinViewModel(),
-    modifier: Modifier = Modifier,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     ProfileContent(
         state = uiState,
         onRefresh = viewModel::onRefresh,
-        modifier = modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize(), // ✅ Call site: VERY BOTTOM argument
     )
 }
 ```

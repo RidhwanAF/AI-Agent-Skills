@@ -63,8 +63,8 @@ All implementations must align with official Google Maps Platform documentation:
 - When displaying more than 20 markers, **always use `Clustering`** to prevent rendering lag:
   ```kotlin
   GoogleMap(
-      modifier = modifier,
       cameraPositionState = cameraPositionState,
+      modifier = modifier, // ✅ Call site: modifier at the bottom of arguments
   ) {
       Clustering(
           items = poiItems,

@@ -1,11 +1,11 @@
 ---
 name: compose_ui
-description: "Master modern Jetpack Compose UI engineering. Enforces modular component file separation (never 1 giant file), strict modifier parameter positioning (top of optional params, bottom at call site), state stability (@Immutable/@Stable), edge-to-edge insets, purposeful haptics, and KDocs."
+description: "Master modern Jetpack Compose UI engineering. Enforces modular component file separation (never 1 giant file), strict modifier parameter positioning (very first top parameter in @Composable fun declarations, very bottom at call sites), state stability (@Immutable/@Stable), edge-to-edge insets, purposeful haptics, and KDocs."
 ---
 
 # 🎨 Jetpack Compose UI Engineering (/compose-ui)
 
-The **Compose UI Skill** establishes production standards for declarative Android UI. It enforces modular component decomposition into dedicated files, strict modifier ordering, Compose compiler state stability, edge-to-edge window insets, purposeful tactile feedback, and zero hardcoded strings.
+The **Compose UI Skill** establishes production standards for declarative Android UI. It enforces modular component decomposition into dedicated files, strict modifier ordering (top in declarations, bottom at call sites), Compose compiler state stability, edge-to-edge window insets, purposeful tactile feedback, and zero hardcoded strings.
 
 ---
 
@@ -48,55 +48,103 @@ feature/cart/presentation/
 
 ## 📐 2. The Modifier Parameter & Consumption Rule (Mandatory)
 
-To maintain standard API consistency across the Android ecosystem:
+To maintain strict API consistency across the Android Jetpack Compose ecosystem, you MUST distinguish between **declaring** a `@Composable` function and **consuming (calling)** a `@Composable` function:
 
-### Rule A: In the Composable Declaration (Modifier on Top of Optional Params)
-The `modifier: Modifier = Modifier` parameter MUST be positioned as the **very first optional parameter** (immediately following required data and callback parameters):
+| Context | Where `modifier` Goes | Rule Summary |
+|:---|:---|:---|
+| **1. Declaring `@Composable fun`** | **VERY TOP (`#1 First Parameter`)** | Always place `modifier: Modifier = Modifier` at the **very first top parameter** of the function signature—**NEVER** at the bottom of the parameter list! |
+| **2. Consuming / Calling a Composable** | **VERY BOTTOM (`Last Argument`)** | Always pass `modifier = Modifier...` at the **very bottom** of the call-site arguments (just before any trailing `{ ... }` content lambda). |
+
+### Rule A: In the Composable Function Declaration (`modifier` at the VERY TOP)
+When **declaring** any `@Composable fun` (whether a Screen container, Content layout, or custom child component), `modifier: Modifier = Modifier` MUST be placed at the **very top of the parameter list**—**NEVER** at the bottom of the function parameters!
 
 ```kotlin
+// ✅ CORRECT DECLARATION: modifier is placed at the VERY TOP (#1 parameter)
 /**
  * Renders an individual cart item with quantity adjustment controls.
  *
+ * @param modifier Applied to the outer card container. MUST be at the very top of parameters.
  * @param item The immutable cart item entity.
  * @param onQuantityChange Fired when the user increments or decrements quantity.
  * @param onDeleteClick Fired when the user removes the item.
- * @param modifier Applied to the outer card container. Must be first optional param.
  * @param isHighlighted Whether to render an accent border indicating pending checkout.
  * @param elevation Elevation level of the card container.
  */
 @Composable
 fun CartItemCard(
-    item: CartItemUiModel,                              // 1. Mandatory data parameters
-    onQuantityChange: (itemId: String, qty: Int) -> Unit, // 2. Mandatory callback parameters
+    modifier: Modifier = Modifier,                        // 1. VERY TOP PARAMETER (Mandatory!)
+    item: CartItemUiModel,                                // 2. Required data parameters
+    onQuantityChange: (itemId: String, qty: Int) -> Unit, // 3. Required callback parameters
     onDeleteClick: (itemId: String) -> Unit,
-    modifier: Modifier = Modifier,                      // 3. TOP of optional parameters
-    isHighlighted: Boolean = false,                     // 4. Subsequent optional configs
-    elevation: Dp = 2.dp,                               // 5. Subsequent optional styling
+    isHighlighted: Boolean = false,                       // 4. Subsequent optional configs
+    elevation: Dp = 2.dp,                                 // 5. Subsequent optional styling
 ) {
     Card(
-        modifier = modifier,
         elevation = CardDefaults.cardElevation(defaultElevation = elevation),
+        modifier = modifier, // Consuming Card -> modifier at the bottom of arguments
     ) {
         // Implementation
     }
 }
+
+// ❌ WRONG DECLARATION: NEVER place modifier at the bottom of a @Composable fun signature!
+@Composable
+fun CartItemCardWrong(
+    item: CartItemUiModel,
+    onQuantityChange: (itemId: String, qty: Int) -> Unit,
+    onDeleteClick: (itemId: String) -> Unit,
+    modifier: Modifier = Modifier, // ❌ VIOLATION! Never put modifier at the bottom of a declaration!
+)
 ```
 
-### Rule B: At the Call Site / Consumption (Modifier at the Bottom)
-When calling and consuming the Composable, pass the `modifier` chain at the **very bottom of the argument list** (or chain it at the end). This ensures business data and callbacks remain prominent while long layout chains do not obscure component arguments:
+### Rule B: At the Call Site / Consumption (`modifier` at the VERY BOTTOM)
+When **calling / consuming** any Composable (both built-in Material/Foundation composables like `Row`, `Column`, `Card`, `LazyColumn`, `GoogleMap` and your own custom Composables), pass the `modifier = Modifier...` argument at the **very bottom of the argument list**. This ensures business data and callbacks remain prominent at the top while long layout modifier chains sit cleanly at the bottom:
 
 ```kotlin
-// ✅ Call Site: Content arguments first, modifier chain at the VERY BOTTOM
+// ✅ CORRECT CALL SITE: Content & callbacks at the top, modifier chain at the VERY BOTTOM
 CartItemCard(
     item = cartItem,
     onQuantityChange = { id, qty -> viewModel.onEvent(CartEvent.UpdateQuantity(id, qty)) },
     onDeleteClick = { id -> viewModel.onEvent(CartEvent.RemoveItem(id)) },
     isHighlighted = cartItem.isPending,
-    modifier = Modifier
+    modifier = Modifier                                   // ✅ VERY BOTTOM of call-site arguments!
         .fillMaxWidth()
         .padding(horizontal = 16.dp, vertical = 8.dp)
-        .clickable { viewModel.onEvent(CartEvent.Select(cartItem.id)) }
+        .clickable { viewModel.onEvent(CartEvent.Select(cartItem.id)) },
 )
+
+// ❌ WRONG CALL SITE: Do not pass modifier at the top when consuming a Composable with other args
+CartItemCard(
+    modifier = Modifier.fillMaxWidth(),                   // ❌ VIOLATION! Move to the bottom of call site!
+    item = cartItem,
+    onQuantityChange = { _, _ -> },
+    onDeleteClick = {},
+)
+```
+
+### Rule C: Hilt ViewModel in Compose — Mandatory Non-Deprecated Import
+When injecting a Dagger Hilt `@HiltViewModel` inside a `@Composable` screen, AI models frequently hallucinate or use the **deprecated** `androidx.hilt.navigation.compose.hiltViewModel` import. You MUST strictly import `hiltViewModel` from `androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel` (introduced in `androidx.hilt:hilt-navigation-compose:1.3.0+` / `androidx.hilt:hilt-lifecycle-viewmodel-compose`):
+
+```kotlin
+// ✅ CORRECT IMPORT (Mandatory):
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+
+// ❌ DEPRECATED / FORBIDDEN IMPORT (NEVER USE THIS):
+// import androidx.hilt.navigation.compose.hiltViewModel
+
+@Composable
+fun CartScreen(
+    modifier: Modifier = Modifier,                  // 1. VERY TOP parameter in declaration!
+    viewModel: CartViewModel = hiltViewModel(),     // 2. Uses androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    CartContent(
+        state = uiState,
+        onEvent = viewModel::onEvent,
+        modifier = modifier,                        // ✅ VERY BOTTOM at call site!
+    )
+}
 ```
 
 ---

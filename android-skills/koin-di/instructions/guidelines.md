@@ -43,12 +43,12 @@ Standards, version catalog setup, and best practices for Koin in modern Android 
 
 4. **Jetpack Compose Consumption**:
    - Use `val viewModel: MyViewModel = koinViewModel()` in screen container composables.
-   - Pass the ViewModel instance as a default composable argument for effortless `@Preview` mocking:
+   - Always place `modifier: Modifier = Modifier` at the **very top** of the Composable parameter list, followed by `viewModel: CartViewModel = koinViewModel()` for effortless `@Preview` mocking:
      ```kotlin
      @Composable
      fun CartScreen(
+         modifier: Modifier = Modifier, // ✅ Declaration: VERY TOP parameter
          viewModel: CartViewModel = koinViewModel(),
-         modifier: Modifier = Modifier,
      )
      ```
 

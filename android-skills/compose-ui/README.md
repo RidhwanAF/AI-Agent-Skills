@@ -30,8 +30,8 @@ compose-ui/
 
 ## 📐 The Modifier Rule Summary
 
-- **In Declaration**: `modifier: Modifier = Modifier` must be the **top parameter among optional arguments**.
-- **At Call Site**: Pass business data and callbacks first, and chain the `modifier` at the **very bottom of arguments**.
+- **In Declaration (`@Composable fun`)**: `modifier: Modifier = Modifier` MUST be placed at the **very first top parameter (`#1`)** of the function signature — **never** at the bottom!
+- **At Call Site (Consuming a Composable)**: Pass business data and callbacks first, and place `modifier = Modifier...` at the **very bottom of the call arguments**.
 
 ---
 

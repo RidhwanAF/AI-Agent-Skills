@@ -56,17 +56,17 @@ feature/map/
 /**
  * Lifecycle-safe Composable wrapper around MapLibre MapView.
  *
+ * @param modifier Applied to the native AndroidView container (MUST be at the very top of parameters).
  * @param styleUrl Vector tile style JSON URL.
  * @param cameraPosition Target camera center and zoom level.
  * @param onMapClick Fired when user selects coordinates on the map.
- * @param modifier Applied to the native AndroidView container (Top of optional params).
  */
 @Composable
 fun MapLibreContainer(
+    modifier: Modifier = Modifier, // ✅ Declaration: VERY TOP parameter
     styleUrl: String,
     cameraPosition: CameraPositionState,
     onMapClick: (latitude: Double, longitude: Double) -> Unit,
-    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -103,10 +103,10 @@ fun MapLibreContainer(
 
     AndroidView(
         factory = { mapView },
-        modifier = modifier,
         update = {
             // Synchronize camera state updates safely
-        }
+        },
+        modifier = modifier, // ✅ Call site: VERY BOTTOM argument
     )
 }
 ```
