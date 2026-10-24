@@ -76,30 +76,37 @@ Each Compose screen must be decomposed into dedicated, testable files:
 - `CartUiState.kt`: Immutable state class with immutable collections.
 - `CartPreview.kt`: Light and dark mode previews.
 
-### 2. The Modifier Rule
-- **In Composable Declaration**: The `modifier: Modifier = Modifier` must be the **top parameter among optional arguments** (right after mandatory data and callbacks).
-- **At the Call Site (Consumption)**: Pass the `modifier` chain at the **very bottom of the call arguments** so data arguments stay visible:
+### 2. The Modifier Rule (Declaration Top vs. Call-Site Bottom)
+- **In Composable Function Declaration (`@Composable fun`)**: `modifier: Modifier = Modifier` MUST be placed at the **very first top parameter (`#1`)** of the function signature — **never** at the bottom of the parameters!
+- **At the Call Site (Consumption)**: Pass business data and callbacks first, and place the `modifier = Modifier...` chain at the **very bottom of the call arguments** so data arguments stay visible at the top:
 
 ```kotlin
-// Declaration: modifier is TOP of optional parameters
+// ✅ Declaration: modifier is at the VERY TOP (#1 parameter)
 @Composable
 fun CartItemCard(
+    modifier: Modifier = Modifier,      // 1. VERY TOP parameter in declaration!
     item: CartItemUiModel,
     onDeleteClick: (String) -> Unit,
-    modifier: Modifier = Modifier,      // TOP of optional params
     isHighlighted: Boolean = false,
 ) { ... }
 
-// Call site: modifier is passed at the VERY BOTTOM
+// ✅ Call site (Consumption): modifier is passed at the VERY BOTTOM
 CartItemCard(
     item = currentItem,
     onDeleteClick = { viewModel.onEvent(CartEvent.Delete(it)) },
     isHighlighted = true,
-    modifier = Modifier
+    modifier = Modifier                 // VERY BOTTOM of call-site arguments!
         .fillMaxWidth()
-        .padding(horizontal = 16.dp, vertical = 8.dp) // BOTTOM of arguments
+        .padding(horizontal = 16.dp, vertical = 8.dp),
 )
 ```
+
+### 3. Hilt ViewModel Non-Deprecated Compose Import
+- **ALWAYS import `hiltViewModel` from**:
+  ```kotlin
+  import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+  ```
+- **NEVER use the deprecated import**: `import androidx.hilt.navigation.compose.hiltViewModel`.
 
 ---
 

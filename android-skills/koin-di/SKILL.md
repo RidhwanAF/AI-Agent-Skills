@@ -55,18 +55,21 @@ All Koin implementations must adhere to the latest official standards:
 - **Use `factoryOf(::MyUseCase)`** for transient, stateless domain interactors.
 
 ### 2. Composable Consumption Rule
-- In Compose UI container screens, obtain ViewModels via default parameter assignment:
+- In Compose UI container screens, place `modifier: Modifier = Modifier` as the **very first top parameter**, followed by `viewModel: ProfileViewModel = koinViewModel()`:
   ```kotlin
   @Composable
   fun ProfileScreen(
+      modifier: Modifier = Modifier, // ✅ Declaration: VERY TOP parameter
       viewModel: ProfileViewModel = koinViewModel(),
-      modifier: Modifier = Modifier,
   ) {
       val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-      ProfileContent(state = uiState, modifier = modifier)
+      ProfileContent(
+          state = uiState,
+          modifier = modifier, // ✅ Call site: VERY BOTTOM argument
+      )
   }
   ```
-- **Never call `koinViewModel()` inside event lambdas or click listeners** (e.g. `onClick = { koinViewModel() }`). Always invoke directly in the Composable function body.
+- **Never call `koinViewModel()` inside event lambdas or click listeners** (e.g. `onClick = { koinViewModel() }`). Always invoke directly in the Composable function header or body.
 
 ### 3. Modular Module Partitioning
 Split Koin modules by layer and domain:

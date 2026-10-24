@@ -26,6 +26,9 @@
 1. Bind repository implementations using `@Binds` in abstract Hilt modules.
 2. Use `@Singleton` for repositories and Room database instances.
 3. Use `@ViewModelScoped` for presentation-specific state holders.
+4. **Hilt Compose ViewModel Import Rule**:
+   - Strictly use `import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel`.
+   - Never use the deprecated `import androidx.hilt.navigation.compose.hiltViewModel`.
 
 ## 4. KDocs Documentation Standard
 - Document every public interface, class, and method.

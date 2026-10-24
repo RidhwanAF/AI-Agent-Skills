@@ -33,7 +33,12 @@ flowchart TD
 - **Data**: Hide networking and database behind Repository interfaces. Use single-expression extension mappers (`fun UserDto.toDomain(): User = ...`).
 - **Presentation**: Single `ViewModel` per screen emitting immutable state via `collectAsStateWithLifecycle()`.
 
-### Step 2: Modern Compose & Tactile Feedback
+### Step 2: Modern Compose, Strict Modifier Order & Tactile Feedback
+- **Modifier Ordering Rule**:
+  - **In `@Composable fun` Declarations**: Always place `modifier: Modifier = Modifier` at the **very first top parameter (`#1`)** of the function signature — **never** at the bottom!
+  - **At Call Sites (Consuming a Composable)**: Always pass `modifier = Modifier...` at the **very bottom** of the call-site arguments.
+- **Hilt ViewModel Compose Import**:
+  - Always use `import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel` (never use the deprecated `import androidx.hilt.navigation.compose.hiltViewModel`).
 - Use Material 3 with edge-to-edge window insets (`Modifier.windowInsetsPadding(...)`).
 - Stable state parameters (`@Immutable`, `@Stable`, immutable collections).
 - Tactile feedback: `LocalHapticFeedback.current` with purposeful `HapticFeedbackType`.

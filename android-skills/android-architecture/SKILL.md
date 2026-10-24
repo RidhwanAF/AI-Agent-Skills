@@ -103,9 +103,16 @@ graph TD
   fun UserDto.toEntity(): UserEntity = UserEntity(id = id, name = name, email = email)
   ```
 
-### C. Dependency Injection (Dagger Hilt)
+### C. Dependency Injection (Dagger Hilt & Compose ViewModel Import)
 - Bind repository implementations to domain interfaces via `@Binds` in dedicated Hilt modules (`@InstallIn(SingletonComponent::class)`).
 - Scope expensive resources (`@Singleton`) and ViewModel dependencies (`@ViewModelScoped`).
+- **Mandatory Non-Deprecated `hiltViewModel` Import in Compose**:
+  - When consuming a `@HiltViewModel` in Jetpack Compose, **ALWAYS** import from:
+    ```kotlin
+    import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+    ```
+  - **NEVER** use the deprecated import `import androidx.hilt.navigation.compose.hiltViewModel`!
+  - Always place `modifier: Modifier = Modifier` at the **very first top parameter (`#1`)** of the Screen Composable declaration before `viewModel: MyViewModel = hiltViewModel()`.
 
 ---
 

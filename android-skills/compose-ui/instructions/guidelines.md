@@ -13,12 +13,18 @@
    - Every reusable child component resides in `components/`.
    - Child components must remain stateless, accepting immutable data and callback lambdas.
 
-## 2. The Modifier Parameter & Consumption Rule
-1. **In Declaration**:
-   - `modifier: Modifier = Modifier` must be the FIRST optional parameter, placed immediately after required data and callbacks.
-2. **At Call Site**:
-   - Pass content and callback arguments first.
-   - Place the `modifier` parameter at the VERY BOTTOM of the argument list.
+## 2. The Modifier Parameter & Consumption Rule (Strict Dual-Rule)
+1. **In Composable Function Declaration (`@Composable fun ...`) — VERY TOP**:
+   - `modifier: Modifier = Modifier` MUST be placed at the **very first top parameter (`#1`)** of the `@Composable fun` parameter list.
+   - **NEVER** place `modifier: Modifier = Modifier` at the bottom of a Composable function declaration! Even for simple two-parameter or three-parameter Composables (e.g., `Screen`, `Content`, `Surface`), `modifier: Modifier = Modifier` belongs at the very top of the declaration signature.
+2. **At Composable Call Site (Consumption) — VERY BOTTOM**:
+   - When calling/consuming any Composable (custom or built-in like `Row`, `LazyColumn`, `ElevatedCard`, `GoogleMap`), pass all content data and callback arguments first.
+   - Place the `modifier = Modifier...` argument at the **VERY BOTTOM** of the call-site argument list (immediately preceding any trailing `{ ... }` content lambda).
+3. **Hilt ViewModel Compose Import (Strict Non-Deprecated Package)**:
+   - **ALWAYS** import `hiltViewModel` from:
+     `import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel`
+   - **NEVER** use the deprecated import `import androidx.hilt.navigation.compose.hiltViewModel`.
+   - In screen declarations, always keep `modifier: Modifier = Modifier` at the **very top (`#1`)** before `viewModel: MyViewModel = hiltViewModel()`.
 
 ## 3. State Stability & Recomposition Guardrails
 1. **Annotate UI States**:

@@ -57,11 +57,11 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun MapScreen(
+    modifier: Modifier = Modifier, // ✅ Declaration: VERY TOP parameter
     places: List<PlaceClusterItem>,
     userLocation: LatLng?,
     hasLocationPermission: Boolean,
     onPlaceSelected: (PlaceClusterItem) -> Unit,
-    modifier: Modifier = Modifier,
 ) {
     val initialCenter = userLocation ?: LatLng(37.7749, -122.4194)
     val cameraPositionState = rememberCameraPositionState {
@@ -71,7 +71,6 @@ fun MapScreen(
 
     Box(modifier = modifier.fillMaxSize()) {
         GoogleMap(
-            modifier = Modifier.fillMaxSize(),
             cameraPositionState = cameraPositionState,
             properties = MapProperties(
                 isMyLocationEnabled = hasLocationPermission,
@@ -80,6 +79,7 @@ fun MapScreen(
                 myLocationButtonEnabled = false, // Handled by custom floating button
                 zoomControlsEnabled = false,
             ),
+            modifier = Modifier.fillMaxSize(), // ✅ Call site: VERY BOTTOM argument
         ) {
             Clustering(
                 items = places,
