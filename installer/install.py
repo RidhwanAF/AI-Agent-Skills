@@ -159,6 +159,98 @@ def check_python_environment():
         sys.exit(1)
     print(f"{Style.GREEN}✓ Python Environment Verified:{Style.RESET} Python {platform.python_version()} on {platform.system()} ({platform.machine()})")
 
+def check_and_sync_git_repo(skip_git_sync=False):
+    """
+    Checks remote git status and synchronizes:
+    - If remote has newer commits and local has no uncommitted changes, pulls fast-forward.
+    - If local is ahead or has local modifications, keeps local (newer/in-development).
+    - If in sync, notifies user.
+    """
+    if skip_git_sync:
+        return
+
+    # Check if REPO_ROOT is a git repository
+    try:
+        is_git = subprocess.run(
+            ["git", "-C", str(REPO_ROOT), "rev-parse", "--is-inside-work-tree"],
+            capture_output=True, text=True, timeout=5
+        )
+        if is_git.returncode != 0 or is_git.stdout.strip() != "true":
+            return
+    except Exception:
+        return
+
+    print(f"\n{Style.BOLD}🔄 Checking for Skill Updates from Git Remote...{Style.RESET}")
+
+    try:
+        # Check if remote origin exists
+        remotes = subprocess.run(
+            ["git", "-C", str(REPO_ROOT), "remote"],
+            capture_output=True, text=True, timeout=5
+        )
+        if "origin" not in remotes.stdout.split():
+            print(f"  {Style.DIM}(No 'origin' remote found, using local skills){Style.RESET}")
+            return
+
+        # Fetch remote updates quietly
+        fetch_res = subprocess.run(
+            ["git", "-C", str(REPO_ROOT), "fetch", "origin", "--quiet"],
+            capture_output=True, text=True, timeout=15
+        )
+        if fetch_res.returncode != 0:
+            print(f"  {Style.DIM}(Could not fetch remote updates: {fetch_res.stderr.strip() or 'network unavailable'}, using local skills){Style.RESET}")
+            return
+
+        # Check local dirty status (uncommitted modifications)
+        status_res = subprocess.run(
+            ["git", "-C", str(REPO_ROOT), "status", "--porcelain"],
+            capture_output=True, text=True, timeout=5
+        )
+        is_dirty = bool(status_res.stdout.strip())
+
+        # Check ahead/behind count against upstream
+        counts_res = subprocess.run(
+            ["git", "-C", str(REPO_ROOT), "rev-list", "--left-right", "--count", "HEAD...@{u}"],
+            capture_output=True, text=True, timeout=5
+        )
+        if counts_res.returncode != 0:
+            # Fallback against origin/main
+            counts_res = subprocess.run(
+                ["git", "-C", str(REPO_ROOT), "rev-list", "--left-right", "--count", "HEAD...origin/main"],
+                capture_output=True, text=True, timeout=5
+            )
+
+        if counts_res.returncode == 0:
+            parts = counts_res.stdout.strip().split()
+            if len(parts) == 2:
+                ahead, behind = int(parts[0]), int(parts[1])
+
+                if ahead > 0 and behind == 0:
+                    print(f"  {Style.GREEN}✓ Local skills are newer (ahead by {ahead} commit{'s' if ahead > 1 else ''}). Installing local version.{Style.RESET}")
+                    return
+                elif ahead > 0 and behind > 0:
+                    print(f"  {Style.YELLOW}⚠️  Local repo has diverged from remote (ahead {ahead}, behind {behind}). Preserving local version.{Style.RESET}")
+                    return
+                elif behind > 0:
+                    if is_dirty:
+                        print(f"  {Style.YELLOW}⚠️  Remote has {behind} newer commit{'s' if behind > 1 else ''}, but local has uncommitted changes. Preserving your local modifications.{Style.RESET}")
+                        return
+                    else:
+                        print(f"  {Style.CYAN}📥 Remote has {behind} newer commit{'s' if behind > 1 else ''}. Pulling latest updates from GitHub...{Style.RESET}")
+                        pull_res = subprocess.run(
+                            ["git", "-C", str(REPO_ROOT), "pull", "--ff-only"],
+                            capture_output=True, text=True, timeout=15
+                        )
+                        if pull_res.returncode == 0:
+                            print(f"  {Style.GREEN}✓ Successfully updated local repo to the latest GitHub version.{Style.RESET}")
+                        else:
+                            print(f"  {Style.YELLOW}↳ Could not fast-forward pull ({pull_res.stderr.strip()}). Installing local version.{Style.RESET}")
+                        return
+
+        print(f"  {Style.GREEN}✓ Local skills are up to date with remote.{Style.RESET}")
+    except Exception as e:
+        print(f"  {Style.DIM}(Git sync check note: {e}, continuing with local skills){Style.RESET}")
+
 def get_official_android_cli_install_cmd():
     sys_name = platform.system().lower()
     machine = platform.machine().lower()
@@ -469,6 +561,7 @@ def main():
     parser.add_argument("--agents", type=str, help="Comma-separated agent keys to install (e.g. '1,3')")
     parser.add_argument("--auto-install-android-cli", action="store_true", help="Automatically install Google Android CLI if missing")
     parser.add_argument("--skip-android-cli", action="store_true", help="Skip checking or installing Google Android CLI")
+    parser.add_argument("--skip-git-sync", action="store_true", help="Skip checking and pulling remote Git updates")
     parser.add_argument("--dry-run", action="store_true", help="Simulate execution without modifying files")
     parser.add_argument("--non-interactive", action="store_true", help="Run without interactive prompts")
 
@@ -476,6 +569,9 @@ def main():
 
     print_banner()
     check_python_environment()
+
+    # Git Remote Update Check
+    check_and_sync_git_repo(skip_git_sync=args.skip_git_sync)
 
     # Android CLI check & setup
     if not args.skip_android_cli:
