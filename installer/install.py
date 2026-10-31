@@ -90,49 +90,57 @@ HOME = Path.home()
 # Target AI Agents configuration (works across Windows, macOS, and Linux)
 SUPPORTED_AGENTS = {
     "1": {
-        "id": "gemini",
-        "name": "Google Gemini / Antigravity",
+        "id": "shared_agents",
+        "name": "Shared Agent Standard (~/.agents/skills)",
         "dirs": [
             HOME / ".agents" / "skills",
-            HOME / ".gemini" / "config" / "skills",
         ],
     },
     "2": {
+        "id": "gemini",
+        "name": "Google Gemini / Antigravity",
+        "dirs": [
+            HOME / ".gemini" / "config" / "skills",
+            HOME / ".gemini" / "antigravity" / "skills",
+            HOME / ".gemini" / "skills",
+        ],
+    },
+    "3": {
         "id": "claude",
         "name": "Claude Code (Anthropic)",
         "dirs": [
             HOME / ".claude" / "skills",
         ],
     },
-    "3": {
+    "4": {
         "id": "cursor",
         "name": "Cursor",
         "dirs": [
             HOME / ".cursor" / "skills",
         ],
     },
-    "4": {
+    "5": {
         "id": "codex",
         "name": "OpenAI Codex CLI",
         "dirs": [
             HOME / ".codex" / "skills",
         ],
     },
-    "5": {
+    "6": {
         "id": "copilot",
         "name": "GitHub Copilot (CLI / Agent)",
         "dirs": [
             HOME / ".copilot" / "skills",
         ],
     },
-    "6": {
+    "7": {
         "id": "windsurf",
         "name": "Windsurf (Codeium)",
         "dirs": [
             HOME / ".codeium" / "windsurf" / "skills",
         ],
     },
-    "7": {
+    "8": {
         "id": "roo_cline",
         "name": "Roo Code / Cline",
         "dirs": [

@@ -84,12 +84,80 @@ When `/engineer-mode` is triggered:
 - **Scenario A: Explicit Directive Provided**
   *(e.g., `/engineer-mode fix the crash in CartViewModel when payment token expires`)*
   - Extract target platform, scope, and intent.
-  - Match immediately to the corresponding playbook (e.g. `01-error-investigation`).
+  - Match immediately to the corresponding playbook (e.g. `01-error-investigation` or `04-android-deep-engineering`).
   - Summarize the execution plan and confirm before proceeding.
-
 - **Scenario B: Broad, Ambiguous, or Empty Prompt**
   *(e.g., `/engineer-mode` or `/engineer-mode I want to build a new feature`)*
   - Initiate the **Interactive Adaptive Questionnaire** below. Do not guess or make unverified assumptions.
+
+### 2. Mandatory Post-Edit Lint & Auto-Fix Gate (Android & Web)
+Whenever `/engineer-mode` executes a task on an Android project (or when invoked in an Android workspace), you **MUST** always run a Lint & Compiler check and fix all warnings/errors before finishing:
+1. **Run Lint & Kotlin Compilation**: Execute `./gradlew lintDebug` (or `./gradlew :<module>:lintDebug` + `./gradlew compileDebugKotlin` / `detekt` / `ktlintCheck` if configured).
+2. **Audit & Auto-Fix Idiomatic Kotlin / Lint Issues**:
+   - **KTX Extensions (`UseKtx`)**: Replace `Uri.parse(...)` with `import androidx.core.net.toUri` + `.toUri()`, and `Color.parseColor(...)` with `import androidx.core.graphics.toColorInt` + `.toColorInt()`.
+   - **Clean Top-Level Imports**: Replace inline fully-qualified calls like `kotlin.math.abs(...)` or `kotlin.math.max(...)` with top-level `import kotlin.math.abs` and short call `abs(...)`.
+   - **Functional Iteration**: Replace verbose `for (...)` loops with idiomatic `.forEach { ... }`, `.forEachIndexed { ... }`, `.map { ... }`, or `.filter { ... }`.
+   - **Zero Dead/Redundant Code**: Remove all **unused imports**, **unused parameters** (use `_` in lambdas), and **unnecessary `@OptIn(Experimental...)`** annotations.
+   - **Compose Modifier & Hilt Rules**: Verify `modifier: Modifier = Modifier` is `#1` at the very top of `@Composable fun` declarations, `modifier = ...` is at the very bottom of call sites, and `hiltViewModel` is imported from `androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel`.
+3. **Active ADB Device & Live App Logcat Analysis (When Device/Emulator is Connected)**:
+   - Run `adb devices -l` to detect if an Android device or emulator is active.
+   - Whenever an ADB device is connected, automatically capture and analyze the active app's runtime logs (`adb shell pidof -s <applicationId>` ➔ `adb logcat -d --pid=<PID> -v threadtime` + `adb logcat -d -b crash` + foreground check `adb shell dumpsys window | grep -E 'mCurrentFocus|mFocusedApp'`) to inspect real-time exceptions, network/API logs, coroutine flows, and UI state issues.
+
+### 3. Anti-Slop Self-Learning & 3-Strike Escalation Protocol (Smart Self-Correction)
+To prevent repetitive AI mistakes ("AI slop") across sessions or within a conversation:
+1. **Track Repeated Corrections (1st, 2nd, 3rd Strike)**:
+   - Monitor conversation history and user feedback for repeated requests or corrections (e.g., if the user has to ask **2 or 3 times** for the same fix, pattern, modifier ordering, import path, lint rule, or business logic correction).
+2. **Trigger Deep Root-Cause & Skill Self-Upgrade on Repeat**:
+   - **Stop Blind Patching**: Never apply a superficial one-line band-aid when an issue repeats.
+   - **Workspace-Wide Sweep**: Grep/scan the entire codebase to find and fix **every single occurrence** of that anti-pattern across all files so the user never encounters it in another file.
+   - **Permanent Skill Hardening (Self-Evolution)**: If the repeated mistake came from a gap or ambiguity in the AI agent skills (`~/.agents/skills/` or `~/.gemini/config/skills/` or the repository skills), **immediately codify the new rule** with explicit `✅ CORRECT` vs `❌ FORBIDDEN` examples into the relevant `SKILL.md` and `instructions/guidelines.md` files (and recommend `/learn` if appropriate) so the AI becomes permanently smarter and never repeats the mistake!
+
+### 4. Mandatory Post-Execution Visual Summary & Grouped Mermaid Flowchart (In Chat)
+Whenever `/engineer-mode` finishes executing any task, you **MUST** conclude your chat response with an **Execution Report Summary** featuring a clean, top-down **Mermaid Flowchart (`flowchart TD`)** styled exactly like the Root README mesh (with flat, single-level slightly dark category `subgraph` containers—**NEVER** nest a `subgraph` inside another `subgraph`, and always use rounded stadium nodes `(["..."])` for every node):
+- **Top-Level Root Node**: `EM(["🚀 /engineer-mode<br/>(Master Orchestrator)"])`
+- **Flat Top-Level Category Subgraphs** (only include the categories actually used in the task):
+  - `subgraph PlaybooksUsed ["📚 Playbooks Executed"]`
+  - `subgraph AndroidSuite ["📱 Modular Android Suite"]`
+  - `subgraph ReactSuite ["⚛️ Modular React TS Suite"]`
+  - `subgraph ArchitectureLayer ["📐 Architecture, Diagnostics & Docs"]`
+  - `subgraph QualityAndShipping ["🔍 Verification, Auto-Lint & Shipping"]`
+- **Clear Directional Flow Arrows (`-->`)** with concise action labels connecting `/engineer-mode` ➔ Playbooks ➔ Categorized Skills ➔ Quality & Shipping.
+
+#### Example Post-Execution Chat Report Template:
+````markdown
+### 📊 `/engineer-mode` Execution Summary
+
+```mermaid
+flowchart TD
+    EM(["🚀 /engineer-mode<br/>(Master Orchestrator)"])
+
+    subgraph PlaybooksUsed ["📚 Playbooks Executed"]
+        PB4(["📘 Playbook 04: Android Deep Engineering"])
+    end
+
+    subgraph AndroidSuite ["📱 Modular Android Suite"]
+        AA(["🏛️ /android-architecture<br/>(KTX, Top Imports, forEach)"])
+        CUI(["🎨 /compose-ui<br/>(Modifier Rule, Zero Unused)"])
+    end
+
+    subgraph ArchitectureLayer ["📐 Architecture, Diagnostics & Docs"]
+        ED(["🔍 /error-detective<br/>(3-Strike Anti-Slop Upgrade)"])
+    end
+
+    subgraph QualityAndShipping ["🔍 Verification, Auto-Lint & Shipping"]
+        LINT(["🧹 Auto-Lint & Compiler Gate<br/>(./gradlew lintDebug)"])
+        GA(["🌿 /git-assistant<br/>(Safe Commit & PR)"])
+    end
+
+    EM -->|1. Matched Intent| PB4
+    PB4 -->|2. Clean Arch & KTX| AA
+    AA -->|3. Compose & Lint Rules| CUI
+    PB4 -->|4. Self-Evolution Rule| ED
+    CUI -->|5. Verify 0 Warnings| LINT
+    ED -->|6. Hardened SKILL.md| LINT
+    LINT -->|7. Staged Commit| GA
+```
+````
 
 ---
 

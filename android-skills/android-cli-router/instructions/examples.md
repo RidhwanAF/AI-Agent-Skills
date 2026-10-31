@@ -46,3 +46,20 @@ android docs search "Jetpack Compose animateContentSize transition"
 # Sets up official Android skills across all configured AI agents
 android init
 ```
+
+---
+
+## 6. Active ADB Device Detection & Live App Logcat Capture
+
+```bash
+# 1. Check if an active device or emulator is connected
+adb devices -l
+
+# 2. Identify the currently focused foreground app & activity
+adb shell dumpsys window | grep -E "mCurrentFocus|mFocusedApp"
+
+# 3. Get the PID of the active app and dump its live logcat + crash buffer
+APP_PID=$(adb shell pidof -s com.example.app)
+adb logcat -d --pid="$APP_PID" -v threadtime *:I
+adb logcat -d -b crash -v threadtime
+```

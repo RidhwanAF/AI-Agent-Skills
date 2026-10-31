@@ -103,8 +103,10 @@ fun MapLibreContainer(
 
     AndroidView(
         factory = { mapView },
-        update = {
-            // Synchronize camera state updates safely
+        update = { view ->
+            view.getMapAsync { _ ->
+                // Synchronize cameraPosition state updates safely
+            }
         },
         modifier = modifier, // ✅ Call site: VERY BOTTOM argument
     )
