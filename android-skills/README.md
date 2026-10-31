@@ -108,15 +108,23 @@ CartItemCard(
   ```
 - **NEVER use the deprecated import**: `import androidx.hilt.navigation.compose.hiltViewModel`.
 
+### 4. Strict Kotlin & Lint Hygiene (Enforced Automatically by `/engineer-mode`)
+- **Android KTX Extensions (`UseKtx`)**: Always use `uriString.toUri()` (`import androidx.core.net.toUri`) instead of `Uri.parse(uriString)`, and `hex.toColorInt()` (`import androidx.core.graphics.toColorInt`) instead of `Color.parseColor(hex)`.
+- **Top-Level Imports (Zero Inline FQNs)**: Never write `kotlin.math.abs(x)` or `kotlin.math.max(a, b)` inline; always add `import kotlin.math.abs` at the top of the file and call `abs(x)`.
+- **Functional Iteration**: Prefer `.forEach { ... }`, `.forEachIndexed { ... }`, `.map { ... }`, and `.filter { ... }` over imperative `for` loops.
+- **Zero Unused Code & Redundant `@OptIn`**: Remove all unused imports (no wildcard `import foo.*`), unused parameters (use `_` in lambdas), and unnecessary `@OptIn(Experimental...)` annotations.
+- **Automated Lint Check & Fix**: Whenever `/engineer-mode` runs on an Android project, it automatically executes `./gradlew lintDebug` (and compiler checks) and fixes all reported lint/compiler issues before completing.
+
 ---
 
-## 🛠️ Google Android CLI Routing
+## 🛠️ Google Android CLI Routing & Live ADB App Logcat Analysis
 
-When you need device automation, emulator execution, or SDK inspection, the Android skills route directly to Google's official `android-cli`:
+When you need device automation, emulator execution, live app log analysis, or SDK inspection, the Android skills route directly to Google's official `android-cli` and active ADB telemetry:
+- **Active ADB App Logcat Capture**: Automatically checks `adb devices -l`, resolves the active app PID (`adb shell pidof -s <applicationId>` or foreground activity via `adb shell dumpsys window | grep -E 'mCurrentFocus|mFocusedApp'`), and captures scoped app logs (`adb logcat -d --pid=<PID> -v threadtime` and `adb logcat -d -b crash`) whenever a device/emulator is connected.
 - Run APK on device: `android run`
 - Health check: `android doctor`
 - Layout & visual inspection: `android layout`, `android screen`
-- Official docs search: `android doc`
+- Official docs search: `android docs search "<query>"`
 
 ---
 

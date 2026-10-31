@@ -17,3 +17,6 @@ Operational protocol for routing developer requests to the official Google Andro
 3. **Collaboration with Official Skill**:
    - This skill is an intelligent router within the custom AI-Engineer-Skills suite. It coexists with the official `android-cli` skill installed by `android init`.
    - Never attempt to overwrite or delete the official `android-cli` skill.
+4. **Active ADB Device Logcat Telemetry**:
+   - Always check `adb devices` when analyzing or verifying an Android app.
+   - If an active device/emulator is connected, resolve the target app's PID (`adb shell pidof -s <package>`) or foreground package (`adb shell dumpsys activity activities | grep ResumedActivity`) and capture `adb logcat -d --pid=<PID>` and `adb logcat -d -b crash` to ground your analysis in real runtime telemetry.

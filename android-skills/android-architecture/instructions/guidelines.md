@@ -30,6 +30,18 @@
    - Strictly use `import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel`.
    - Never use the deprecated `import androidx.hilt.navigation.compose.hiltViewModel`.
 
-## 4. KDocs Documentation Standard
+## 4. KTX, Idiomatic Kotlin & Lint Hygiene Standard
+1. **Android KTX Extensions (`UseKtx`)**:
+   - Always use `string.toUri()` (`import androidx.core.net.toUri`) instead of `Uri.parse(string)`.
+   - Always use `hex.toColorInt()` (`import androidx.core.graphics.toColorInt`) instead of `Color.parseColor(hex)`.
+2. **No Inline Fully-Qualified Calls**:
+   - Never write `kotlin.math.abs(x)`, `kotlin.math.max(a, b)`, or `java.util.UUID.randomUUID()` inline in code. Always import the symbol at the top of the file (`import kotlin.math.abs`) and call `abs(x)`.
+3. **Functional Iteration Over Imperative Loops**:
+   - Use `.forEach { ... }`, `.forEachIndexed { index, item -> ... }`, `.map { ... }`, `.filter { ... }` instead of imperative `for (item in list)` loops.
+4. **Zero Compiler & Lint Warnings**:
+   - Remove all unused imports, unused parameters (use `_` in lambdas), and unnecessary `@OptIn(Experimental...)` annotations.
+   - Always run `./gradlew lintDebug` (or target module lint) and fix all warnings before finishing.
+
+## 5. KDocs Documentation Standard
 - Document every public interface, class, and method.
 - Explain parameter requirements, invariants, and threading context.

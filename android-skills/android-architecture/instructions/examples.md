@@ -131,8 +131,11 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel // ✅ MANDATORY NON-DEPRECATED IMPORT
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.domain.model.User
+import com.example.domain.model.UserId
 import com.example.domain.usecase.GetUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 // ❌ FORBIDDEN DEPRECATED IMPORT:
@@ -142,14 +145,16 @@ import javax.inject.Inject
 class UserViewModel @Inject constructor(
     private val getUserUseCase: GetUserUseCase,
 ) : ViewModel() {
-    // Expose StateFlow<UserUiState>
+    fun observeUser(userId: UserId): Flow<User> = getUserUseCase(userId)
 }
 
 @Composable
 fun UserScreen(
     modifier: Modifier = Modifier,              // ✅ Declaration: VERY TOP (#1 parameter)
+    userId: UserId,
     viewModel: UserViewModel = hiltViewModel(), // ✅ Uses androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 ) {
-    // Observe state via collectAsStateWithLifecycle()
+    val user by viewModel.observeUser(userId).collectAsStateWithLifecycle(initialValue = null)
+    // Pass modifier and user to stateless UserContent(..., modifier = modifier)
 }
 ```

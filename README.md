@@ -142,6 +142,8 @@ When you begin any non-trivial task, invoke `/engineer-mode`. It functions like 
    - `[7]` **Git Shipping & PR Creation** (`/git-assistant`)
    - `[8]` **End-to-End Autonomous Delivery** (Design ➔ ADR ➔ Modular Code ➔ Testing ➔ Changelog ➔ Ship)
 3. **Coordinates Routing**: Hands off work to specialized domain experts and preserves all context across turns.
+4. **3-Strike Anti-Slop Self-Evolution**: If an issue or user request is repeated 2–3 times due to AI slop, `/engineer-mode` automatically performs a workspace-wide sweep to fix all occurrences and permanently upgrades the relevant skill rules (`SKILL.md` / `guidelines.md`) with `✅ CORRECT` vs `❌ FORBIDDEN` guardrails so the AI becomes smarter and never repeats the mistake.
+5. **Post-Execution Grouped Mermaid Report in Chat**: Whenever `/engineer-mode` finishes a task, it renders a clean, top-down **Mermaid Flowchart (`flowchart TD`)** in chat using flat, slightly dark category `subgraph` containers (`📚 Playbooks Executed`, `📱 Modular Android Suite`, `⚛️ Modular React TS Suite`, `📐 Architecture, Diagnostics & Docs`, and `🔍 Verification, Auto-Lint & Shipping`) and stadium nodes `(["..."])` connected with clear directional arrows.
 
 ---
 
@@ -178,13 +180,14 @@ When you begin any non-trivial task, invoke `/engineer-mode`. It functions like 
 
 | Number | AI Coding Agent | Global Skills Directory |
 |---|---|---|
-| **1** | **Google Gemini / Antigravity** | `~/.agents/skills` & `~/.gemini/config/skills` |
-| **2** | **Claude Code (Anthropic)** | `~/.claude/skills` |
-| **3** | **Cursor** | `~/.cursor/skills` |
-| **4** | **OpenAI Codex CLI** | `~/.codex/skills` |
-| **5** | **GitHub Copilot (CLI / Agent)** | `~/.copilot/skills` |
-| **6** | **Windsurf (Codeium)** | `~/.codeium/windsurf/skills` |
-| **7** | **Roo Code / Cline** | `~/.roo/skills` & `~/.cline/skills` |
+| **1** | **Shared Agent Standard (Universal)** | `~/.agents/skills` |
+| **2** | **Google Gemini / Antigravity** | `~/.gemini/config/skills`, `~/.gemini/antigravity/skills` & `~/.gemini/skills` |
+| **3** | **Claude Code (Anthropic)** | `~/.claude/skills` |
+| **4** | **Cursor** | `~/.cursor/skills` |
+| **5** | **OpenAI Codex CLI** | `~/.codex/skills` |
+| **6** | **GitHub Copilot (CLI / Agent)** | `~/.copilot/skills` |
+| **7** | **Windsurf (Codeium)** | `~/.codeium/windsurf/skills` |
+| **8** | **Roo Code / Cline** | `~/.roo/skills` & `~/.cline/skills` |
 
 ---
 

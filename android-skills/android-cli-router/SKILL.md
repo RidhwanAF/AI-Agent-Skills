@@ -65,3 +65,31 @@ The router coordinates the following operations using the official Google `andro
    - When asked to look up official Android API docs, dispatch to `android docs search "<topic>"`.
 3. **Keep the Official `android-cli` Skill Intact**:
    - This router collaborates with the official `android-cli` skill installed by `android init` and does not overwrite or remove it.
+
+---
+
+## 📱 3. Active ADB Device & Live App Logcat Telemetry (Mandatory When Connected)
+
+Whenever working on an Android project (debugging, testing, verifying a feature, or investigating runtime behavior), automatically check if an active ADB device or emulator is connected and capture the live app's logs for analysis:
+
+1. **Detect Connected ADB Devices**:
+   ```bash
+   adb devices -l
+   ```
+   *(If at least one device/emulator is in `device` state, proceed immediately with live telemetry extraction).*
+2. **Identify the Active / Foreground App & Process PID**:
+   - Resolve `applicationId` from `app/build.gradle.kts` (or detect the current foreground activity via `adb shell dumpsys window | grep -E 'mCurrentFocus|mFocusedApp'`).
+   - Get the running PID of the target package:
+     ```bash
+     adb shell pidof -s <applicationId>
+     ```
+3. **Capture & Analyze Scoped App Logcat**:
+   - Dump the recent logs filtered strictly to the active app's PID (plus fatal crash buffers):
+     ```bash
+     # Scoped to the active app process PID
+     adb logcat -d --pid=<PID> -v threadtime *:V
+
+     # Always check the crash buffer for Fatal Exceptions / ANRs
+     adb logcat -d -b crash -v threadtime
+     ```
+   - Analyze exceptions (`AndroidRuntime`, `Fatal Exception`), coroutine cancellations, network/HTTP status codes, Compose recomposition warnings, and lifecycle anomalies directly from the live device output before proposing or verifying a fix.

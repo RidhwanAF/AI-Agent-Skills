@@ -54,26 +54,35 @@ To help me pinpoint and resolve the issue quickly, please provide a few details:
 
 ---
 
-## 🔬 2. Autonomous Diagnostic Protocol (If Unsure)
+## 🔬 2. Autonomous Diagnostic & Active ADB Telemetry Protocol
 
-If the user selects "Unsure" or provides incomplete information:
-1. **Log & Trace Inspection**:
-   - For Android: Inspect `adb logcat`, Gradle build output (`./gradlew test --stacktrace`), or crash reports.
+1. **Active ADB Device Check & Live App Log Capture (Mandatory First Step on Android)**:
+   - Immediately check `adb devices -l` to see if an Android device or emulator is currently connected and online.
+   - If an ADB device is active:
+     1. Identify the target `applicationId` (from `build.gradle.kts` or foreground focus via `adb shell dumpsys window | grep -E 'mCurrentFocus|mFocusedApp'`).
+     2. Resolve the running process ID (`adb shell pidof -s <applicationId>`).
+     3. Capture the active app's live logs (`adb logcat -d --pid=<PID> -v threadtime`) and the crash buffer (`adb logcat -d -b crash -v threadtime`) to extract exact stack traces, ANRs, network errors, or state transitions from the live app.
+2. **Build & Test Log Inspection**:
+   - For Android: Inspect Gradle build/lint output (`./gradlew lintDebug`, `./gradlew test --stacktrace`).
    - For Web: Inspect browser console logs, test output (`vitest` / `jest`), or build errors (`npm run build`).
-2. **Recent Delta Analysis**:
+3. **Recent Delta Analysis**:
    - Inspect `git diff HEAD~1` or uncommitted changes to identify newly introduced regressions.
-3. **Symbol & Invariant Tracing**:
+4. **Symbol & Invariant Tracing**:
    - Trace variables from entry point to the null/undefined dereference or broken invariant.
 
 ---
 
-## 🛠️ 3. Fix Synthesis & Regression Testing
+## 🛠️ 3. Fix Synthesis, 3-Strike Anti-Slop Escalation & Regression Testing
 
 - **Minimal & Non-Invasive**: Fix the root cause directly; do NOT wrap broken code in blind empty try-catch blocks or add `@ts-ignore` / `@Suppress`.
+- **3-Strike Anti-Slop Escalation & Self-Evolution**:
+  - If an error, lint warning, or architectural mistake recurs **2–3 times** (or the user has to repeat the same request 3 times because of AI slop):
+    1. **Stop Single-File Patching**: Perform a full workspace grep/audit to fix **every occurrence** of that anti-pattern across the entire project.
+    2. **Upgrade the Skill Rules**: Permanently codify the rule (`✅ CORRECT` vs `❌ FORBIDDEN`) into the active skill files (`SKILL.md` / `guidelines.md` in `~/.agents/skills/` and `~/.gemini/config/skills/`) so the AI becomes permanently smarter and never repeats the mistake.
 - **Architectural Preservation**: Ensure the fix respects Clean Architecture (no business logic in UI, no UI in domain).
 - **Automated Verification**:
-  - Run the targeted unit test or write a reproducing test case before finalizing the fix.
-  - Verify build passes cleanly.
+  - Run the targeted unit test and lint checks (`./gradlew lintDebug` on Android) before finalizing the fix.
+  - Verify build passes cleanly with zero warnings.
 
 ---
 

@@ -92,6 +92,15 @@ The agent will immediately present the interactive menu, asking you to choose fr
 
 ---
 
+## 🧠 Anti-Slop 3-Strike Self-Evolution & Post-Run Visual Report
+
+1. **3-Strike Anti-Slop Escalation**:
+   - If an issue or user correction occurs repeatedly (e.g., 2–3 times due to AI slop), `/engineer-mode` halts superficial single-file edits, performs a **workspace-wide sweep** to fix every instance across the project, and **permanently hardens the active skill rules** with `✅ CORRECT` vs `❌ FORBIDDEN` guardrails so the AI becomes smarter and never repeats the mistake.
+2. **README-Style Grouped Mermaid Execution Report in Chat**:
+   - Upon finishing any task, `/engineer-mode` outputs an **Execution Report Summary** in chat with a clean `flowchart TD` Mermaid diagram using flat, single-level slightly dark category `subgraph` containers (`📚 Playbooks Executed`, `📱 Modular Android Suite`, `⚛️ Modular React TS Suite`, `📐 Architecture, Diagnostics & Docs`, and `🔍 Verification, Auto-Lint & Shipping`) and stadium nodes `(["..."])` connected by step-by-step flow arrows.
+
+---
+
 ## 📋 Playbook Catalog
 
 | # | Playbook | Key Responsibilities | Output Location |

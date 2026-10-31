@@ -185,3 +185,18 @@ Obtain `val haptics = LocalHapticFeedback.current` in Composables. Fire tactile 
   - `title_<name>` (e.g. `title_cart`)
   - `desc_<name>` (e.g. `desc_remove_cart_item`)
 - Resolve via `stringResource(R.string.key)`.
+
+---
+
+## 🧹 6. Strict Kotlin & Lint Hygiene in Compose (Zero Warnings)
+
+Every Composable file generated or modified must pass Android Lint and Kotlin compiler checks with **zero warnings**:
+
+| Anti-Pattern (Forbidden) | Clean Idiomatic Standard (Mandatory) |
+| :--- | :--- |
+| `Uri.parse(url)` | `import androidx.core.net.toUri` + `url.toUri()` |
+| `kotlin.math.abs(offset)` (inline FQN) | `import kotlin.math.abs` at top of file + `abs(offset)` |
+| `for (item in items) { ... }` | `items.forEach { item -> ... }` / `items.map { ... }` |
+| Unused parameter in Composable or lambda | Remove unused Composable param; replace unused lambda param with `_` |
+| Unused imports or wildcard `import foo.*` | Explicit imports only (`import androidx.compose.foundation.layout.Row`); prune all unused imports |
+| Unnecessary `@OptIn(ExperimentalMaterial3Api::class)` | Only add `@OptIn` when an experimental API is genuinely used in that function; remove immediately if not needed |

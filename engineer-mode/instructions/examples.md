@@ -55,3 +55,50 @@ sequenceDiagram
     EM->>CR: Generate timestamped /docs/changelogs/ record
     EM->>GA: Stage atomic commit & create PR briefing
 ```
+
+---
+
+## 3. Post-Execution Chat Report Summary (README-Style Slightly Dark Container Mermaid Diagram)
+
+At the completion of every `/engineer-mode` task, the agent renders a clean, top-down `flowchart TD` Mermaid diagram in the chat response using flat, single-level category `subgraph` containers (matching the Root README style, without nested subgraphs) and stadium nodes `(["..."])`:
+
+````markdown
+### 📊 `/engineer-mode` Execution Report Summary
+
+```mermaid
+flowchart TD
+    EM(["🚀 /engineer-mode<br/>(Master Orchestrator)"])
+
+    subgraph PlaybooksUsed ["📚 Playbooks Executed"]
+        PB1(["📘 Playbook 01: Error Investigation"])
+        PB4(["📘 Playbook 04: Android Deep Engineering"])
+    end
+
+    subgraph AndroidSuite ["📱 Modular Android Suite"]
+        AA(["🏛️ /android-architecture<br/>(Enforce KTX & Clean Arch)"])
+        CUI(["🎨 /compose-ui<br/>(Modifier & Hilt Rules)"])
+        GBH(["🐘 /gradle-build-hygiene<br/>(Version Catalog Check)"])
+    end
+
+    subgraph ArchitectureLayer ["📐 Architecture, Diagnostics & Docs"]
+        ED(["🔍 /error-detective<br/>(3-Strike Anti-Slop Fix)"])
+        CR(["📝 /changelog-recorder<br/>(Record Artifacts)"])
+    end
+
+    subgraph QualityAndShipping ["🔍 Verification, Auto-Lint & Shipping"]
+        LINT(["🧹 Auto-Lint & Compiler Gate<br/>(./gradlew lintDebug)"])
+        GA(["🌿 /git-assistant<br/>(Stage Safe Commit)"])
+    end
+
+    EM -->|1. Triage & Route| PB1
+    EM -->|2. Domain Execution| PB4
+    PB1 -->|Root-Cause Audit| ED
+    PB4 -->|KTX, Imports & forEach| AA
+    AA -->|UI & Modifier Hygiene| CUI
+    CUI -->|Catalog Verification| GBH
+    ED -->|3-Strike Self-Upgrade| AA
+    GBH -->|Verify 0 Warnings| LINT
+    LINT -->|Log Changes| CR
+    CR -->|Ready to Ship| GA
+```
+````
