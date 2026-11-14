@@ -133,8 +133,9 @@ graph TD
    - **Unused Imports**: Audit every file's import block before finishing. Remove every single unused import and never use wildcard imports (`import foo.*`).
    - **Unused Parameters**: Never leave unused parameters in functions, constructors, or lambdas. If a lambda parameter is unused, replace it with `_` (e.g., `{ _, item -> ... }`). If a function parameter is unused, remove it from the signature.
    - **No Redundant `@OptIn(Experimental...)`**: Never slap `@OptIn(ExperimentalMaterial3Api::class)`, `@OptIn(ExperimentalCoroutinesApi::class)`, or `@OptIn(ExperimentalFoundationApi::class)` on a file, class, or function unless an experimental symbol is *actually* invoked inside that scope. If a previously experimental API has stabilized or was removed, immediately delete the redundant `@OptIn` annotation and its import.
-5. **Mandatory Automated Lint & Compiler Verification**:
+5. **Mandatory Automated Lint & Compiler Verification (Strict Zero-Suppression)**:
    - Whenever creating or modifying Android/Kotlin code, you **MUST** run the project's lint/compiler verification (`./gradlew lintDebug` or `./gradlew :module:lintDebug` and `./gradlew compileDebugKotlin`) and fix all reported warnings (`UseKtx`, `UnusedImport`, `UnusedParameter`, `RedundantOptIn`, `ObsoleteSdkInt`, etc.) before completing the task.
+   - **NEVER** hide lint/compiler errors with `@Suppress`, `@SuppressLint`, `@SuppressWarnings`, or Gradle `lint { disable += ...; abortOnError = false; ignoreWarnings = true }` unless there is genuinely no other way to fix it or the user explicitly asks to suppress it.
 6. **Mandatory KDocs**: All public classes, interfaces, and functions must feature clear KDocs documenting their intention, parameters, and return types.
 7. **No Robotic Comments & No Dead Code**: Remove filler comments (`// Assigning variable`, `// Return result`) and commented-out code blocks.
 8. **Time Safety with `kotlin.time.Duration`**: Never pass raw Long milliseconds to delays or timeouts. Use `5.seconds`, `300.milliseconds`, `10.minutes`.
