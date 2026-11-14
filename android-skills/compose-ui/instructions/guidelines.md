@@ -25,6 +25,11 @@
      `import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel`
    - **NEVER** use the deprecated import `import androidx.hilt.navigation.compose.hiltViewModel`.
    - In screen declarations, always keep `modifier: Modifier = Modifier` at the **very top (`#1`)** before `viewModel: MyViewModel = hiltViewModel()`.
+4. **Modifier Chaining Order (`clip` ➔ `background`/`border` ➔ `clickable` ➔ `padding`)**:
+   - **DO**: Place `clip(shape)` and `clickable { ... }` **before** inner `padding(...)` on clickable `Column`/`Row`/`Box` containers so the touch target and ripple span the full container.
+   - **DON'T**: Place `padding(...)` before `clickable { ... }` when full-container ripple is intended.
+5. **Zero Deprecated Compose APIs**:
+   - Use `androidx.lifecycle.compose.LocalLifecycleOwner`, `collectAsStateWithLifecycle()`, `HorizontalDivider()`, `PullToRefreshBox`, `Icons.AutoMirrored.Filled.*`, and `enableEdgeToEdge()`. Never use Accompanist wrappers or `androidx.compose.ui.platform.LocalLifecycleOwner`.
 
 ## 3. State Stability & Recomposition Guardrails
 1. **Annotate UI States**:

@@ -65,6 +65,7 @@ MANAGED_SKILLS = {
     "adr-analyze": REPO_ROOT / "diagnostic-skills" / "adr-analyze",
     "app-design": REPO_ROOT / "diagnostic-skills" / "app-design",
     "changelog-recorder": REPO_ROOT / "diagnostic-skills" / "changelog-recorder",
+    "fact-first": REPO_ROOT / "diagnostic-skills" / "fact-first",
     # Version Control
     "git-assistant": REPO_ROOT / "git-skills" / "git-assistant",
 }
@@ -547,6 +548,7 @@ def print_summary(selected_agent_keys):
     print(f"  • {Style.CYAN}/adr-analyze{Style.RESET}            ➔ Architecture Decision Records with executive summary & Mermaid pie score")
     print(f"  • {Style.CYAN}/app-design{Style.RESET}             ➔ Visual UML class/sequence/state models in English")
     print(f"  • {Style.CYAN}/changelog-recorder{Style.RESET}     ➔ Timestamped logs: /docs/changelogs/YYYY-MM-DD_HH-mm-ss_*.md")
+    print(f"  • {Style.CYAN}/fact-first{Style.RESET}             ➔ Direct, honest, non-sycophantic, data-backed responses")
     print(f"  • {Style.CYAN}/git-assistant{Style.RESET}           ➔ Safety-first Git operations, conventional commits, PRs\n")
 
     print(f"{Style.BOLD}Selected Agents:{Style.RESET}")
@@ -555,6 +557,37 @@ def print_summary(selected_agent_keys):
     print(f"\n{Style.BOLD}Try it in your AI agent chat:{Style.RESET}")
     print(f"  Type {Style.BOLD}{Style.CYAN}/engineer-mode{Style.RESET} to begin your adaptive engineering workflow!\n")
 
+def configure_local_mcp_server(dry_run=False):
+    """Safely registers raf-local-code-search in ~/.gemini/config/mcp_config.json."""
+    server_script = REPO_ROOT / "mcp-code-search" / "server.py"
+    if not server_script.exists():
+        return
+
+    mcp_config_path = HOME / ".gemini" / "config" / "mcp_config.json"
+    if dry_run:
+        print(f"  {Style.DIM}[Dry-Run] Would register raf-local-code-search in {mcp_config_path}{Style.RESET}")
+        return
+
+    try:
+        mcp_config_path.parent.mkdir(parents=True, exist_ok=True)
+        existing: dict = {}
+        if mcp_config_path.exists():
+            raw = mcp_config_path.read_text(encoding="utf-8").strip()
+            if raw:
+                existing = json.loads(raw) or {}
+
+        servers = existing.setdefault("mcpServers", {})
+        servers["raf-local-code-search"] = {
+            "command": sys.executable,
+            "args": [str(server_script)],
+        }
+        with open(mcp_config_path, "w", encoding="utf-8") as f:
+            json.dump(existing, f, indent=2)
+        print(f"  {Style.GREEN}✓ Registered local MCP server 'raf-local-code-search' in {mcp_config_path}{Style.RESET}")
+    except Exception as e:
+        print(f"  {Style.YELLOW}⚠️  Could not update {mcp_config_path}: {e}{Style.RESET}")
+
+
 def main():
     parser = argparse.ArgumentParser(description="RAF - Agent Skills Universal Installer")
     parser.add_argument("--all", "-a", action="store_true", help="Install to all supported AI agents")
@@ -562,6 +595,7 @@ def main():
     parser.add_argument("--auto-install-android-cli", action="store_true", help="Automatically install Google Android CLI if missing")
     parser.add_argument("--skip-android-cli", action="store_true", help="Skip checking or installing Google Android CLI")
     parser.add_argument("--skip-git-sync", action="store_true", help="Skip checking and pulling remote Git updates")
+    parser.add_argument("--install-mcp", action="store_true", help="Register raf-local-code-search MCP server in ~/.gemini/config/mcp_config.json")
     parser.add_argument("--dry-run", action="store_true", help="Simulate execution without modifying files")
     parser.add_argument("--non-interactive", action="store_true", help="Run without interactive prompts")
 
@@ -590,6 +624,9 @@ def main():
 
     # Perform installation
     install_skills(selected_keys, dry_run=args.dry_run, skip_android_cli=args.skip_android_cli)
+    if args.install_mcp:
+        print(f"\n{Style.BOLD}⚡ Configuring Local Code Search MCP Server...{Style.RESET}")
+        configure_local_mcp_server(dry_run=args.dry_run)
     print_summary(selected_keys)
 
 if __name__ == "__main__":

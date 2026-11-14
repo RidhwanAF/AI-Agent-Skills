@@ -11,7 +11,8 @@ Welcome to **Engineer Mode**, the central command post and intelligent orchestra
 | 🏠 **Root Hub** | Full Suite Overview & Universal Installer | [Root README](../README.md) |
 | 📱 **Android Skills** | Clean Arch, Compose, MapLibre, Testing, Gradle | [Android README](../android-skills/README.md) |
 | ⚛️ **React TS Skills** | Next.js, Vite, TypeScript, Tailwind, Web Vitals | [React TS README](../react-ts-skills/README.md) |
-| 🔍 **Diagnostic Skills** | Error Detective, ADR Detection, App Design, Changelogs | [Diagnostic README](../diagnostic-skills/README.md) |
+| 🔍 **Diagnostic Skills** | Error Detective, ADR Detection, App Design, Changelogs, Fact-First | [Diagnostic README](../diagnostic-skills/README.md) |
+| ⚡ **Local Code Search MCP** | Token-Saving BM25 + Symbol Search (`raf-local-code-search`) | [MCP README](../mcp-code-search/README.md) |
 | 🌿 **Git Skills** | Branching, Safe Rebase, Conflict Resolution, PRs | [Git README](../git-skills/README.md) |
 
 ---

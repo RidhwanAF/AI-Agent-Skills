@@ -138,3 +138,24 @@ graph TD
 6. **Mandatory KDocs**: All public classes, interfaces, and functions must feature clear KDocs documenting their intention, parameters, and return types.
 7. **No Robotic Comments & No Dead Code**: Remove filler comments (`// Assigning variable`, `// Return result`) and commented-out code blocks.
 8. **Time Safety with `kotlin.time.Duration`**: Never pass raw Long milliseconds to delays or timeouts. Use `5.seconds`, `300.milliseconds`, `10.minutes`.
+
+---
+
+## ✅ 3. Do's & ❌ Don'ts (Latest Stable Kotlin 2.x & AndroidX)
+
+| Topic | ❌ DON'T (Deprecated / Legacy) | ✅ DO (Latest Stable) |
+| :--- | :--- | :--- |
+| **Enum iteration** | `MyEnum.values()` | `MyEnum.entries` (Kotlin 1.9+/2.x) |
+| **State / Singletons** | `object Loading : UiState()` | `data object Loading : UiState` + `sealed interface` |
+| **Preferences** | `SharedPreferences` | `DataStore<Preferences>` / Proto DataStore |
+| **URI & Color parsing** | `Uri.parse(url)` / `Color.parseColor(hex)` | `url.toUri()` (`androidx.core.net.toUri`) / `hex.toColorInt()` |
+| **Coroutines in ViewModel** | `GlobalScope.launch { ... }` | `viewModelScope.launch { ... }` or `stateIn(..., SharingStarted.WhileSubscribed(5_000), ...)` |
+
+---
+
+## 📚 4. Official References
+
+- **Guide to App Architecture**: `https://developer.android.com/topic/architecture`
+- **Android KTX Extensions**: `https://developer.android.com/kotlin/ktx`
+- **Kotlin 2.x What's New**: `https://kotlinlang.org/docs/whatsnew20.html`
+- **Coroutines Best Practices**: `https://developer.android.com/kotlin/coroutines/coroutines-best-practices`

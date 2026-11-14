@@ -113,3 +113,22 @@ dependencies {
       arg("room.schemaLocation", "$projectDir/schemas")
   }
   ```
+
+---
+
+## ✅ 4. Do's & ❌ Don'ts (Latest Stable AGP & Kotlin 2.x)
+
+| Topic | ❌ DON'T (Deprecated / Legacy) | ✅ DO (Latest Stable) |
+| :--- | :--- | :--- |
+| **Annotation Processing** | `kapt(libs.hilt.compiler)` | `ksp(libs.hilt.compiler)` (2x faster, K2 compatible) |
+| **Compose Compiler** | `composeOptions { kotlinCompilerExtensionVersion = "..." }` | `alias(libs.plugins.kotlin.compose)` (`org.jetbrains.kotlin.plugin.compose`) |
+| **Java Target** | `kotlinOptions { jvmTarget = "1.8" }` | `kotlin { jvmToolchain(17) }` |
+| **Dependencies** | Hardcoded `"com.squareup.retrofit2:retrofit:2.11.0"` | Version Catalog `implementation(libs.retrofit)` in `gradle/libs.versions.toml` |
+
+---
+
+## 📚 5. Official References
+
+- **AGP Release Notes**: `https://developer.android.com/build/releases/gradle-plugin`
+- **Compose Compiler Plugin (Kotlin 2.0+)**: `https://developer.android.com/develop/ui/compose/compiler`
+- **Gradle Version Catalogs**: `https://developer.android.com/build/migrate-to-catalogs`

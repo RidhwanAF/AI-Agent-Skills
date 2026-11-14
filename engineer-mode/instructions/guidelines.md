@@ -9,8 +9,10 @@ Operational instructions for running `/engineer-mode` as the primary adaptive en
 1. **Initial Interactive Triage**:
    - Present the 8-option interactive menu to the user.
    - Respect user selection and load the matching playbook from `playbooks/`.
-2. **Context-Aware Dynamic Routing**:
-   - Instead of trying to perform everything within a single massive prompt, route sub-tasks to the dedicated specialized skills (`/android-architecture`, `/compose-ui`, `/compose-maplibre`, `/error-detective`, `/adr-analyze`, etc.).
+2. **Context-Aware Dynamic Routing & Token-Saving MCP Search**:
+   - Instead of reading entire files into context, use `raf-local-code-search` MCP (`search_code_smart`, `outline_symbols`, `read_line_range`) with candidate keywords first.
+   - Route sub-tasks to specialized skills (`/fact-first`, `/android-architecture`, `/compose-ui`, `/compose-maplibre`, `/error-detective`, `/adr-analyze`, etc.).
+   - Always apply `/fact-first`: direct, non-sycophantic, evidence-backed responses with zero guessing and zero deprecated syntax.
 3. **Execution Gating & Mandatory Auto-Lint Fix**:
    - Gate each phase behind automated verification (compile checks, unit tests, lints).
    - **For Android Projects**: Always run `./gradlew lintDebug` (or `./gradlew :<module>:lintDebug` and `./gradlew compileDebugKotlin`) and automatically fix all lint warnings and compiler diagnostics before completing the turn—specifically enforcing KTX extensions (`toUri()` over `Uri.parse()`), top-level imports (`import kotlin.math.abs` + `abs()` over `kotlin.math.abs()`), functional loops (`forEach` over `for`), and zero unused imports, unused parameters, or redundant `@OptIn(Experimental...)` annotations.

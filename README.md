@@ -15,7 +15,8 @@ Every skill module has its own comprehensive documentation, workflow diagrams, a
 | 🚀 **`engineer-mode/`** | Master Entry Point & Playbooks | `/engineer-mode` | [Engineer Mode Guide](engineer-mode/README.md) |
 | 📱 **`android-skills/`** | Modular Android Suite & Google CLI | `/android-architecture`, `/compose-ui`, `/compose-google-maps`, `/compose-maplibre`, `/koin-di`, `/android-testing`, `/gradle-build-hygiene`, `/android-cli-router` | [Android Skills Guide](android-skills/README.md) |
 | ⚛️ **`react-ts-skills/`** | Modular React TS Suite | `/react-ts-architecture`, `/react-ui-components`, `/react-state-management`, `/react-testing` | [React TS Skills Guide](react-ts-skills/README.md) |
-| 🔍 **`diagnostic-skills/`** | Diagnostics, ADR, Design & Logs | `/error-detective`, `/adr-analyze`, `/app-design`, `/changelog-recorder` | [Diagnostic Skills Guide](diagnostic-skills/README.md) |
+| 🔍 **`diagnostic-skills/`** | Diagnostics, ADR, Design & Logs | `/error-detective`, `/adr-analyze`, `/app-design`, `/changelog-recorder`, `/fact-first` | [Diagnostic Skills Guide](diagnostic-skills/README.md) |
+| ⚡ **`mcp-code-search/`** | Local Token-Saving MCP | `raf-local-code-search` (`search_code_smart`, `outline_symbols`, `read_line_range`) | [MCP Code Search Guide](mcp-code-search/README.md) |
 | 🌿 **`git-skills/`** | Version Control & PR Shipping | `/git-assistant` | [Git Skills Guide](git-skills/README.md) |
 
 ---
@@ -49,7 +50,7 @@ Double-click **`install.command`** in macOS Finder.
 
 ## 🕸️ The Connected Skills Mesh
 
-In traditional setups, AI skills run as disconnected silos. In **AI-Engineer-Skills**, all 18 skills know about and collaborate with the entire team:
+In traditional setups, AI skills run as disconnected silos. In **AI-Engineer-Skills**, all 19 skills know about and collaborate with the entire team:
 
 ```mermaid
 flowchart TD

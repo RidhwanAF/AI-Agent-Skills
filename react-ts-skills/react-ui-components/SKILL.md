@@ -117,3 +117,19 @@ Pass data and event handlers first; place long `className` layout styling at the
 1. **Semantic HTML**: Use native `<button>`, `<article>`, `<nav>`, and `<dialog>` tags instead of un-styled `<div>` elements with `onClick`.
 2. **Keyboard Navigation & Focus Rings**: Ensure all interactive elements have visible focus outlines (`focus-visible:ring-2 focus-visible:ring-offset-2`).
 3. **Screen Reader Attributes**: Add `aria-label`, `aria-expanded`, and `aria-live` where dynamic asynchronous updates take place.
+
+---
+
+## ✅ 4. Do's & ❌ Don'ts (Latest Stable React 19)
+
+| Topic | ❌ DON'T (Deprecated / Legacy) | ✅ DO (Latest Stable React 19) |
+| :--- | :--- | :--- |
+| **Ref Forwarding** | `React.forwardRef<HTMLButtonElement, Props>(...)` | Pass `ref?: React.Ref<HTMLButtonElement>` directly as a standard prop |
+| **Component Typing** | `const Card: React.FC<Props> = ...` | Explicit `export function Card({ ... }: CardProps)` |
+| **Form Pending State** | Manual `isSubmitting` `useState` + `try/finally` | `useActionState` / `useFormStatus` |
+| **Clickable Element** | `<div onClick={...}>` | Native `<button type="button" onClick={...}>` |
+
+## 📚 5. Official References
+
+- **React 19 Release & Upgrades**: `https://react.dev/blog/2024/12/05/react-19`
+- **WCAG 2.2 Quick Reference**: `https://www.w3.org/WAI/WCAG22/quickref/`

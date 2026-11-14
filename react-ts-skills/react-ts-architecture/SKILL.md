@@ -115,3 +115,18 @@ graph TD
        throw new Error(`Unhandled union variant: ${JSON.stringify(value)}`);
    }
    ```
+
+---
+
+## ✅ 3. Do's & ❌ Don'ts (Latest Stable TypeScript 5.x)
+
+| Topic | ❌ DON'T (Deprecated / Legacy) | ✅ DO (Latest Stable TypeScript 5.x) |
+| :--- | :--- | :--- |
+| **Runtime Enums** | `enum Status { Active = 'ACTIVE' }` | Union literal `export type Status = 'active' \| 'inactive'` or `as const` |
+| **Loose Typing** | `as any` or `Record<string, any>` | `unknown` + Zod validation or `satisfies` operator |
+| **Prop / Config Typing** | `Object` / `Function` types | Explicit interface/function signatures |
+
+## 📚 4. Official References
+
+- **TypeScript Handbook**: `https://www.typescriptlang.org/docs/handbook/intro.html`
+- **Zod Validation**: `https://zod.dev/`

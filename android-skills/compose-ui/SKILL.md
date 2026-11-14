@@ -147,6 +147,29 @@ fun CartScreen(
 }
 ```
 
+### Rule D: Modifier Chaining Order (`clip` ➔ `background` ➔ `clickable` ➔ `padding`)
+Modifiers are applied **sequentially from outside to inside**. Putting `padding` before `clickable` or `background` shrinks the clickable touch target and clips the ripple inside the padding.
+
+| Intent | ❌ DON'T (Broken Ripple / Target) | ✅ DO (Full Ripple & Correct Bounds) |
+| :--- | :--- | :--- |
+| **Clickable `Column`/`Row`/`Box` with full ripple** | `Modifier.padding(16.dp).clickable { onClick() }` *(ripple & tap area stop inside padding)* | `Modifier.clip(RoundedCornerShape(12.dp)).clickable(onClick = onClick).padding(16.dp)` |
+| **Card-like container with background + border + ripple** | `Modifier.background(bg).padding(16.dp).clip(shape).clickable { }` | `Modifier.clip(shape).background(bg).border(1.dp, border, shape).clickable(onClick = onClick).padding(16.dp)` |
+| **Outer margin + full inner ripple** | `Modifier.clickable(onClick = onClick).padding(16.dp)` *(when outer margin was meant)* | `Modifier.padding(horizontal = 16.dp).clip(shape).clickable(onClick = onClick).padding(16.dp)` |
+
+```kotlin
+// ✅ DO: clip -> background -> clickable -> inner padding (full-area bounded ripple)
+Column(
+    modifier = Modifier
+        .fillMaxWidth()
+        .clip(RoundedCornerShape(12.dp))
+        .background(MaterialTheme.colorScheme.surfaceContainerLow)
+        .clickable(onClick = onItemClick)
+        .padding(16.dp),
+) {
+    Text(text = item.title, style = MaterialTheme.typography.titleMedium)
+}
+```
+
 ---
 
 ## ⚡ 3. Compose State Stability & Recomposition Discipline
@@ -200,3 +223,28 @@ Every Composable file generated or modified must pass Android Lint and Kotlin co
 | Unused parameter in Composable or lambda | Remove unused Composable param; replace unused lambda param with `_` |
 | Unused imports or wildcard `import foo.*` | Explicit imports only (`import androidx.compose.foundation.layout.Row`); prune all unused imports |
 | Unnecessary `@OptIn(ExperimentalMaterial3Api::class)` | Only add `@OptIn` when an experimental API is genuinely used in that function; remove immediately if not needed |
+
+---
+
+## 🚀 7. Latest Stable Compose APIs (Zero Deprecations — Do's & Don'ts)
+
+Always use current stable Jetpack Compose & Material 3 APIs; never emit deprecated packages or legacy Accompanist wrappers:
+
+| Feature | ❌ DON'T (Deprecated / Legacy) | ✅ DO (Latest Stable) |
+| :--- | :--- | :--- |
+| **Lifecycle Owner** | `androidx.compose.ui.platform.LocalLifecycleOwner` | `androidx.lifecycle.compose.LocalLifecycleOwner` |
+| **StateFlow Observation** | `flow.collectAsState()` | `flow.collectAsStateWithLifecycle()` |
+| **Hilt ViewModel** | `androidx.hilt.navigation.compose.hiltViewModel` | `androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel` |
+| **Dividers (M3)** | `Divider()` | `HorizontalDivider()` / `VerticalDivider()` |
+| **Pull to Refresh** | `com.google.accompanist.swiperefresh.SwipeRefresh` | `androidx.compose.material3.pulltorefresh.PullToRefreshBox` |
+| **Directional Icons** | `Icons.Default.ArrowBack` / `Icons.Filled.Send` | `Icons.AutoMirrored.Filled.ArrowBack` / `Icons.AutoMirrored.Filled.Send` |
+| **Edge-to-Edge System Bars** | `accompanist-systemuicontroller` | `enableEdgeToEdge()` in `ComponentActivity` + `WindowInsets.safeDrawing` |
+
+---
+
+## 📚 8. Official References
+
+- **Compose Modifier Order**: `https://developer.android.com/develop/ui/compose/modifiers-order`
+- **Compose API Guidelines**: `https://android.googlesource.com/platform/frameworks/support/+/androidx-main/compose/docs/compose-component-api-guidelines.md`
+- **Lifecycle & State in Compose**: `https://developer.android.com/develop/ui/compose/lifecycle`
+- **Material 3 Components**: `https://developer.android.com/develop/ui/compose/designsystems/material3`
