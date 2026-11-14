@@ -24,6 +24,7 @@ Welcome to the **Diagnostic, ADR, App Design & Changelog Skills** documentation.
 | [**`adr-analyze/`**](./adr-analyze/README.md) | `/adr-analyze` | Architecture Decision Records grounded in official documentation (Google, React, W3C/MDN) with executive summary and Mermaid pie chart scoring. | `/docs/adr/ADR-XXXX-*.md` with Mermaid Pie Score |
 | [**`app-design/`**](./app-design/README.md) | `/app-design` | Visual system modeling, UML class, sequence, and state diagrams, use case specifications in English. | `/docs/architecture/*.md` |
 | [**`changelog-recorder/`**](./changelog-recorder/README.md) | `/changelog-recorder`, `/changelog` | Detailed, timestamped changelog generation with strict naming (`YYYY-MM-DD_HH-mm-ss_<title>.md`). | `/docs/changelogs/` and index |
+| [**`fact-first/`**](./fact-first/README.md) | `/fact-first` | Fact-grounded, direct, zero-sycophancy technical answers citing observed files, command output, or official docs. | Concise cited answers |
 
 ---
 

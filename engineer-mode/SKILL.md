@@ -39,13 +39,17 @@ flowchart TD
     end
 
     subgraph QualityAndShipping ["🔍 Quality & Version Control"]
+        FF(["🎯 /fact-first"])
         ED(["🔍 /error-detective"])
         GA(["🌿 /git-assistant"])
     end
 
+    LocalMCP[("⚡ raf-local-code-search MCP<br/>(BM25 + Symbol Search)")]
     GoogleCLI[("🛠️ Google android-cli")]
 
     %% Orchestrator routing
+    EM -->|Enforce Fact-First Directness| FF
+    EM -->|Token-Saving Code Search| LocalMCP
     EM -->|System Modeling| AD
     EM -->|Document Decisions| ADR
     EM -->|Record Progress| CR
@@ -80,12 +84,13 @@ flowchart TD
 
 When `/engineer-mode` is triggered:
 
-### 1. Assess User Input
+### 1. Assess User Input & Token-Saving Local Code Search
 - **Scenario A: Explicit Directive Provided**
   *(e.g., `/engineer-mode fix the crash in CartViewModel when payment token expires`)*
   - Extract target platform, scope, and intent.
+  - **Token-Saving Code Discovery (MCP First)**: Before reading full files in chat, extract candidate keywords (symbol names, annotations, error strings) and call `search_code_smart` / `outline_symbols` / `read_line_range` from the `raf-local-code-search` MCP server (or `python3 mcp-code-search/server.py --cli --keywords ...`).
   - Match immediately to the corresponding playbook (e.g. `01-error-investigation` or `04-android-deep-engineering`).
-  - Summarize the execution plan and confirm before proceeding.
+  - **Fact-First Response**: Apply `/fact-first` — lead with the direct technical conclusion, cite exact `file:line` evidence or command outputs, never guess, and never agree with flawed code/assumptions just to be supportive.
 - **Scenario B: Broad, Ambiguous, or Empty Prompt**
   *(e.g., `/engineer-mode` or `/engineer-mode I want to build a new feature`)*
   - Initiate the **Interactive Adaptive Questionnaire** below. Do not guess or make unverified assumptions.

@@ -120,3 +120,16 @@ fun MapLibreContainer(
 - Position map overlays (compass, zoom buttons, location centering FAB) using Material 3 `FloatingActionButton` or `IconButton`.
 - Respect edge-to-edge window insets by applying `WindowInsets.safeDrawing` to control overlays so navigation bars never obscure map interactions.
 - Provide smooth camera animations via `animateCamera` rather than abrupt jumps.
+
+---
+
+## ✅ 4. Do's & ❌ Don'ts + Official References
+
+| Topic | ❌ DON'T (Deprecated / Unsafe) | ✅ DO (Latest Stable) |
+| :--- | :--- | :--- |
+| **Lifecycle Owner** | `androidx.compose.ui.platform.LocalLifecycleOwner` | `androidx.lifecycle.compose.LocalLifecycleOwner` |
+| **MapView Cleanup** | Leaving `MapView` unattached to `LifecycleEventObserver` | Attach `ON_START/RESUME/PAUSE/STOP/DESTROY` + `onDispose { mapView.onDestroy() }` |
+| **Modifier Order** | `Modifier.padding(16.dp).clickable { ... }` on overlay cards | `Modifier.clip(shape).clickable { ... }.padding(16.dp)` |
+
+- **Official MapLibre Native Docs**: `https://maplibre.org/maplibre-native/docs/`
+- **Lifecycle in Compose**: `https://developer.android.com/develop/ui/compose/lifecycle`
