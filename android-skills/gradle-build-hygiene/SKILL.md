@@ -118,6 +118,10 @@ dependencies {
 
 ## ✅ 4. Do's & ❌ Don'ts (Latest Stable AGP & Kotlin 2.x)
 
+- **STRICT ZERO-LINT-BYPASS POLICY**:
+  - ❌ **DON'T** add `lint { disable += ... }`, `abortOnError = false`, `ignoreWarnings = true`, `checkReleaseBuilds = false`, or disable lint/ktlint/detekt tasks in `build.gradle.kts` or `lint.xml` to make a build pass.
+  - ✅ **DO** run `./gradlew lintDebug` and fix the underlying source/manifest/dependency issue directly. Only disable or suppress a lint check if there is genuinely no other way to fix it or the user explicitly asks to suppress it.
+
 | Topic | ❌ DON'T (Deprecated / Legacy) | ✅ DO (Latest Stable) |
 | :--- | :--- | :--- |
 | **Annotation Processing** | `kapt(libs.hilt.compiler)` | `ksp(libs.hilt.compiler)` (2x faster, K2 compatible) |

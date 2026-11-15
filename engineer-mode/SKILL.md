@@ -98,7 +98,11 @@ When `/engineer-mode` is triggered:
 ### 2. Mandatory Post-Edit Lint & Auto-Fix Gate (Android & Web)
 Whenever `/engineer-mode` executes a task on an Android project (or when invoked in an Android workspace), you **MUST** always run a Lint & Compiler check and fix all warnings/errors before finishing:
 1. **Run Lint & Kotlin Compilation**: Execute `./gradlew lintDebug` (or `./gradlew :<module>:lintDebug` + `./gradlew compileDebugKotlin` / `detekt` / `ktlintCheck` if configured).
-2. **Audit & Auto-Fix Idiomatic Kotlin / Lint Issues**:
+2. **STRICT ZERO-SUPPRESSION & ZERO-GRADLE-BYPASS POLICY**:
+   - **NEVER** silence errors or warnings by adding `@Suppress`, `@SuppressLint`, `@SuppressWarnings`, `//noinspection`, `@ts-ignore`, `eslint-disable`, or similar annotations/comments.
+   - **NEVER** bypass Android Studio / Gradle lint by editing `build.gradle.kts` / `lint.xml` to add `lint { disable += ... }`, `abortOnError = false`, `ignoreWarnings = true`, `checkReleaseBuilds = false`, or disabling lint/detekt/ktlint tasks.
+   - **Only Exception**: You may suppress a specific rule **only** if there is genuinely no other way to fix it (documenting why in a comment) **or** the user explicitly asks you to suppress it. Otherwise, **always fix the root cause** in the code and re-run lint until clean.
+3. **Audit & Auto-Fix Idiomatic Kotlin / Lint Issues**:
    - **KTX Extensions (`UseKtx`)**: Replace `Uri.parse(...)` with `import androidx.core.net.toUri` + `.toUri()`, and `Color.parseColor(...)` with `import androidx.core.graphics.toColorInt` + `.toColorInt()`.
    - **Clean Top-Level Imports**: Replace inline fully-qualified calls like `kotlin.math.abs(...)` or `kotlin.math.max(...)` with top-level `import kotlin.math.abs` and short call `abs(...)`.
    - **Functional Iteration**: Replace verbose `for (...)` loops with idiomatic `.forEach { ... }`, `.forEachIndexed { ... }`, `.map { ... }`, or `.filter { ... }`.

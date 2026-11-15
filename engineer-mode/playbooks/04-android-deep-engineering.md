@@ -64,7 +64,9 @@ flowchart TD
   ./gradlew lintDebug
   ```
   *(or `./gradlew :<module>:lintDebug` / `./gradlew compileDebugKotlin` for multi-module projects)*
-- **Inspect & Fix Every Warning/Error**: Automatically fix any `UseKtx`, `UnusedImport`, `UnusedParameter`, `RedundantOptIn`, deprecated API usage, or modifier ordering violations reported by Lint or the Kotlin compiler, and re-run until clean.
+- **Inspect & Fix Every Warning/Error (Zero Suppression & Zero Gradle Bypass)**:
+  - Automatically fix any `UseKtx`, `UnusedImport`, `UnusedParameter`, `RedundantOptIn`, deprecated API usage, or modifier ordering violations reported by Lint or the Kotlin compiler, and re-run until clean.
+  - **NEVER** add `@Suppress` / `@SuppressLint` / `@SuppressWarnings`, and **NEVER** disable lint in `build.gradle.kts` or `lint.xml` (`lint { disable += ... }`, `abortOnError = false`, `ignoreWarnings = true`, `checkReleaseBuilds = false`). Only suppress if there is genuinely no other fix or the user explicitly requests it.
 
 ### Step 6: Active ADB Device Logcat Analysis & Device Execution Routing
 - **Automatic Live App Logcat Capture (When ADB Device is Active)**:

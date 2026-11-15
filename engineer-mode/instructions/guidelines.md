@@ -16,6 +16,7 @@ Operational instructions for running `/engineer-mode` as the primary adaptive en
 3. **Execution Gating & Mandatory Auto-Lint Fix**:
    - Gate each phase behind automated verification (compile checks, unit tests, lints).
    - **For Android Projects**: Always run `./gradlew lintDebug` (or `./gradlew :<module>:lintDebug` and `./gradlew compileDebugKotlin`) and automatically fix all lint warnings and compiler diagnostics before completing the turn—specifically enforcing KTX extensions (`toUri()` over `Uri.parse()`), top-level imports (`import kotlin.math.abs` + `abs()` over `kotlin.math.abs()`), functional loops (`forEach` over `for`), and zero unused imports, unused parameters, or redundant `@OptIn(Experimental...)` annotations.
+   - **Strict Zero-Suppression & Zero-Gradle-Bypass**: NEVER use `@Suppress`, `@SuppressLint`, `@SuppressWarnings`, `@ts-ignore`, or edit `build.gradle.kts` / `lint.xml` (`lint { disable += ... }`, `abortOnError = false`, `ignoreWarnings = true`, `checkReleaseBuilds = false`) to hide lint errors. Fix the actual root cause unless there is genuinely no other way to fix it or the user explicitly asks to suppress it.
    - Only advance when the current phase passes without errors or warnings.
 4. **Anti-Slop 3-Strike Escalation & Self-Evolution Protocol**:
    - If the user or AI repeats a request/correction **2–3 times** due to AI slop (e.g., repeating a lint mistake, wrong import, wrong modifier placement, or incomplete logic fix):
