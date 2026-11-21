@@ -188,3 +188,168 @@ fun CartScreen(
     }
 }
 ```
+
+---
+
+### File 5: `ExpandableSubSectionBox.kt` (Anti-Misclick Architecture & Full-Card Ripple)
+```kotlin
+package com.example.presentation.common.components
+
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ExpandMore
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+
+/**
+ * Collapsible section ensuring full card edge-to-edge clickability when collapsed,
+ * while isolating child controls from accidental toggle events when expanded.
+ */
+@Composable
+fun ExpandableSubSectionBox(
+    modifier: Modifier = Modifier,
+    title: String,
+    expanded: Boolean,
+    onToggleExpand: () -> Unit,
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    val haptics = LocalHapticFeedback.current
+    val cardShape = RoundedCornerShape(18.dp)
+    val chevronRotation by animateFloatAsState(
+        targetValue = if (expanded) 180f else 0f,
+        animationSpec = spring(dampingRatio = 0.72f, stiffness = 380f),
+        label = "expandableSubSectionChevron",
+    )
+
+    Surface(
+        shape = cardShape,
+        color = MaterialTheme.colorScheme.surfaceContainerHigh,
+        border = BorderStroke(
+            width = 1.dp,
+            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f),
+        ),
+        modifier = modifier.fillMaxWidth(),
+    ) {
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(cardShape)
+                    .clickable {
+                        haptics.performHapticFeedback(HapticFeedbackType.SegmentTick)
+                        onToggleExpand()
+                    }
+                    .padding(horizontal = 14.dp, vertical = 14.dp),
+            ) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier.weight(1f),
+                )
+                Icon(
+                    imageVector = Icons.Rounded.ExpandMore,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier
+                        .size(20.dp)
+                        .graphicsLayer { rotationZ = chevronRotation },
+                )
+            }
+
+            AnimatedVisibility(
+                visible = expanded,
+                enter = fadeIn(tween(180)) + expandVertically(spring(dampingRatio = 0.82f, stiffness = 380f)),
+                exit = fadeOut(tween(140)) + shrinkVertically(spring(dampingRatio = 0.86f, stiffness = 400f)),
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 14.dp, end = 14.dp, bottom = 12.dp),
+                    content = content,
+                )
+            }
+        }
+    }
+}
+```
+
+---
+
+### File 6: `ModernStatefulTextField.kt` (Compose 1.13+ Migration)
+```kotlin
+package com.example.presentation.common.components
+
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.clearText
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.ImeAction
+import kotlinx.coroutines.flow.drop
+
+@Composable
+fun ModernStatefulTextField(
+    modifier: Modifier = Modifier,
+    state: TextFieldState = remember { TextFieldState() },
+    onTextUserChange: () -> Unit,
+    onSubmit: (String) -> Unit,
+) {
+    LaunchedEffect(state) {
+        snapshotFlow { state.text.toString() }
+            .drop(1)
+            .collect { onTextUserChange() }
+    }
+
+    BasicTextField(
+        state = state,
+        lineLimits = TextFieldLineLimits.SingleLine,
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send),
+        onKeyboardAction = {
+            val text = state.text.toString().trim()
+            if (text.isNotEmpty()) {
+                onSubmit(text)
+                state.clearText()
+            }
+        },
+        modifier = modifier,
+    )
+}
+```

@@ -239,10 +239,215 @@ Always use current stable Jetpack Compose & Material 3 APIs; never emit deprecat
 | **Pull to Refresh** | `com.google.accompanist.swiperefresh.SwipeRefresh` | `androidx.compose.material3.pulltorefresh.PullToRefreshBox` |
 | **Directional Icons** | `Icons.Default.ArrowBack` / `Icons.Filled.Send` | `Icons.AutoMirrored.Filled.ArrowBack` / `Icons.AutoMirrored.Filled.Send` |
 | **Edge-to-Edge System Bars** | `accompanist-systemuicontroller` | `enableEdgeToEdge()` in `ComponentActivity` + `WindowInsets.safeDrawing` |
+| **Text Field Input State** | `BasicTextField(value: String, onValueChange: (String) -> Unit)` | `BasicTextField(state = remember { TextFieldState() }, lineLimits = TextFieldLineLimits.SingleLine)` + `snapshotFlow { state.text.toString() }` |
 
 ---
 
-## 📚 8. Official References
+## 📦 8. Expandable Containers & Anti-Misclick Architecture
+
+When implementing expandable cards or collapsible settings sub-sections, AI models frequently introduce one of two critical UX bugs:
+1. **The Tiny Tap Target Bug**: Placing `.clickable` only on a small inner title or icon, forcing the user to precisely hunt for a tiny click target.
+2. **The Accidental Collapse Bug**: Wrapping the entire outer container (both header and expanded content) in `.clickable`, causing any touch on child sliders, switches, text fields, or buttons to accidentally collapse the card.
+
+### Mandatory Architecture Pattern:
+- **When Collapsed**: The clickable area and Material 3 ripple MUST span the entire card edge-to-edge (`Modifier.clip(cardShape).clickable { onToggle() }`).
+- **When Expanded**: The header remains cleanly clickable to collapse, but the expanded body content MUST reside **outside** the toggle clickable container:
+
+```kotlin
+/**
+ * Expandable container ensuring full-card clickability when collapsed, while
+ * strictly isolating expanded child controls from accidental toggle events.
+ */
+@Composable
+fun ExpandableCard(
+    modifier: Modifier = Modifier,
+    title: String,
+    expanded: Boolean,
+    onToggleExpand: () -> Unit,
+    cardShape: Shape = RoundedCornerShape(18.dp),
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    val haptics = LocalHapticFeedback.current
+    val chevronRotation by animateFloatAsState(
+        targetValue = if (expanded) 180f else 0f,
+        animationSpec = spring(dampingRatio = 0.72f, stiffness = 380f),
+        label = "expandableChevron",
+    )
+
+    Surface(
+        shape = cardShape,
+        color = MaterialTheme.colorScheme.surfaceContainerHigh,
+        modifier = modifier.fillMaxWidth(),
+    ) {
+        Column(modifier = Modifier.fillMaxWidth()) {
+            // Header box: spans full card width when collapsed
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(cardShape)
+                    .clickable {
+                        haptics.performHapticFeedback(HapticFeedbackType.SegmentTick)
+                        onToggleExpand()
+                    }
+                    .padding(horizontal = 16.dp, vertical = 14.dp),
+            ) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier.weight(1f),
+                )
+                Icon(
+                    imageVector = Icons.Rounded.ExpandMore,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(22.dp)
+                        .graphicsLayer { rotationZ = chevronRotation },
+                )
+            }
+
+            // Expanded body: strictly OUTSIDE the toggle clickable container
+            AnimatedVisibility(
+                visible = expanded,
+                enter = fadeIn(tween(180)) + expandVertically(spring(dampingRatio = 0.82f, stiffness = 380f)),
+                exit = fadeOut(tween(140)) + shrinkVertically(spring(dampingRatio = 0.86f, stiffness = 400f)),
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, end = 16.dp, bottom = 14.dp),
+                    content = content,
+                )
+            }
+        }
+    }
+}
+```
+
+---
+
+## 🔲 9. Responsive `FlowRow` & Multi-Column Layouts (Sub-Pixel Guard)
+
+When arranging sub-items or chips in a multi-column responsive layout, naive column calculation (e.g., `maxWidth / 2`) causes Compose layout rounding errors where items prematurely wrap into an unsightly single column on wider viewports.
+
+### Mandatory Sub-Pixel Rounding Guard Formula:
+Always wrap multi-column sub-items in `BoxWithConstraints` and compute column counts with horizontal spacing compensation and a `1.dp` guard:
+
+```kotlin
+@Composable
+fun ResponsiveSubItemGrid(
+    modifier: Modifier = Modifier,
+    minItemWidth: Dp = 200.dp,
+    horizontalSpacing: Dp = 12.dp,
+    verticalSpacing: Dp = 8.dp,
+    maxColumns: Int = 2,
+    content: @Composable (itemModifier: Modifier) -> Unit,
+) {
+    BoxWithConstraints(modifier = modifier.fillMaxWidth()) {
+        val columns = ((maxWidth + horizontalSpacing) / (minItemWidth + horizontalSpacing))
+            .toInt()
+            .coerceIn(1, maxColumns.coerceAtLeast(1))
+
+        val itemModifier = if (columns > 1) {
+            val totalGap = horizontalSpacing * (columns - 1)
+            // Subtract 1.dp sub-pixel guard so floating-point rounding never forces accidental wrapping
+            val safeColumnWidth = ((maxWidth - totalGap - 1.dp) / columns.toFloat()).coerceAtLeast(1.dp)
+            Modifier.width(safeColumnWidth)
+        } else {
+            Modifier.fillMaxWidth()
+        }
+
+        FlowRow(
+            maxItemsInEachRow = columns,
+            horizontalArrangement = Arrangement.spacedBy(horizontalSpacing),
+            verticalArrangement = Arrangement.spacedBy(verticalSpacing),
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            content(itemModifier)
+        }
+    }
+}
+```
+
+---
+
+## 🔄 10. Animated Icon Transformations in Menus & Dropdowns
+
+Never display static icons for expandable menus, dialogs, or dropdown selectors.
+- Animate chevron and dropdown arrow rotations using `animateFloatAsState` (`0° <-> 180°` spring rotation).
+- Apply via `.graphicsLayer { rotationZ = rotation }` to avoid recomposing the entire Composable during angle updates:
+
+```kotlin
+val dropdownArrowRotation by animateFloatAsState(
+    targetValue = if (menuExpanded) 180f else 0f,
+    animationSpec = spring(dampingRatio = 0.72f, stiffness = 380f),
+    label = "dropdownArrowRotation",
+)
+
+Icon(
+    imageVector = Icons.Rounded.ArrowDropDown,
+    contentDescription = null,
+    modifier = Modifier
+        .size(20.dp)
+        .graphicsLayer { rotationZ = dropdownArrowRotation },
+)
+```
+
+---
+
+## 📜 11. Scrollable Viewports, Spacing & Adaptive Elevation Shadows
+
+When displaying scrollable content below a sticky header, camera cutout, or simulation mockup:
+1. **Dedicated Clearance**: Always place an explicit spacing buffer (e.g. `12.dp` to `16.dp`) between sticky controls/previews and the scrollable viewport.
+2. **Rounded Viewport Clipping**: Clip the scrollable container to matching corner radii (`RoundedCornerShape(topStart = 22.dp, topEnd = 22.dp)`) so scrolled content never bleeds outside the card boundaries.
+3. **Adaptive Scroll Shadow**: Never draw static shadow lines that look unpolished when content is at rest. Use `derivedStateOf { scrollState.value > 0 }` to dynamically fade in a top/bottom vertical gradient shadow **only when scrolled down**, keeping it 100% transparent at top rest:
+
+```kotlin
+val scrollState = rememberScrollState()
+val isScrolled by remember { derivedStateOf { scrollState.value > 0 } }
+val topShadowAlpha by animateFloatAsState(
+    targetValue = if (isScrolled) 1f else 0f,
+    animationSpec = tween(durationMillis = 180),
+    label = "topScrollShadowAlpha",
+)
+
+Box(
+    modifier = Modifier
+        .weight(1f)
+        .fillMaxWidth()
+        .clip(RoundedCornerShape(topStart = 22.dp, topEnd = 22.dp)),
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState)
+            .padding(bottom = 16.dp),
+    ) {
+        // Scroll content
+    }
+
+    if (topShadowAlpha > 0.01f) {
+        Box(
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .fillMaxWidth()
+                .height(20.dp)
+                .background(
+                    Brush.verticalGradient(
+                        0.0f to MaterialTheme.colorScheme.scrim.copy(alpha = 0.12f * topShadowAlpha),
+                        1.0f to Color.Transparent,
+                    ),
+                ),
+        )
+    }
+}
+```
+
+---
+
+## 📚 12. Official References
 
 - **Compose Modifier Order**: `https://developer.android.com/develop/ui/compose/modifiers-order`
 - **Compose API Guidelines**: `https://android.googlesource.com/platform/frameworks/support/+/androidx-main/compose/docs/compose-component-api-guidelines.md`
