@@ -128,10 +128,33 @@ dependencies {
 | **Compose Compiler** | `composeOptions { kotlinCompilerExtensionVersion = "..." }` | `alias(libs.plugins.kotlin.compose)` (`org.jetbrains.kotlin.plugin.compose`) |
 | **Java Target** | `kotlinOptions { jvmTarget = "1.8" }` | `kotlin { jvmToolchain(17) }` |
 | **Dependencies** | Hardcoded `"com.squareup.retrofit2:retrofit:2.11.0"` | Version Catalog `implementation(libs.retrofit)` in `gradle/libs.versions.toml` |
+| **Compose 1.13+ SDK** | Plain `compileSdk = 37` (causes AAR metadata error 37.1+) | `compileSdk { version = release(37) { minorApiLevel = 2 } }` (Android 37.2) |
+| **LocaleConfig Definition** | Manual `res/xml/locales_config.xml` (causes `LocaleFolder` vs `in/id` drift) | `androidResources { generateLocaleConfig = true }` + `res/resources.properties` (`unqualifiedResLocale=en`) |
 
 ---
 
-## 📚 5. Official References
+## 🌐 5. Automatic LocaleConfig & Language Governance
+
+Do NOT maintain manual XML lists like `app/src/main/res/xml/locales_config.xml`. Legacy language codes (e.g. `in` for Indonesian in Java vs `id` in modern BCP-47) trigger lint warnings (`LocaleFolder: The locale folder "id" should be called "in" instead`) or manifest conflicts.
+
+### Standard AGP Setup:
+In `app/build.gradle.kts`:
+```kotlin
+android {
+    androidResources {
+        generateLocaleConfig = true
+    }
+}
+```
+In `app/src/main/res/resources.properties`:
+```properties
+unqualifiedResLocale=en
+```
+Keep localized folders standard (e.g. `values-in` for Indonesian) and let AGP automatically scan and generate `_generated_res_locale_config.xml` without manifest mismatch errors.
+
+---
+
+## 📚 6. Official References
 
 - **AGP Release Notes**: `https://developer.android.com/build/releases/gradle-plugin`
 - **Compose Compiler Plugin (Kotlin 2.0+)**: `https://developer.android.com/develop/ui/compose/compiler`

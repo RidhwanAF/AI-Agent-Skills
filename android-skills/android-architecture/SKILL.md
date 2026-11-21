@@ -151,10 +151,48 @@ graph TD
 | **Preferences** | `SharedPreferences` | `DataStore<Preferences>` / Proto DataStore |
 | **URI & Color parsing** | `Uri.parse(url)` / `Color.parseColor(hex)` | `url.toUri()` (`androidx.core.net.toUri`) / `hex.toColorInt()` |
 | **Coroutines in ViewModel** | `GlobalScope.launch { ... }` | `viewModelScope.launch { ... }` or `stateIn(..., SharingStarted.WhileSubscribed(5_000), ...)` |
+| **Notification Listener I/O** | Querying `activeNotifications` or decoding Bitmaps directly on main thread in `onListenerConnected` / `onNotificationPosted` | Sequential `CoroutineScope(SupervisorJob() + Dispatchers.IO.limitedParallelism(1))` cancelled in `onDestroy()` to comply with `@WorkerThread` |
 
 ---
 
-## 📚 4. Official References
+## ⚙️ 4. Android Service & Background Worker-Thread Compliance
+
+Framework callbacks on `NotificationListenerService` (`onListenerConnected`, `onNotificationPosted`, `onNotificationRemoved`) and standard `Service` components are triggered on the application's Main Looper. 
+
+### Worker-Thread Rule for Notification Listeners:
+Methods like `activeNotifications`, `packageManager.getApplicationIcon()`, `icon.loadDrawable()`, or attachment stream decoding from `contentResolver.openInputStream(uri)` can be annotated with `@WorkerThread` or cause main-thread jank and lint errors (`Call must be from @WorkerThread, but super method NotificationListenerService.onListenerConnected(…) is allowing @{Main,Ui}`).
+
+```kotlin
+class MyNotificationListenerService : NotificationListenerService() {
+
+    // Sequential I/O dispatcher prevents race conditions between posted/removed events
+    private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO.limitedParallelism(1))
+
+    override fun onDestroy() {
+        serviceScope.cancel()
+        super.onDestroy()
+    }
+
+    override fun onListenerConnected() {
+        super.onListenerConnected()
+        serviceScope.launch {
+            refreshActiveNotifications()
+        }
+    }
+
+    override fun onNotificationPosted(sbn: StatusBarNotification?, rankingMap: RankingMap?) {
+        super.onNotificationPosted(sbn, rankingMap)
+        val notif = sbn ?: return
+        serviceScope.launch {
+            processIncomingNotification(notif, rankingMap)
+        }
+    }
+}
+```
+
+---
+
+## 📚 5. Official References
 
 - **Guide to App Architecture**: `https://developer.android.com/topic/architecture`
 - **Android KTX Extensions**: `https://developer.android.com/kotlin/ktx`

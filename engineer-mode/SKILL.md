@@ -108,7 +108,17 @@ Whenever `/engineer-mode` executes a task on an Android project (or when invoked
    - **Functional Iteration**: Replace verbose `for (...)` loops with idiomatic `.forEach { ... }`, `.forEachIndexed { ... }`, `.map { ... }`, or `.filter { ... }`.
    - **Zero Dead/Redundant Code**: Remove all **unused imports**, **unused parameters** (use `_` in lambdas), and **unnecessary `@OptIn(Experimental...)`** annotations.
    - **Compose Modifier & Hilt Rules**: Verify `modifier: Modifier = Modifier` is `#1` at the very top of `@Composable fun` declarations, `modifier = ...` is at the very bottom of call sites, and `hiltViewModel` is imported from `androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel`.
-3. **Active ADB Device & Live App Logcat Analysis (When Device/Emulator is Connected)**:
+   - **Compose UI Interaction Guardrails**:
+     - *Expandable cards*: Full-card edge-to-edge `.clickable` with rounded ripple when collapsed; isolated body content when expanded so child controls never trigger accidental collapse.
+     - *Animated dropdowns & chevrons*: Always animate rotation (`0° <-> 180°`) using `animateFloatAsState` and `.graphicsLayer { rotationZ = rotation }`.
+     - *Responsive grids*: Always apply `BoxWithConstraints` and `1.dp` sub-pixel rounding guards in multi-column `FlowRow` layouts.
+     - *Scroll viewports*: Ensure `12.dp`+ clearance below sticky previews, rounded clipping, and `derivedStateOf { scrollState.value > 0 }` top shadow gradients.
+     - *Compose 1.13+*: Migrate `BasicTextField(value, onValueChange)` to `BasicTextField(state = TextFieldState, lineLimits = TextFieldLineLimits.SingleLine)`.
+   - **Service & Notification Listener Worker-Thread Compliance**:
+     - Never run notification queries (`activeNotifications`) or bitmap decoding directly on the main thread in `NotificationListenerService` callbacks (`onListenerConnected`, `onNotificationPosted`). Always dispatch via a dedicated sequential `CoroutineScope(SupervisorJob() + Dispatchers.IO.limitedParallelism(1))`.
+   - **Automatic LocaleConfig in AGP**:
+     - Avoid manual `res/xml/locales_config.xml` that causes `LocaleFolder` vs `in/id` drift. Use `androidResources { generateLocaleConfig = true }` with `unqualifiedResLocale=en` in `res/resources.properties`.
+4. **Active ADB Device & Live App Logcat Analysis (When Device/Emulator is Connected)**:
    - Run `adb devices -l` to detect if an Android device or emulator is active.
    - Whenever an ADB device is connected, automatically capture and analyze the active app's runtime logs (`adb shell pidof -s <applicationId>` ➔ `adb logcat -d --pid=<PID> -v threadtime` + `adb logcat -d -b crash` + foreground check `adb shell dumpsys window | grep -E 'mCurrentFocus|mFocusedApp'`) to inspect real-time exceptions, network/API logs, coroutine flows, and UI state issues.
 
