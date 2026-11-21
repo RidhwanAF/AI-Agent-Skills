@@ -192,8 +192,9 @@ Column(
 ## 📳 4. Tactile Haptic Feedback Standards
 
 Obtain `val haptics = LocalHapticFeedback.current` in Composables. Fire tactile feedback strictly based on UI semantics:
-- **`HapticFeedbackType.SegmentTick`**: Slider movements, segmented button toggles, tab switches.
-- **`HapticFeedbackType.Confirm`**: Successful action completion (e.g. item added to cart, payment success).
+- **`HapticFeedbackType.SegmentFrequentTick`**: Continuous fluid interactions — sliders, scrubbing, continuous dragging gesture updates, seek bar tracking.
+- **`HapticFeedbackType.SegmentTick`**: Discrete single-step changes — segmented button choice, tab switches, dropdown/expand toggles, discrete detent crossing.
+- **`HapticFeedbackType.Confirm`**: Successful action completion (e.g. item added to cart, payment success, gesture dismiss commit).
 - **`HapticFeedbackType.Reject`**: Validation errors, boundary bounces, blocked inputs.
 
 ---

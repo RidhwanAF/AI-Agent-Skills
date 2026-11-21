@@ -42,7 +42,7 @@ flowchart TD
   - Always use `import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel` (never use the deprecated `import androidx.hilt.navigation.compose.hiltViewModel`).
 - Use Material 3 with edge-to-edge window insets (`Modifier.windowInsetsPadding(...)`).
 - Stable state parameters (`@Immutable`, `@Stable`, immutable collections).
-- Tactile feedback: `LocalHapticFeedback.current` with purposeful `HapticFeedbackType`.
+- Tactile feedback: `LocalHapticFeedback.current` with purposeful `HapticFeedbackType` (`SegmentFrequentTick` for sliders/dragging, `SegmentTick` for discrete toggles/steps).
 
 ### Step 3: Zero Hardcoded Strings
 - Extract all text into `res/values/strings.xml` with semantic prefixes (`label_`, `msg_`, `title_`, `action_`, `error_`, `hint_`, `desc_`).
