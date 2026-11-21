@@ -353,3 +353,53 @@ fun ModernStatefulTextField(
     )
 }
 ```
+
+### 11. Haptic Feedback for Sliders & Continuous Dragging (`SegmentFrequentTick`)
+
+```kotlin
+package com.example.ui.components
+
+import androidx.compose.material3.Slider
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
+import kotlin.math.roundToInt
+
+@Composable
+fun TactileScrubSlider(
+    value: Float,
+    onValueChange: (Float) -> Unit,
+    modifier: Modifier = Modifier,
+    valueRange: ClosedFloatingPointRange<Float> = 0f..1f,
+) {
+    val haptics = LocalHapticFeedback.current
+    val totalBuckets = 32
+    fun bucketFor(v: Float): Int {
+        val span = (valueRange.endInclusive - valueRange.start).coerceAtLeast(0.0001f)
+        val fraction = ((v - valueRange.start) / span).coerceIn(0f, 1f)
+        return (fraction * totalBuckets).roundToInt()
+    }
+
+    var lastBucket by remember(valueRange) { mutableIntStateOf(bucketFor(value)) }
+
+    Slider(
+        value = value,
+        onValueChange = { next ->
+            val bucket = bucketFor(next)
+            if (bucket != lastBucket) {
+                lastBucket = bucket
+                // Fluid high-frequency tick for continuous dragging / sliding
+                haptics.performHapticFeedback(HapticFeedbackType.SegmentFrequentTick)
+            }
+            onValueChange(next)
+        },
+        valueRange = valueRange,
+        modifier = modifier,
+    )
+}
+```

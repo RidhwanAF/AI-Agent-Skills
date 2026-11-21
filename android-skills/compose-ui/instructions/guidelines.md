@@ -63,8 +63,9 @@
 
 ## 4. Tactile Haptic Feedback
 - Use `LocalHapticFeedback.current` with purposeful semantics:
-  - `SegmentTick`: Sliders, tabs, toggles.
-  - `Confirm`: Success, checkout, submission.
+  - `SegmentFrequentTick`: Sliders, continuous dragging, scrubbing, seek bar tracking.
+  - `SegmentTick`: Discrete segmented buttons, tab switches, expandable card toggles.
+  - `Confirm`: Success, checkout, submission, gesture dismiss commit.
   - `Reject`: Errors, invalid input, boundary rejection.
 
 ## 5. Zero Hardcoded Strings
