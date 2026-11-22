@@ -354,49 +354,89 @@ fun ModernStatefulTextField(
 }
 ```
 
-### 11. Haptic Feedback for Sliders & Continuous Dragging (`SegmentFrequentTick`)
+### 11. Haptic Feedback for Sliders & Continuous Dragging (Low-Amplitude Continuous Wave)
 
 ```kotlin
 package com.example.ui.components
 
+import android.content.Context
+import android.os.VibrationEffect
+import android.os.VibratorManager
 import androidx.compose.material3.Slider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalHapticFeedback
-import kotlin.math.roundToInt
+import androidx.compose.ui.platform.LocalContext
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.math.abs
+import kotlin.time.Duration.Companion.milliseconds
 
-@Composable
-fun TactileScrubSlider(
-    value: Float,
-    onValueChange: (Float) -> Unit,
-    modifier: Modifier = Modifier,
-    valueRange: ClosedFloatingPointRange<Float> = 0f..1f,
-) {
-    val haptics = LocalHapticFeedback.current
-    val totalBuckets = 32
-    fun bucketFor(v: Float): Int {
-        val span = (valueRange.endInclusive - valueRange.start).coerceAtLeast(0.0001f)
-        val fraction = ((v - valueRange.start) / span).coerceIn(0f, 1f)
-        return (fraction * totalBuckets).roundToInt()
+class SmoothSlideHaptics(context: Context) {
+    private val vibrator =
+        (context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager).defaultVibrator
+    private var isWaveActive = false
+
+    fun onSlideMove() {
+        if (!vibrator.hasVibrator() || !vibrator.hasAmplitudeControl() || isWaveActive) return
+        isWaveActive = true
+        val timings = longArrayOf(24L, 48L, 52L, 52L, 48L)
+        val amplitudes = intArrayOf(2, 4, 6, 5, 4)
+        // Loops indices 1..4 seamlessly at ultra-low intensity while finger moves (system volume slider feel)
+        vibrator.vibrate(VibrationEffect.createWaveform(timings, amplitudes, 1))
     }
 
-    var lastBucket by remember(valueRange) { mutableIntStateOf(bucketFor(value)) }
+    fun stopWave() {
+        if (!isWaveActive) return
+        isWaveActive = false
+        vibrator.cancel()
+    }
+}
+
+@Composable
+fun TactileWaveSlider(
+    modifier: Modifier = Modifier,
+    value: Float,
+    onValueChange: (Float) -> Unit,
+    valueRange: ClosedFloatingPointRange<Float> = 0f..1f,
+) {
+    val context = LocalContext.current
+    val slideHaptics = remember(context) { SmoothSlideHaptics(context) }
+    val scope = rememberCoroutineScope()
+    var lastMoved by remember(valueRange) { mutableFloatStateOf(value) }
+    var idleJob by remember { mutableStateOf<Job?>(null) }
+
+    DisposableEffect(slideHaptics) {
+        onDispose {
+            idleJob?.cancel()
+            slideHaptics.stopWave()
+        }
+    }
 
     Slider(
         value = value,
         onValueChange = { next ->
-            val bucket = bucketFor(next)
-            if (bucket != lastBucket) {
-                lastBucket = bucket
-                // Fluid high-frequency tick for continuous dragging / sliding
-                haptics.performHapticFeedback(HapticFeedbackType.SegmentFrequentTick)
+            if (abs(next - lastMoved) > (valueRange.endInclusive - valueRange.start) * 0.002f) {
+                lastMoved = next
+                slideHaptics.onSlideMove()
+                idleJob?.cancel()
+                idleJob = scope.launch {
+                    delay(85.milliseconds)
+                    slideHaptics.stopWave()
+                }
             }
             onValueChange(next)
+        },
+        onValueChangeFinished = {
+            idleJob?.cancel()
+            slideHaptics.stopWave()
         },
         valueRange = valueRange,
         modifier = modifier,

@@ -42,13 +42,15 @@ flowchart TD
   - Always use `import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel` (never use the deprecated `import androidx.hilt.navigation.compose.hiltViewModel`).
 - Use Material 3 with edge-to-edge window insets (`Modifier.windowInsetsPadding(...)`).
 - Stable state parameters (`@Immutable`, `@Stable`, immutable collections).
-- Tactile feedback: `LocalHapticFeedback.current` with purposeful `HapticFeedbackType` (`SegmentFrequentTick` for sliders/dragging, `SegmentTick` for discrete toggles/steps).
+- Tactile feedback: Low-amplitude continuous repeating waveform (`VibrationEffect.createWaveform(..., repeat = 1)`, auto-stopping on `~85ms` stillness/release) for sliders and fluid dragging (fallback `SegmentFrequentTick` only without amplitude control); `LocalHapticFeedback.current` (`SegmentTick`, `Confirm`, `Reject`) for discrete interactions.
 
 ### Step 3: Zero Hardcoded Strings
 - Extract all text into `res/values/strings.xml` with semantic prefixes (`label_`, `msg_`, `title_`, `action_`, `error_`, `hint_`, `desc_`).
 
 ### Step 4: KTX Extensions, Clean Imports, Functional Loops & Zero Unused Code
 - **Use KTX Extensions (`UseKtx`)**: Always use `uriString.toUri()` (`import androidx.core.net.toUri`) instead of `Uri.parse(uriString)`, and `hex.toColorInt()` (`import androidx.core.graphics.toColorInt`) instead of `Color.parseColor(hex)`.
+- **Compose 1.13+ Observable Locale (`NonObservableLocale`)**: Inside `@Composable` functions, always use `LocalLocale.current.platformLocale` (`androidx.compose.ui.platform.LocalLocale`) instead of `Locale.getDefault()`.
+- **Sliders Inside Swipeable Containers**: Track active slider touches via a non-consuming `PointerEventPass.Initial` `CompositionLocal` counter so outer swipe gestures yield without calling `change.consume()` on `PointerEventPass.Main`.
 - **Top-Level Imports (No Inline FQNs)**: Never write `kotlin.math.abs(...)` or `kotlin.math.max(...)` inline; always add `import kotlin.math.abs` at the top of the file and call `abs(...)`.
 - **Functional Iteration**: Prefer `.forEach { ... }`, `.forEachIndexed { ... }`, `.map { ... }`, `.filter { ... }` over imperative `for` loops.
 - **Zero Unused Code & Redundant Annotations**:

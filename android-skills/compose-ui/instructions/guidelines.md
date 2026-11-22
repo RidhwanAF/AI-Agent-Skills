@@ -49,9 +49,10 @@
 2. **Rounded Clip**: Clip the scroll container with `RoundedCornerShape(topStart = ..., topEnd = ...)`.
 3. **Adaptive Shadow**: Use `derivedStateOf { scrollState.value > 0 }` to fade in a subtle top gradient shadow only during active scroll.
 
-## 6. Modern Compose 1.13+ Text Field State Migration
-- **FORBIDDEN**: `BasicTextField(value: String, onValueChange: (String) -> Unit)` (Deprecated in Compose 1.13.0+).
-- **MANDATORY**: `BasicTextField(state = remember { TextFieldState() }, lineLimits = TextFieldLineLimits.SingleLine, ...)` with `state.clearText()` and `snapshotFlow { state.text.toString() }`.
+## 6. Modern Compose 1.13+ APIs & Gesture Interop
+- **Text Field State (FORBIDDEN: `value`/`onValueChange`)**: `BasicTextField(value: String, onValueChange: (String) -> Unit)` is deprecated in Compose 1.13.0+. Always use `BasicTextField(state = remember { TextFieldState() }, lineLimits = TextFieldLineLimits.SingleLine, ...)` with `state.clearText()` and `snapshotFlow { state.text.toString() }`.
+- **Observable Locale (`NonObservableLocale`)**: Never call `Locale.getDefault()` directly inside `@Composable` functions. Always read `LocalLocale.current.platformLocale` (`androidx.compose.ui.platform.LocalLocale`) so locale changes trigger recomposition cleanly with zero lint errors.
+- **Sliders Inside Swipeable Overlays**: Never call `change.consume()` on `PointerEventPass.Main` in a wrapper around Material `Slider` (doing so starves `Slider`'s internal drag detector). Use a non-consuming `PointerEventPass.Initial` `CompositionLocal` touch counter so the outer swipeable container yields whenever `activeSliderTouchCount > 0`.
 
 ## 7. State Stability & Recomposition Guardrails
 1. **Annotate UI States**:
@@ -62,9 +63,9 @@
    - Use stable lambdas and method references to avoid breaking Strong Skipping mode.
 
 ## 4. Tactile Haptic Feedback
-- Use `LocalHapticFeedback.current` with purposeful semantics:
-  - `SegmentFrequentTick`: Sliders, continuous dragging, scrubbing, seek bar tracking.
-  - `SegmentTick`: Discrete segmented buttons, tab switches, expandable card toggles.
+- Match tactile feedback to interaction physics:
+  - **Sliders & continuous dragging/scrubbing**: Use a whisper-light, ultra-weak continuous repeating waveform (`VibratorManager` + `VibrationEffect.createWaveform(..., repeat = 1)` at amplitudes `~2..6/255`) while moving (auto-cancel after `~85ms` stillness or on release/dispose), with a whisper-soft `PRIMITIVE_LOW_TICK` (`0.18f`) boundary thud at min/max. Do NOT tick on every step change. Fall back to `HapticFeedbackType.SegmentFrequentTick` only when `!vibrator.hasAmplitudeControl()`.
+  - `SegmentTick`: Discrete segmented buttons, tab switches, step buttons, expandable card toggles.
   - `Confirm`: Success, checkout, submission, gesture dismiss commit.
   - `Reject`: Errors, invalid input, boundary rejection.
 
