@@ -191,9 +191,12 @@ Column(
 
 ## 📳 4. Tactile Haptic Feedback Standards
 
-Obtain `val haptics = LocalHapticFeedback.current` in Composables. Fire tactile feedback strictly based on UI semantics:
-- **`HapticFeedbackType.SegmentFrequentTick`**: Continuous fluid interactions — sliders, scrubbing, continuous dragging gesture updates, seek bar tracking.
-- **`HapticFeedbackType.SegmentTick`**: Discrete single-step changes — segmented button choice, tab switches, dropdown/expand toggles, discrete detent crossing.
+Fire tactile feedback strictly based on UI interaction physics:
+- **Continuous Sliders & Fluid Dragging/Scrubbing (System Volume Slider Feel)**:
+  - **NEVER** fire discrete sharp ticks on every value step change during smooth dragging — use a **whisper-light, ultra-weak continuous repeating waveform** via `VibratorManager` + `VibrationEffect.createWaveform(timings = longArrayOf(24L, 48L, 52L, 52L, 48L), amplitudes = intArrayOf(2, 4, 6, 5, 4), repeat = 1)` while `vibrator.hasAmplitudeControl()` is true (keep amplitudes ultra-low `~2..6/255` so modern LRA motors feel silky, never harsh or buzz-heavy).
+  - Guard with an active flag (`isSlideWaveActive`) so movement frames sustain the wave without restarting/clicking, auto-stop (`vibrator.cancel()`) after `~85ms` of finger stillness or immediately on drag end / `DisposableEffect.onDispose`, and play a whisper-soft single low-frequency thud (`PRIMITIVE_LOW_TICK`, scale `0.18f`) once when hitting the exact min/max bound.
+  - Fall back to `HapticFeedbackType.SegmentFrequentTick` **only** on hardware lacking amplitude control (`!vibrator.hasAmplitudeControl()`).
+- **`HapticFeedbackType.SegmentTick`**: Discrete single-step changes — segmented button choice, tab switches, step `-`/`+` buttons, dropdown/expand toggles, discrete detent crossing.
 - **`HapticFeedbackType.Confirm`**: Successful action completion (e.g. item added to cart, payment success, gesture dismiss commit).
 - **`HapticFeedbackType.Reject`**: Validation errors, boundary bounces, blocked inputs.
 
