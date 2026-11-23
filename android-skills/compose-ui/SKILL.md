@@ -451,7 +451,50 @@ Box(
 
 ---
 
-## 📚 12. Official References
+## 📱 12. Strict Edge-to-Edge BottomSheets, Horizontal Scrolls, IME & TopAppBars
+
+Never let scrollable content get clipped by system bars, outer horizontal paddings, or the software keyboard:
+
+### A. Edge-to-Edge `ModalBottomSheet` (Zero Navigation-Bar Clipping — Mandatory)
+Material 3 `ModalBottomSheet` applies default `contentWindowInsets` that clip inner lists above the system navigation bar. You **MUST**:
+1. Pass `contentWindowInsets = { WindowInsets(0) }` to `ModalBottomSheet` so the sheet surface extends all the way to the physical bottom edge behind the translucent system navigation bar.
+2. Apply navigation bar clearance **inside the scrollable content** via `LazyColumn(contentPadding = PaddingValues(..., bottom = 24.dp + WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()))` or a trailing `Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))` inside a `verticalScroll` column — **NEVER** as outer clipping padding on the sheet container.
+
+```kotlin
+// ✅ CORRECT: Edge-to-edge ModalBottomSheet — items glide behind the gesture nav bar without clipping
+ModalBottomSheet(
+    onDismissRequest = onDismiss,
+    contentWindowInsets = { WindowInsets(0) },
+) {
+    val navBarBottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+    LazyColumn(
+        contentPadding = PaddingValues(
+            start = 20.dp,
+            end = 20.dp,
+            top = 8.dp,
+            bottom = 24.dp + navBarBottom,
+        ),
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        items(items) { item -> /* ... */ }
+    }
+}
+```
+
+### B. Edge-to-Edge Horizontal Scrolling (Chips, Carousels, Grids)
+- **NEVER** wrap a `LazyRow`, `LazyHorizontalGrid`, or `horizontalScroll` row inside a parent `Modifier.padding(horizontal = ...)` — that clips items mid-screen during horizontal scroll.
+- Apply `contentPadding = PaddingValues(horizontal = 12.dp..16.dp)` directly on the `LazyRow` / `LazyHorizontalGrid` so items scroll flush from screen edge to screen edge.
+
+### C. Dynamic Keyboard / IME Adjustment (`imePadding`)
+- Always apply `.consumeWindowInsets(innerPadding).imePadding()` on `Scaffold` body content (and `.imePadding()` on scrollable `ModalBottomSheet` forms) so `OutlinedTextField` / chat composers lift smoothly above the software keyboard and are never covered.
+- Hide the `Scaffold` bottom `NavigationBar` when inside a dedicated full-screen composer/chat thread so the composer sits flush above the keyboard.
+
+### D. Collapsing `TopAppBar`
+- On scrollable screens, wire `val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()`, pass `scrollBehavior = scrollBehavior` to `TopAppBar`, and attach `.nestedScroll(scrollBehavior.nestedScrollConnection)` to `Scaffold` so scrolling down hides the TopAppBar and scrolling up restores it smoothly.
+
+---
+
+## 📚 13. Official References
 
 - **Compose Modifier Order**: `https://developer.android.com/develop/ui/compose/modifiers-order`
 - **Compose API Guidelines**: `https://android.googlesource.com/platform/frameworks/support/+/androidx-main/compose/docs/compose-component-api-guidelines.md`
